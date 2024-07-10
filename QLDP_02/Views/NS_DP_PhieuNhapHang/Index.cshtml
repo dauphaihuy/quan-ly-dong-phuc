@@ -1,0 +1,1279 @@
+﻿@model IEnumerable<QLDP_02.Models.getPhieuNhapHang_Result>
+
+@{
+    ViewBag.Title = "Đơn mua hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+    <div class="container-fluid px-4">
+        <div class="page-header-content">
+            <div class="row align-items-center justify-content-between pt-3">
+                <div class="col-auto mb-3">
+                    <h1 class="page-header-title">
+                        <i class="fa-solid fa-warehouse fa-lg"></i>&nbsp;Đơn mua hàng
+                    </h1>
+                </div>
+                <div class="col-12 col-xl-auto mb-3">
+                    <button type="button" class="btn btn-sm btn-light text-primary" onclick="themMoiPhieuNhapHang()">
+                        <i class="me-1 fa-regular fa-square-plus"></i>
+                        Thêm mới
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main page content-->
+<div class="container-fluid px-4">
+    <div class="card">
+        <div class="card-header">Dữ liệu Đơn mua hàng</div>
+        <div class="card-body">
+            <table id="datatablesSimple">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Mã phiếu")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Tên phiếu")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Ngày đặt hàng")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Tên người đặt hàng")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Nhà cung cấp")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Tổng SL mua")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Tổng SL đã nhập")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Tổng thanh toán")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Hoàn thành")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Ghi chú")
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MaPhieuNhapHang)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TenPhieuNhapHang)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NgayDatHang)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HoDem) @Html.DisplayFor(modelItem => item.Ten)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TenNhaCungCap)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TongSLMua)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TongSLDaNhap)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TongThanhToan)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsHoanThanh)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GhiChu)
+                            </td>
+                            <td>
+                                <button class="btn btn-datatable btn-icon btn-transparent-dark" type="button" data-id="@Html.DisplayFor(modelItem => item.PhieuNhapHang)" onclick="suaPhieuNhapHang(this)">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </button> |
+                                <button class="btn btn-datatable btn-icon btn-transparent-dark" type="button" data-id="@Html.DisplayFor(modelItem => item.PhieuNhapHang)" onclick="xoaPhieuNhapHang(this)">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal ThemMoiPhieuNhapHang -->
+<div class="modal fade" id="modalThemMoiPhieuNhapHang" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticThemMoiPhieuNhapHang" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert alert-success">
+                <h5 class="modal-title" id="staticThemMoiPhieuNhapHang">Thêm mới Phiếu nhập hàng</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formThemMoiPhieuNhapHang" class="row g-3 needs-validation" novalidate>
+                    <div class="form-group row mb-2">
+                        <div class="col-lg-2">
+                            <label for="id_MaPhieuNhapHang" class="fw-500 required">Mã phiếu <span class="text-danger">(*)</span>:</label>
+                            <input type="text" class="form-control" required id="id_MaPhieuNhapHang" />
+                            <div class="invalid-feedback">Vui lòng nhập Mã phiếu.</div>
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="id_TenPhieuNhapHang" class="fw-500 required">Tên Đơn mua hàng <span class="text-danger">(*)</span>:</label>
+                            <input type="text" class="form-control" required id="id_TenPhieuNhapHang" />
+                            <div class="invalid-feedback">Vui lòng nhập Tên Đơn mua hàng.</div>
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="id_NgayDatHang" class="fw-500 required">Ngày đặt hàng <span class="text-danger">(*)</span>:</label>
+                            <input type="datetime-local" class="form-control" required id="id_NgayDatHang" />
+                            <div class="invalid-feedback">Vui lòng chọn Ngày đặt hàng.</div>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="id_NhaCungCap" class="fw-500 required">Nhà cung cấp <span class="text-danger">(*)</span>:</label>
+                            @Html.DropDownList("NhaCungCap", null, new { @id = "id_NhaCungCap", @class = "form-control" })
+                            <div class="invalid-feedback">Vui lòng chọn Nhà cung cấp.</div>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="id_KhoNhan" class="fw-500 required">Kho nhận <span class="text-danger">(*)</span>:</label>
+                            @Html.DropDownList("KhoNhan", null, new { @id = "id_KhoNhan", @class = "form-control" })
+                            <div class="invalid-feedback">Vui lòng chọn Kho nhận.</div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <div class="col-md-2">
+                            <label class="fw-500 required">Tổng SL đã nhập:</label>
+                            <input type="number" class="form-control" disabled id="id_TongSLDaNhap" />
+                        </div>
+                        <div class="col-lg-10">
+                            <label class="fw-500 required">Ghi chú:</label>
+                            <textarea rows="1" type="text" class="form-control" id="id_GhiChu"></textarea>
+                        </div>
+                    </div>
+                    <hr />
+
+                    <div class="modal-header alert alert-dark align-items-center my-0">
+                        <h5 class="modal-title" id="iFormLabel">Danh sách sản phẩm</h5>
+                        <button class="btn btn-success btn-sm col-md-auto" type="button" onclick="checkDataThemMoiPhieuNhapHangChiTiet()">Thêm sản phẩm</button>
+                    </div>
+                    <div class="modal-body p-2 pt-0">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayName("Sản phẩm")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Tính chất")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Size")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Số lượng")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Đơn giá")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Thành tiền")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("SL đã nhập")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("SL còn lại")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Đơn vị tính")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Ghi chú (Nếu có)")
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- dữ liệu lấy trong function themMoiPhieuNhapHang() -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer pb-0 mt-0">
+                        <button class="btn btn-success" type="button" onclick="xacNhanThemMoiPhieuNhapHang()">Xác nhận</button>
+                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Quay lại</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal ThemMoiPhieuNhapHangChiTiet -->
+<div class="modal fade" id="modalThemMoiPhieuNhapHangChiTiet" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticThemMoiPhieuNhapHangChiTiet" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticThemMoiPhieuNhapHangChiTiet">Chọn sản phẩm</h5>
+                <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#modalThemMoiPhieuNhapHang"></button>
+            </div>
+
+            <div class="modal-body pb-0">
+                <form class="row g-3 needs-validation my-2" novalidate>
+                    <div class="form-group row mb-2">
+                        <label for="id_SanPham" class="col-lg-4 d-flex align-items-center">Sản phẩm&nbsp;<span class="text-danger">(*)</span>:</label>
+                        <div class="col-lg-8">
+                            @Html.DropDownList("TenSanPham", null, new { @id = "id_SanPham", @class = "form-control", @required = "required" })
+                            <div class="invalid-feedback">Vui lòng Chọn sản phẩm.</div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_TinhChat" class="col-lg-4 col-lg-3 d-flex align-items-center">Tính chất:</label>
+                        <div class="col-lg-8">
+                            @Html.DropDownList("TinhChatDongPhuc", null, new { @id = "id_TinhChat", @class = "form-control" })
+                            <div class="invalid-feedback">Vui lòng Chọn tính chất.</div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_Size" class="col-lg-4 col-lg-3 d-flex align-items-center">Size:</label>
+                        <div class="col-lg-8">
+                            @Html.DropDownList("Size", null, new { @id = "id_Size", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_SoLuong" class="col-lg-4 col-lg-3 d-flex align-items-center">Số lượng&nbsp;<span class="text-danger">(*)</span>:</label>
+                        <div class="col-lg-8">
+                            <input type="number" required class="form-control col-lg-8"  id="id_SoLuong" />
+                            <div class="invalid-feedback">Vui lòng Nhập số lượng.</div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_DonGia" class="col-lg-4 col-lg-3 d-flex align-items-center">Đơn giá&nbsp;<span class="text-danger">(*)</span>:</label>
+                        <div class="col-lg-8">
+                            <input type="number" required class="form-control col-lg-8"  id="id_DonGia" />
+                            <div class="invalid-feedback">Vui lòng Nhập đơn giá.</div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_DonViTinh" class="col-lg-4 col-lg-3 d-flex align-items-center">Đơn vị tính&nbsp;<span class="text-danger">(*)</span>:</label>
+                        <div class="col-lg-8">
+                            @Html.DropDownList("DonViTinh", null, new { @id = "id_DonViTinh", @class = "form-control", @required = "required" })
+                            <div class="invalid-feedback">Vui lòng Chọn đơn vị tính.</div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_GhiChu" class="col-lg-4 col-lg-3 d-flex align-items-center">Ghi chú:</label>
+                        <div class="col-lg-8">
+                            <input type="text" class="form-control col-lg-8" id="id_GhiChu" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" onclick="themMoiPhieuNhapHangChiTiet()">Xác nhận</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal SuaPhieuNhapHang -->
+<div class="modal fade" id="modalSuaPhieuNhapHang" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticSuaPhieuNhapHang" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert alert-success">
+                <h5 class="modal-title" id="staticSuaPhieuNhapHang">Cập nhật Đơn nhập hàng</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3 needs-validation" novalidate>
+                    <div class="form-group row mb-2">
+                        <div class="col-lg-2">
+                            <label for="id_SuaMaPhieuNhapHang" class="fw-500 required">Mã phiếu <span class="text-danger">(*)</span>:</label>
+                            <input type="text" class="form-control" required id="id_SuaMaPhieuNhapHang" />
+                            <div class="invalid-feedback">Vui lòng nhập Mã phiếu.</div>
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="id_SuaTenPhieuNhapHang" class="fw-500 required">Tên Đơn mua hàng <span class="text-danger">(*)</span>:</label>
+                            <input type="text" class="form-control" required id="id_SuaTenPhieuNhapHang" />
+                            <div class="invalid-feedback">Vui lòng nhập Tên Đơn mua hàng.</div>
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="id_SuaNgayDatHang" class="fw-500 required">Ngày đặt hàng <span class="text-danger">(*)</span>:</label>
+                            <input type="datetime-local" class="form-control" required id="id_SuaNgayDatHang" />
+                            <div class="invalid-feedback">Vui lòng chọn Ngày đặt hàng.</div>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="id_SuaNhaCungCap" class="fw-500 required">Nhà cung cấp <span class="text-danger">(*)</span>:</label>
+                            @Html.DropDownList("NhaCungCap", null, new { @id = "id_SuaNhaCungCap", @class = "form-control" })
+                            <div class="invalid-feedback">Vui lòng chọn Nhà cung cấp.</div>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="id_SuaKhoNhan" class="fw-500 required">Kho nhận <span class="text-danger">(*)</span>:</label>
+                            @Html.DropDownList("KhoNhan", null, new { @id = "id_SuaKhoNhan", @class = "form-control" })
+                            <div class="invalid-feedback">Vui lòng chọn Kho nhận.</div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <div class="col-md-2">
+                            <label class="fw-500 required">Tổng SL đã nhập:</label>
+                            <input type="number" class="form-control" disabled id="id_SuaTongSLDaNhap" />
+                        </div>
+                        <div class="col-lg-10">
+                            <label class="fw-500 required">Ghi chú:</label>
+                            <textarea rows="1" type="text" class="form-control" id="id_SuaGhiChu"></textarea>
+                        </div>
+                    </div>
+                    <hr />
+
+                    <div class="modal-header alert alert-secondary align-items-center my-0">
+                        <h5 class="modal-title" id="iFormLabel">Danh sách sản phẩm</h5>
+                        <button type="button" class="btn btn-success btn-sm col-md-auto" onclick="checkSuaDataThemMoiPhieuNhapHangChiTiet()">Thêm sản phẩm</button>
+                    </div>
+                    <div class="modal-body p-2 pt-0">
+                        <table class="table table-bordered" id="suaDataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayName("Sản phẩm")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Tính chất")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Size")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Số lượng")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Đơn giá")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Thành tiền")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("SL đã nhập")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("SL còn lại")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Đơn vị tính")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Ghi chú (Nếu có)")
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- dữ liệu lấy trong function suaPhieuNhapHang() -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer pb-0 mt-0">
+                        <button id="id_XacNhanSuaPhieuNhapHang" class="btn btn-success" type="button" onclick="xacNhanSuaPhieuNhapHang()">Xác nhận</button>
+                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Quay lại</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal SuaPhieuNhapHangChiTiet -->
+<div class="modal fade" id="modalSuaPhieuNhapHangChiTiet" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticSuaPhieuNhapHangChiTiet" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticSuaPhieuNhapHangChiTiet">Cập nhật sản phẩm</h5>
+                <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#modalSuaPhieuNhapHang"></button>
+            </div>
+
+            <div class="modal-body pb-0">
+                <form class="row g-3 needs-validation my-2" novalidate>
+                    <div class="form-group row mb-2">
+                        <label for="id_SuaSanPham" class="col-lg-4 d-flex align-items-center">Sản phẩm&nbsp;<span class="text-danger">(*)</span>:</label>
+                        <div class="col-lg-8">
+                            @Html.DropDownList("TenSanPham", null, new { @id = "id_SuaSanPham", @class = "form-control", @required = "required" })
+                            <div class="invalid-feedback">Vui lòng Chọn sản phẩm.</div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_SuaTinhChat" class="col-lg-4 col-lg-3 d-flex align-items-center">Tính chất:</label>
+                        <div class="col-lg-8">
+                            @Html.DropDownList("TinhChatDongPhuc", null, new { @id = "id_SuaTinhChat", @class = "form-control" })
+                            <div class="invalid-feedback">Vui lòng Chọn tính chất.</div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_SuaSize" class="col-lg-4 col-lg-3 d-flex align-items-center">Size:</label>
+                        <div class="col-lg-8">
+                            @Html.DropDownList("Size", null, new { @id = "id_SuaSize", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_SuaSoLuong" class="col-lg-4 col-lg-3 d-flex align-items-center">Số lượng&nbsp;<span class="text-danger">(*)</span>:</label>
+                        <div class="col-lg-8">
+                            <input type="number" required class="form-control col-lg-8"  id="id_SuaSoLuong" />
+                            <div class="invalid-feedback">Vui lòng Nhập số lượng.</div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_SuaDonGia" class="col-lg-4 col-lg-3 d-flex align-items-center">Đơn giá&nbsp;<span class="text-danger">(*)</span>:</label>
+                        <div class="col-lg-8">
+                            <input type="number" required class="form-control col-lg-8"  id="id_SuaDonGia" />
+                            <div class="invalid-feedback">Vui lòng Nhập đơn giá.</div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_SuaDonViTinh" class="col-lg-4 col-lg-3 d-flex align-items-center">Đơn vị tính&nbsp;<span class="text-danger">(*)</span>:</label>
+                        <div class="col-lg-8">
+                            @Html.DropDownList("DonViTinh", null, new { @id = "id_SuaDonViTinh", @class = "form-control", @required = "required" })
+                            <div class="invalid-feedback">Vui lòng Chọn đơn vị tính.</div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_SuaGhiChu" class="col-lg-4 col-lg-3 d-flex align-items-center">Ghi chú:</label>
+                        <div class="col-lg-8">
+                            <input type="text" class="form-control col-lg-8" id="id_SuaGhiChu" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" onclick="xacNhanSuaPhieuNhapHangChiTiet()">Xác nhận</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal ThemMoiSuaPhieuNhapHangChiTiet -->
+<div class="modal fade" id="modalThemMoiSuaPhieuNhapHangChiTiet" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticThemMoiSuaPhieuNhapHangChiTiet" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticThemMoiSuaPhieuNhapHangChiTiet">Chọn sản phẩm</h5>
+                <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#modalSuaPhieuNhapHang"></button>
+            </div>
+
+            <div class="modal-body pb-0">
+                <form class="row g-3 needs-validation my-2" novalidate>
+                    <div class="form-group row mb-2">
+                        <label for="id_ThemSuaSanPham" class="col-lg-4 d-flex align-items-center">Sản phẩm&nbsp;<span class="text-danger">(*)</span>:</label>
+                        <div class="col-lg-8">
+                            @Html.DropDownList("TenSanPham", null, new { @id = "id_ThemSuaSanPham", @class = "form-control", @required = "required" })
+                            <div class="invalid-feedback">Vui lòng Chọn sản phẩm.</div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_ThemSuaTinhChat" class="col-lg-4 col-lg-3 d-flex align-items-center">Tính chất:</label>
+                        <div class="col-lg-8">
+                            @Html.DropDownList("TinhChatDongPhuc", null, new { @id = "id_ThemSuaTinhChat", @class = "form-control" })
+                            <div class="invalid-feedback">Vui lòng Chọn tính chất.</div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_ThemSuaSize" class="col-lg-4 col-lg-3 d-flex align-items-center">Size:</label>
+                        <div class="col-lg-8">
+                            @Html.DropDownList("Size", null, new { @id = "id_ThemSuaSize", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_ThemSuaSoLuong" class="col-lg-4 col-lg-3 d-flex align-items-center">Số lượng&nbsp;<span class="text-danger">(*)</span>:</label>
+                        <div class="col-lg-8">
+                            <input type="number" required class="form-control col-lg-8"  id="id_ThemSuaSoLuong" />
+                            <div class="invalid-feedback">Vui lòng Nhập số lượng.</div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_ThemSuaDonGia" class="col-lg-4 col-lg-3 d-flex align-items-center">Đơn giá&nbsp;<span class="text-danger">(*)</span>:</label>
+                        <div class="col-lg-8">
+                            <input type="number" required class="form-control col-lg-8"  id="id_ThemSuaDonGia" />
+                            <div class="invalid-feedback">Vui lòng Nhập đơn giá.</div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_ThemSuaDonViTinh" class="col-lg-4 col-lg-3 d-flex align-items-center">Đơn vị tính&nbsp;<span class="text-danger">(*)</span>:</label>
+                        <div class="col-lg-8">
+                            @Html.DropDownList("DonViTinh", null, new { @id = "id_ThemSuaDonViTinh", @class = "form-control", @required = "required" })
+                            <div class="invalid-feedback">Vui lòng Chọn đơn vị tính.</div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="id_ThemSuaGhiChu" class="col-lg-4 col-lg-3 d-flex align-items-center">Ghi chú:</label>
+                        <div class="col-lg-8">
+                            <input type="text" class="form-control col-lg-8" id="id_ThemSuaGhiChu" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" onclick="themMoiSuaPhieuNhapHangChiTiet()">Xác nhận</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal XoaPhieuNhapHang -->
+<div class="modal fade" id="modalXoaPhieuNhapHang" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticXoaPhieuNhapHang" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticXoaPhieuNhapHang">Xoá Phiếu nhập hàng</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="fa-solid fa-triangle-exclamation fa-beat fa-4x"></i>
+                    <br />
+                    <p class="fw-bolder">Cảnh báo</p>
+                    <p>Bạn có chắc Xóa phiếu nhập hàng: <span id="id_XoaPhieuNhapHang" class="text-danger fw-bolder"></span> không?</p>
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <button class="btn btn-danger" type="button" onclick="xacNhanXoaPhieuNhapHang()">Xoá</button>
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Quay lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal XoaPhieuNhapHangChiTiet -->
+<div class="modal fade" id="modalXoaPhieuNhapHangChiTiet" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticXoaPhieuNhapHangChiTiet" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticXoaPhieuNhapHangChiTiet">Xoá Sản phẩm</h5>
+                <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#modalSuaPhieuNhapHang"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="fa-solid fa-triangle-exclamation fa-beat fa-4x"></i>
+                    <br />
+                    <p class="fw-bolder">Cảnh báo</p>
+                    <p>Bạn có chắc Xóa sản phẩm: <span id="id_XoaPhieuNhapHangChiTiet" class="text-danger fw-bolder"></span> không?</p>
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <button class="btn btn-danger" type="button" onclick="xacNhanXoaPhieuNhapHangChiTiet()">Xoá</button>
+                    <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#modalSuaPhieuNhapHang">Quay lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script src="~/Content/AdminLayout/js/datatables/datatables-simple-demo.js"></script>
+
+<script>
+    // Script themMoiPhieuNhapHang
+    function themMoiPhieuNhapHang() {
+        $.ajax({
+            url: "/NS_DP_PhieuNhapHang/GetThemMoiPhieuNhapHang",
+            type: 'GET',
+            success: function (data) {
+                // Cập nhật HTML của bảng
+                $('#dataTable tbody').empty(); // Xóa nội dung cũ trong tbody
+
+                $.each(data, function (index, item) {
+                    var newRow =
+                        "<tr>" +
+                        "<td>" + item.TenSanPham + "</td>" +
+                        "<td>" + item.TenTinhChatDongPhuc + "</td>" +
+                        "<td>" + item.MaSize + "</td>" +
+                        "<td>" + item.SoLuong + "</td>" +
+                        "<td>" + item.DonGia + "</td>" +
+                        "<td>" + item.ThanhTien + "</td>" +
+                        "<td>" + item.SoLuongDaNhap + "</td>" +
+                        "<td>" + (item.SoLuong - item.SoLuongDaNhap) + "</td>" +
+                        "<td>" + item.TenDonViTinh + "</td>" +
+                        "<td>" + item.GhiChuChiTiet + "</td>" +
+                        "<td>" +
+                        "<button class='btn btn-datatable btn-icon btn-transparent-dark' data-id-chitiet='" + item.ID + "' onclick='suaPhieuNhapHangChiTiet(this)' >" +
+                        "<i class='fa-regular fa-pen-to-square'></i>" +
+                        "</button> | " +
+                        "<button class='btn btn-datatable btn-icon btn-transparent-dark' data-id-chitiet='" + item.ID + "' onclick='xoaPhieuNhapHangChiTiet(this)' type='button' data-bs-toggle='modal' data-bs-target='#modalXoaPhieuNhapHangChiTiet'>" +
+                        "<i class='fa-regular fa-trash-can'></i>" +
+                        "</button>" +
+                        "</td>" +
+                        "</tr>";
+
+                    $('#dataTable tbody').append(newRow);
+                });
+
+                $('#modalThemMoiPhieuNhapHang').modal('show');
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+    }
+
+    function checkDataThemMoiPhieuNhapHangChiTiet() {
+        // Thu thập dữ liệu từ input trong modal
+        var MaPhieuNhapHang = $('#id_MaPhieuNhapHang').val();
+        var TenPhieuNhapHang = $('#id_TenPhieuNhapHang').val();
+        var NgayDatHang = $('#id_NgayDatHang').val();
+        var NhaCungCap = $('#id_NhaCungCap').val();
+        var KhoNhan = $('#id_KhoNhan').val();
+
+        if (MaPhieuNhapHang && TenPhieuNhapHang && NgayDatHang && NhaCungCap && KhoNhan) {
+            $('#modalThemMoiPhieuNhapHang').modal('hide');
+
+            $("#id_TinhChat").prepend($("<option>", {
+                value: null,
+                text: ""
+            }));
+            $("#id_TinhChat").val("");
+
+            $("#id_Size").prepend($("<option>", {
+                value: null,
+                text: ""
+            }));
+            $("#id_Size").val("");
+
+            $('#modalThemMoiPhieuNhapHangChiTiet').modal('show');
+        }
+        else {
+            console.error('Lỗi khi gửi dữ liệu: ');
+        }
+    }
+
+    var IdPhieuNhapHangCurrent;
+    function xacNhanThemMoiPhieuNhapHang() {
+        // Thu thập dữ liệu từ input trong modal
+        var MaPhieuNhapHang = $('#id_MaPhieuNhapHang').val();
+        var TenPhieuNhapHang = $('#id_TenPhieuNhapHang').val();
+        var NgayDatHang = $('#id_NgayDatHang').val();
+        var NhaCungCap = $('#id_NhaCungCap').val();
+        var KhoNhan = $('#id_KhoNhan').val();
+        var GhiChu = $('#id_GhiChu').val();
+
+        if (MaPhieuNhapHang && TenPhieuNhapHang && NgayDatHang && NhaCungCap && KhoNhan) {
+            // Trả về một Promise mới
+            return new Promise(function (resolve, reject) {
+                // Sử dụng AJAX để gửi dữ liệu đến controller
+                $.ajax({
+                    url: '/NS_DP_PhieuNhapHang/Create',
+                    type: 'POST',
+                    data: {
+                        MaPhieuNhapHang: MaPhieuNhapHang,
+                        TenPhieuNhapHang: TenPhieuNhapHang,
+                        NgayDatHang: NgayDatHang,
+                        NhaCungCap: NhaCungCap,
+                        KhoNhan: KhoNhan,
+                        GhiChu: GhiChu
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        IdPhieuNhapHangCurrent = parseInt(data.PhieuNhapHang);
+                        IdPhieuNhapHang = IdPhieuNhapHangCurrent;
+
+                        // Xử lý phản hồi từ controller (nếu cần)
+                        $('#modalThemMoiPhieuNhapHang').modal('hide');
+
+                        // Resolve Promise khi xác nhận thành công
+                        resolve();
+                    },
+                    error: function (error) {
+                        console.error('Lỗi khi gửi dữ liệu: ', error);
+
+                        // Reject Promise khi có lỗi
+                        reject(error);
+                    }
+                });
+            });
+        } else {
+            // Trả về một Promise bị từ chối ngay lập tức nếu có lỗi
+            return Promise.reject(new Error('Lỗi khi gửi dữ liệu'));
+        }
+    }
+
+    // Script themMoiPhieuNhapHangChiTiet
+    function themMoiPhieuNhapHangChiTiet() {
+        // Thu thập dữ liệu từ input trong modal
+        var SanPham = $('#id_SanPham').val();
+        var TinhChat = $('#id_TinhChat').val();
+        var Size = $('#id_Size').val();
+        var SoLuong = parseInt($('#id_SoLuong').val());
+        var DonGia = parseFloat($('#id_DonGia').val());
+        var DonViTinh = $('#id_DonViTinh').val();
+        var GhiChu = $('#id_GhiChu').val();
+
+        if (SanPham && SoLuong && DonGia && DonViTinh) {
+            // Sử dụng AJAX để gửi dữ liệu đến controller
+            $.ajax({
+                url: '/NS_DP_PhieuNhapHang/CreateChiTiet', // Thay đổi đường dẫn tới controller của bạn
+                type: 'POST',
+                data: {
+                    SanPham: SanPham,
+                    TinhChat: TinhChat,
+                    Size: Size,
+                    SoLuong: SoLuong,
+                    DonGia: DonGia,
+                    DonViTinh: DonViTinh,
+                    GhiChu: GhiChu
+                },
+                success: function (data) {
+                    // Xử lý phản hồi từ controller (nếu cần)
+                    console.log(data);
+
+                    // Đóng modal sau khi lưu thành công
+                    $('#modalThemMoiPhieuNhapHangChiTiet').modal('hide');
+
+                    xacNhanThemMoiPhieuNhapHang().then(function () {
+                        themMoiPhieuNhapHang_CONTINUE();
+                    }).catch(function (error) {
+                        console.error('Lỗi xác nhận: ', error);
+                    });
+                },
+                error: function (error) {
+                    console.error('Lỗi khi gửi dữ liệu: ', error);
+                }
+            });
+        }
+        else {
+            console.error('Lỗi khi gửi dữ liệu: ', error);
+        }
+    }
+
+    function themMoiPhieuNhapHang_CONTINUE() {
+        if (IdPhieuNhapHangCurrent == null)
+            IdPhieuNhapHangCurrent = IdPhieuNhapHang;
+        $.ajax({
+            url: "/NS_DP_PhieuNhapHang/GetIdPhieuNhapHang/" + IdPhieuNhapHangCurrent,
+            type: 'POST',
+            data: {
+                PhieuNhapHang: IdPhieuNhapHangCurrent
+            },
+            success: function (data) {
+                // Xử lý phản hồi từ controller (nếu cần)
+                console.log(data);
+                $('#id_SuaMaPhieuNhapHang').val(data.MaPhieuNhapHang);
+                $('#id_SuaTenPhieuNhapHang').val(data.TenPhieuNhapHang);
+
+                var NgayDH = parseInt(data.NgayDatHang.replace("/Date(", "").replace(")/", ""), 10);
+                var serverDateTime = new Date(NgayDH);
+                $('#id_SuaNgayDatHang').val(serverDateTime.toISOString().slice(0, 16));
+
+                $('#id_SuaNhaCungCap').val(data.NhaCungCap);
+                $('#id_SuaKhoNhan').val(data.KhoNhan);
+                $('#id_SuaGhiChu').val(data.GhiChu);
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+
+        $.ajax({
+            url: "/NS_DP_PhieuNhapHang/SuaPhieuNhapHang/" + IdPhieuNhapHangCurrent,
+            type: 'GET',
+            data: {
+                PhieuNhapHang: IdPhieuNhapHangCurrent
+            },
+            success: function (data) {
+                // Xử lý phản hồi từ controller (nếu cần)
+                console.log(data);
+
+                // Cập nhật HTML của bảng
+                $('#suaDataTable tbody').empty(); // Xóa nội dung cũ trong tbody
+
+                $.each(data, function (index, item) {
+                    var newRow =
+                        "<tr>" +
+                        "<td>" + ((item.TenSanPham !== null && item.TenSanPham !== undefined) ? item.TenSanPham : "") + "</td>" +
+                        "<td>" + (item.TenTinhChatDongPhuc !== null ? item.TenTinhChatDongPhuc : "") + "</td>" +
+                        "<td>" + (item.MaSize !== null ? item.MaSize : "") + "</td>" +
+                        "<td>" + (item.SoLuong !== null ? item.SoLuong : "") + "</td>" +
+                        "<td>" + (item.DonGia !== null ? item.DonGia : "") + "</td>" +
+                        "<td>" + (item.ThanhTien !== null ? item.ThanhTien : "") + "</td>" +
+                        "<td>" + (item.SoLuongDaNhap !== null ? item.SoLuongDaNhap : "") + "</td>" +
+                        "<td>" + ((item.SoLuong !== null && item.SoLuongDaNhap !== null) ? (item.SoLuong - item.SoLuongDaNhap) : "") + "</td>" +
+                        "<td>" + (item.TenDonViTinh !== null ? item.TenDonViTinh : "") + "</td>" +
+                        "<td>" + (item.GhiChuChiTiet !== null ? item.GhiChuChiTiet : "") + "</td>" +
+                        "<td>" +
+                        "<button class='btn btn-datatable btn-icon btn-transparent-dark' type='button' data-id-chitiet='" + item.ID + "' onclick='suaSuaPhieuNhapHangChiTiet(this)'>" +
+                        "<i class='fa-regular fa-pen-to-square'></i>" +
+                        "</button> | " +
+                        "<button class='btn btn-datatable btn-icon btn-transparent-dark' type='button' data-id-chitiet='" + item.ID + "' onclick='xoaSuaPhieuNhapHangChiTiet(this)'>" +
+                        "<i class='fa-regular fa-trash-can'></i>" +
+                        "</button>" +
+                        "</td>" +
+                        "</tr>";
+
+                    $('#suaDataTable tbody').append(newRow);
+                });
+
+                $('#modalSuaPhieuNhapHang').modal('show');
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+    }
+
+    // Script suaPhieuNhapHang
+    var IdPhieuNhapHang;
+    function suaPhieuNhapHang(button) {
+        IdPhieuNhapHang = parseInt(button.getAttribute("data-id"), 10);
+
+        $.ajax({
+            url: "/NS_DP_PhieuNhapHang/GetIdPhieuNhapHang/" + IdPhieuNhapHang,
+            type: 'POST',
+            data: {
+                PhieuNhapHang: IdPhieuNhapHang
+            },
+            success: function (data) {
+                // Xử lý phản hồi từ controller (nếu cần)
+                console.log(data);
+                $('#id_SuaMaPhieuNhapHang').val(data.MaPhieuNhapHang);
+                $('#id_SuaTenPhieuNhapHang').val(data.TenPhieuNhapHang);
+
+                var NgayDH = parseInt(data.NgayDatHang.replace("/Date(", "").replace(")/", ""), 10);
+                var serverDateTime = new Date(NgayDH);
+                $('#id_SuaNgayDatHang').val(serverDateTime.toISOString().slice(0, 16));
+
+                $('#id_SuaNhaCungCap').val(data.NhaCungCap);
+                $('#id_SuaKhoNhan').val(data.KhoNhan);
+                $('#id_SuaGhiChu').val(data.GhiChu);
+
+                $('#modalSuaPhieuNhapHang').modal('show');
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+
+        $.ajax({
+            url: "/NS_DP_PhieuNhapHang/SuaPhieuNhapHang/" + IdPhieuNhapHang,
+            type: 'GET',
+            data: {
+                PhieuNhapHang: IdPhieuNhapHang
+            },
+            success: function (data) {
+                // Xử lý phản hồi từ controller (nếu cần)
+                console.log(data);
+
+                // Cập nhật HTML của bảng
+                $('#suaDataTable tbody').empty(); // Xóa nội dung cũ trong tbody
+
+                $.each(data, function (index, item) {
+                    var newRow =
+                        "<tr>" +
+                        "<td>" + ((item.TenSanPham !== null && item.TenSanPham !== undefined) ? item.TenSanPham : "") + "</td>" +
+                        "<td>" + (item.TenTinhChatDongPhuc !== null ? item.TenTinhChatDongPhuc : "") + "</td>" +
+                        "<td>" + (item.MaSize !== null ? item.MaSize : "") + "</td>" +
+                        "<td>" + (item.SoLuong !== null ? item.SoLuong : "") + "</td>" +
+                        "<td>" + (item.DonGia !== null ? item.DonGia : "") + "</td>" +
+                        "<td>" + (item.ThanhTien !== null ? item.ThanhTien : "") + "</td>" +
+                        "<td>" + (item.SoLuongDaNhap !== null ? item.SoLuongDaNhap : "") + "</td>" +
+                        "<td>" + ((item.SoLuong !== null && item.SoLuongDaNhap !== null) ? (item.SoLuong - item.SoLuongDaNhap) : "") + "</td>" +
+                        "<td>" + (item.TenDonViTinh !== null ? item.TenDonViTinh : "") + "</td>" +
+                        "<td>" + (item.GhiChuChiTiet !== null ? item.GhiChuChiTiet : "") + "</td>" +
+                        "<td>" +
+                        "<button class='btn btn-datatable btn-icon btn-transparent-dark' type='button' data-id-chitiet='" + item.ID + "' onclick='suaSuaPhieuNhapHangChiTiet(this)'>" +
+                        "<i class='fa-regular fa-pen-to-square'></i>" +
+                        "</button> | " +
+                        "<button class='btn btn-datatable btn-icon btn-transparent-dark' type='button' data-id-chitiet='" + item.ID + "' onclick='xoaSuaPhieuNhapHangChiTiet(this)'>" +
+                        "<i class='fa-regular fa-trash-can'></i>" +
+                        "</button>" +
+                        "</td>" +
+                        "</tr>";
+
+                    $('#suaDataTable tbody').append(newRow);
+                });
+
+                $('#modalSuaPhieuNhapHang').modal('show');
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+    }
+
+    function xacNhanSuaPhieuNhapHang() {
+        // Thu thập dữ liệu từ input trong modal
+        var MaPhieuNhapHang = $('#id_SuaMaPhieuNhapHang').val();
+        var TenPhieuNhapHang = $('#id_SuaTenPhieuNhapHang').val();
+        var NgayDatHang = $('#id_SuaNgayDatHang').val();
+        var NhaCungCap = $('#id_SuaNhaCungCap').val();
+        var KhoNhan = $('#id_SuaKhoNhan').val();
+        var GhiChu = $('#id_SuaGhiChu').val();
+
+        if (MaPhieuNhapHang && TenPhieuNhapHang && NgayDatHang && NhaCungCap && KhoNhan) {
+            // Sử dụng AJAX để gửi dữ liệu đến controller
+            $.ajax({
+                url: '/NS_DP_PhieuNhapHang/Edit/' + IdPhieuNhapHang, // Thay đổi đường dẫn tới controller của bạn
+                type: 'POST',
+                data: {
+                    PhieuNhapHang: IdPhieuNhapHang,
+                    MaPhieuNhapHang: MaPhieuNhapHang,
+                    TenPhieuNhapHang: TenPhieuNhapHang,
+                    NgayDatHang: NgayDatHang,
+                    NhaCungCap: NhaCungCap,
+                    KhoNhan: KhoNhan,
+                    GhiChu: GhiChu
+                },
+                success: function (response) {
+                    // Xử lý phản hồi từ controller (nếu cần)
+                    console.log(response);
+
+                    // Load lại trang
+                    location.reload();
+                },
+                error: function (error) {
+                    console.error('Lỗi khi gửi dữ liệu: ', error);
+                }
+            });
+        }
+        else {
+            console.error('Lỗi khi gửi dữ liệu: ');
+        }
+    }
+
+    function checkSuaDataThemMoiPhieuNhapHangChiTiet() {
+        // Thu thập dữ liệu từ input trong modal
+        var MaPhieuNhapHang = $('#id_SuaMaPhieuNhapHang').val();
+        var TenPhieuNhapHang = $('#id_SuaTenPhieuNhapHang').val();
+        var NgayDatHang = $('#id_SuaNgayDatHang').val();
+        var NhaCungCap = $('#id_SuaNhaCungCap').val();
+        var KhoNhan = $('#id_SuaKhoNhan').val();
+
+        if (MaPhieuNhapHang && TenPhieuNhapHang && NgayDatHang && NhaCungCap && KhoNhan) {
+            $('#modalSuaPhieuNhapHang').modal('hide');
+
+            $("#id_ThemSuaTinhChat").val(null);
+            $("#id_ThemSuaSize").val(null);
+
+            $('#modalThemMoiSuaPhieuNhapHangChiTiet').modal('show');
+        }
+        else {
+            console.error('Dữ liệu bị thiếu.');
+        }
+    }
+
+    // Script themMoiSuaPhieuNhapHangChiTiet
+    function themMoiSuaPhieuNhapHangChiTiet() {
+        // Thu thập dữ liệu từ input trong modal
+        var PhieuNhapHang = IdPhieuNhapHang;
+        var SanPham = $('#id_ThemSuaSanPham').val();
+        var TinhChat = $('#id_ThemSuaTinhChat').val();
+        var Size = $('#id_SuaSize').val();
+        var SoLuong = parseInt($('#id_ThemSuaSoLuong').val());
+        var DonGia = parseFloat($('#id_ThemSuaDonGia').val());
+        var DonViTinh = $('#id_ThemSuaDonViTinh').val();
+        var GhiChu = $('#id_ThemSuaGhiChu').val();
+
+        if (SanPham && SoLuong && DonGia && DonViTinh) {
+            // Sử dụng AJAX để gửi dữ liệu đến controller
+            $.ajax({
+                url: '/NS_DP_PhieuNhapHang/ThemMoiSuaChiTiet', // Thay đổi đường dẫn tới controller của bạn
+                type: 'POST',
+                data: {
+                    PhieuNhapHang: PhieuNhapHang,
+                    SanPham: SanPham,
+                    TinhChat: TinhChat,
+                    Size: Size,
+                    SoLuong: SoLuong,
+                    DonGia: DonGia,
+                    DonViTinh: DonViTinh,
+                    GhiChu: GhiChu
+                },
+                success: function (data) {
+                    // Xử lý phản hồi từ controller (nếu cần)
+                    console.log(data);
+
+                    // Đóng modal sau khi lưu thành công
+                    $('#modalThemMoiSuaPhieuNhapHangChiTiet').modal('hide');
+
+                    themMoiPhieuNhapHang_CONTINUE();
+                },
+                error: function (error) {
+                    console.error('Lỗi khi gửi dữ liệu: ', error);
+                }
+            });
+        }
+        else {
+            console.error('Lỗi khi gửi dữ liệu: ', error);
+        }
+    }
+
+    // Script suaPhieuNhapHangChiTiet
+    var IdPhieuNhapHangChiTiet;
+    function suaSuaPhieuNhapHangChiTiet(button) {
+        IdPhieuNhapHangChiTiet = parseInt(button.getAttribute("data-id-chitiet"), 10);
+
+        $.ajax({
+            url: "/NS_DP_PhieuNhapHang/GetIdPhieuNhapHangChiTiet/" + IdPhieuNhapHangChiTiet,
+            type: 'POST',
+            data: {
+                PhieuNhapHangChiTiet: IdPhieuNhapHangChiTiet
+            },
+            success: function (data) {
+                $('#modalSuaPhieuNhapHang').modal('hide');
+
+                // Xử lý phản hồi từ controller (nếu cần)
+                console.log(data)
+
+                $("#id_SuaTinhChat").prepend($("<option>", {
+                    value: null,
+                    text: ""
+                }));
+
+                $("#id_SuaSize").prepend($("<option>", {
+                    value: null,
+                    text: ""
+                }));
+
+                $('#id_SuaSanPham').val(data.SanPham);
+                $('#id_SuaTinhChat').val(data.TinhChatDongPhuc);
+                $('#id_SuaSize').val(data.Size);
+                $('#id_SuaSoLuong').val(data.SoLuong);
+                $('#id_SuaDonGia').val(data.DonGia);
+                $('#id_SuaDonViTinh').val(data.DonViTinh);
+                $('#id_SuaGhiChuChiTiet').val(data.GhiChuChiTiet);
+
+                $('#modalSuaPhieuNhapHangChiTiet').modal('show');
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+    }
+
+    function xacNhanSuaPhieuNhapHangChiTiet() {
+        // Thu thập dữ liệu từ input trong modal
+        var ID = IdPhieuNhapHangChiTiet;
+        var SanPham = $('#id_SuaSanPham').val();
+        var TinhChat = $('#id_SuaTinhChat').val();
+        var Size = $('#id_SuaSize').val();
+        var SoLuong = parseInt($('#id_SuaSoLuong').val());
+        var DonGia = parseFloat($('#id_SuaDonGia').val());
+        var DonViTinh = $('#id_SuaDonViTinh').val();
+        var GhiChu = $('#id_SuaGhiChu').val();
+
+        // Sử dụng AJAX để gửi dữ liệu đến controller
+        $.ajax({
+            url: '/NS_DP_PhieuNhapHang/EditChiTiet', // Thay đổi đường dẫn tới controller của bạn
+            type: 'POST',
+            data: {
+                ID: ID,
+                SanPham: SanPham,
+                TinhChat: TinhChat,
+                Size: Size,
+                SoLuong: SoLuong,
+                DonGia: DonGia,
+                DonViTinh: DonViTinh,
+                GhiChu: GhiChu
+            },
+            success: function (data) {
+                // Xử lý phản hồi từ controller (nếu cần)
+                console.log(data);
+                // Đóng modal sau khi lưu thành công
+                $('#modalSuaPhieuNhapHangChiTiet').modal('hide');
+
+                // Cập nhật HTML của bảng
+                $('#suaDataTable tbody').empty(); // Xóa nội dung cũ trong tbody
+
+                $.each(data, function (index, item) {
+                    var newRow =
+                        "<tr>" +
+                        "<td>" + ((item.TenSanPham !== null && item.TenSanPham !== undefined) ? item.TenSanPham : "") + "</td>" +
+                        "<td>" + (item.TenTinhChatDongPhuc !== null ? item.TenTinhChatDongPhuc : "") + "</td>" +
+                        "<td>" + (item.MaSize !== null ? item.MaSize : "") + "</td>" +
+                        "<td>" + (item.SoLuong !== null ? item.SoLuong : "") + "</td>" +
+                        "<td>" + (item.DonGia !== null ? item.DonGia : "") + "</td>" +
+                        "<td>" + (item.ThanhTien !== null ? item.ThanhTien : "") + "</td>" +
+                        "<td>" + (item.SoLuongDaNhap !== null ? item.SoLuongDaNhap : "") + "</td>" +
+                        "<td>" + ((item.SoLuong !== null && item.SoLuongDaNhap !== null) ? (item.SoLuong - item.SoLuongDaNhap) : "") + "</td>" +
+                        "<td>" + (item.TenDonViTinh !== null ? item.TenDonViTinh : "") + "</td>" +
+                        "<td>" + (item.GhiChuChiTiet !== null ? item.GhiChuChiTiet : "") + "</td>" +
+                        "<td>" +
+                        "<button class='btn btn-datatable btn-icon btn-transparent-dark' type='button' data-id-chitiet='" + item.ID + "' onclick='suaSuaPhieuNhapHangChiTiet(this)'>" +
+                        "<i class='fa-regular fa-pen-to-square'></i>" +
+                        "</button> | " +
+                        "<button class='btn btn-datatable btn-icon btn-transparent-dark' type='button' data-id-chitiet='" + item.ID + "' onclick='xoaSuaPhieuNhapHangChiTiet(this)'>" +
+                        "<i class='fa-regular fa-trash-can'></i>" +
+                        "</button>" +
+                        "</td>" +
+                        "</tr>";
+
+                    $('#suaDataTable tbody').append(newRow);
+                });
+
+                $('#modalSuaPhieuNhapHang').modal('show');
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+    }
+
+    function xoaPhieuNhapHang(button) {
+        IdPhieuNhapHang = parseInt(button.getAttribute("data-id"), 10);
+
+        $.ajax({
+            url: "/NS_DP_PhieuNhapHang/GetIdPhieuNhapHang/" + IdPhieuNhapHang,
+            type: 'POST',
+            data: {
+                PhieuNhapHang: IdPhieuNhapHang
+            },
+            success: function (data) {
+                // Xử lý phản hồi từ controller (nếu cần)
+                console.log(data);
+                $('#id_XoaPhieuNhapHang').text(data.TenPhieuNhapHang);
+
+                $('#modalXoaPhieuNhapHang').modal('show');
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+    }
+
+    function xacNhanXoaPhieuNhapHang() {
+        var PhieuNhapHang = IdPhieuNhapHang;
+
+        // Gửi yêu cầu xóa sản phẩm lên server
+        $.ajax({
+            url: "/NS_DP_PhieuNhapHang/Delete/" + PhieuNhapHang,
+            type: "POST",
+            data: {
+                PhieuNhapHang: PhieuNhapHang
+            },
+            success: function (response) {
+                // Xử lý phản hồi từ controller (nếu cần)
+                console.log(response);
+                // Đóng modal sau khi xoá thành công
+                $('#modalXoaPhieuNhapHang').modal('hide');
+                // Reload trang
+                location.reload();
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+    }
+
+    function xoaSuaPhieuNhapHangChiTiet(button) {
+        IdPhieuNhapHangChiTiet = parseInt(button.getAttribute("data-id-chitiet"), 10);
+
+        $.ajax({
+            url: "/NS_DP_PhieuNhapHang/GetNamePhieuNhapHangChiTiet/" + IdPhieuNhapHangChiTiet,
+            type: 'POST',
+            data: {
+                PhieuNhapHangChiTiet: IdPhieuNhapHangChiTiet
+            },
+            success: function (data) {
+                $('#modalSuaPhieuNhapHang').modal('hide');
+
+                // Xử lý phản hồi từ controller (nếu cần)
+                console.log(data)
+                $('#id_XoaPhieuNhapHangChiTiet').text(data.TenSanPham);
+
+                $('#modalXoaPhieuNhapHangChiTiet').modal('show');
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+    }
+
+    function xacNhanXoaPhieuNhapHangChiTiet() {
+        // Thu thập dữ liệu từ input trong modal
+        var ID = IdPhieuNhapHangChiTiet;
+
+        // Sử dụng AJAX để gửi dữ liệu đến controller
+        $.ajax({
+            url: '/NS_DP_PhieuNhapHang/DeleteChiTiet', // Thay đổi đường dẫn tới controller của bạn
+            type: 'POST',
+            data: {
+                ID: ID
+            },
+            success: function (data) {
+                // Xử lý phản hồi từ controller (nếu cần)
+                console.log(data);
+                // Đóng modal sau khi lưu thành công
+                $('#modalXoaPhieuNhapHangChiTiet').modal('hide');
+
+                // Cập nhật HTML của bảng
+                $('#suaDataTable tbody').empty(); // Xóa nội dung cũ trong tbody
+
+                $.each(data, function (index, item) {
+                    var newRow =
+                        "<tr>" +
+                        "<td>" + ((item.TenSanPham !== null && item.TenSanPham !== undefined) ? item.TenSanPham : "") + "</td>" +
+                        "<td>" + (item.TenTinhChatDongPhuc !== null ? item.TenTinhChatDongPhuc : "") + "</td>" +
+                        "<td>" + (item.MaSize !== null ? item.MaSize : "") + "</td>" +
+                        "<td>" + (item.SoLuong !== null ? item.SoLuong : "") + "</td>" +
+                        "<td>" + (item.DonGia !== null ? item.DonGia : "") + "</td>" +
+                        "<td>" + (item.ThanhTien !== null ? item.ThanhTien : "") + "</td>" +
+                        "<td>" + (item.SoLuongDaNhap !== null ? item.SoLuongDaNhap : "") + "</td>" +
+                        "<td>" + ((item.SoLuong !== null && item.SoLuongDaNhap !== null) ? (item.SoLuong - item.SoLuongDaNhap) : "") + "</td>" +
+                        "<td>" + (item.TenDonViTinh !== null ? item.TenDonViTinh : "") + "</td>" +
+                        "<td>" + (item.GhiChuChiTiet !== null ? item.GhiChuChiTiet : "") + "</td>" +
+                        "<td>" +
+                        "<button class='btn btn-datatable btn-icon btn-transparent-dark' type='button' data-id-chitiet='" + item.ID + "' onclick='suaSuaPhieuNhapHangChiTiet(this)'>" +
+                        "<i class='fa-regular fa-pen-to-square'></i>" +
+                        "</button> | " +
+                        "<button class='btn btn-datatable btn-icon btn-transparent-dark' type='button' data-id-chitiet='" + item.ID + "' onclick='xoaSuaPhieuNhapHangChiTiet(this)'>" +
+                        "<i class='fa-regular fa-trash-can'></i>" +
+                        "</button>" +
+                        "</td>" +
+                        "</tr>";
+
+                    $('#suaDataTable tbody').append(newRow);
+                });
+
+                $('#modalSuaPhieuNhapHang').modal('show');
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+    }
+
+</script>
+
+
+<!-- Check DataInput -->
+@*<script>
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+
+        })();
+    </script>*@

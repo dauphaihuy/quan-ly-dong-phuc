@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3cae800838a74a4990395cffd19db44f" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="DB_QLDPModel.DM_DP_DonViTinh" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.DM_DP_LoaiSanPham" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.DM_DP_LyDoCapPhat" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.DM_DP_NhaCungCap" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.DM_DP_Size" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.DM_DP_TinhChatDongPhuc" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.DM_DP_TrangThaiDuyet" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.NS_DP_GioiTinh" Width="1.5" PointX="6.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.NS_DP_PhieuDeNghi" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.NS_DP_PhieuDeNghi_CaNhan" Width="1.5" PointX="8.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.NS_DP_PhieuDeNghi_CaNhan_ChiTiet" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.NS_DP_PhieuDeNghi_ChiTiet" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.NS_DP_PhieuNhapHang" Width="1.5" PointX="10.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.NS_DP_PhieuNhapHang_ChiTiet" Width="1.5" PointX="2.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.NS_DP_SanPham" Width="1.5" PointX="4.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.NS_DP_SanPham_TinhChatDongPhuc" Width="1.5" PointX="12.75" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.NS_DP_XuatNhapKho" Width="1.5" PointX="12.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.NS_DP_XuatNhapKho_ChiTiet" Width="1.5" PointX="12.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.NS_NhanSu" Width="1.5" PointX="10.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_QLDPModel.DM_DP_Kho" Width="1.5" PointX="13.375" PointY="13.75" />
+        <EntityTypeShape EntityType="DB_QLDPModel.sysdiagrams" Width="1.5" PointX="15.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DB_QLDPModel.NS_QuocTich" Width="1.5" PointX="0.75" PointY="15.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,310 @@
+﻿@model IEnumerable<QLDP_02.Models.getXuatNhapKho_Result>
+
+@{
+    ViewBag.Title = "Nhập kho";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+    <div class="container-fluid px-4">
+        <div class="page-header-content">
+            <div class="row align-items-center justify-content-between pt-3">
+                <div class="col-auto mb-3">
+                    <h1 class="page-header-title">
+                        <i class="fa-solid fa-right-to-bracket fa-lg"></i>&nbsp;Nhập kho
+                    </h1>
+                </div>
+                <div class="col-12 col-xl-auto mb-3">
+                    <a class="btn btn-sm btn-light text-primary" type="button" data-bs-toggle="modal" data-bs-target="#modalThemMoiNhapKho">
+                        <i class="me-1 fa-regular fa-square-plus"></i>
+                        Thêm mới
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main page content-->
+<div class="container-fluid px-4">
+    <div class="card">
+        <div class="card-body">
+            <table id="datatablesSimple">
+                <thead>
+                    <tr>
+                        <td>
+                            @Html.DisplayName("Ngày nhập hàng")
+                        </td>
+                        <td>
+                            @Html.DisplayName("Mã phiếu nhập")
+                        </td>
+                        <td>
+                            @Html.DisplayName("Kho nhận")
+                        </td>
+                        <td>
+                            @Html.DisplayName("Họ tên người nhận")
+                        </td>
+                        <td>
+                            @Html.DisplayName("Tỷ giá")
+                        </td>
+                        <td>
+                            @Html.DisplayName("Nhà cung cấp")
+                        </td>
+                        <td>
+                            @Html.DisplayName("Ghi chú")
+                        </td>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NgayNhapXuat)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MaXuatNhapKho)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TenKho)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HoDem) @Html.DisplayFor(modelItem => item.Ten)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TyGia)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TenNhaCungCap)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GhiChu)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.MaXuatNhapKho }) |
+                                @Html.ActionLink("Details", "Details", new { id = item.MaXuatNhapKho }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.MaXuatNhapKho })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script src="~/Content/AdminLayout/js/datatables/datatables-simple-demo.js"></script>
+
+
+<!-- Modal ThemMoiNhapKho -->
+<div class="modal fade" id="modalThemMoiNhapKho" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticThemMoiNhapKho" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert alert-success">
+                <h5 class="modal-title" id="staticThemMoiNhapKho">Thêm mới Nhập kho</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row mb-2">
+                    <div class="col-lg-2">
+                        <label class="fw-500">Mã phiếu:</label>
+                        <input type="text" class="form-control" required id="id_MaXuatNhapKho" disabled/>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="fw-500 required">Phiếu nhập hàng <span class="text-danger">(*)</span> :</label>
+                        @Html.DropDownList("PhieuNhapHang", null, "", new { @id = "id_MaXuatNhapKho", @class = "form-control required" })
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="fw-500">Kho nhận<span class="text-danger">(*)</span>:</label>
+                        @Html.DropDownList("Kho", null, "", new { @id = "id_Kho", @class = "form-control required" })
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="fw-500">Ngày nhận:</label>
+                        <input type="datetime-local" class="form-control" required id="id_NgayNhapXuat" />
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="fw-500">Tỷ giá<span class="text-danger">(*)</span> :</label>
+                        <input type="number" placeholder="0" class="form-control" required id="id_TyGia" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2">
+                    <div class="col-lg-12">
+                        <label class="fw-500">Ghi chú</label>
+                        <textarea rows="1" type="text" class="form-control" id="id_GhiChu"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="button" onclick="themMoiNhapKho()">Xác nhận</button>
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Quay lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal XoaNhapKho -->
+<div class="modal fade" id="modalXoaNhapKho" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticXoaNhapKho" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticXoaSanPham">Xoá Nhập kho</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="fa-solid fa-triangle-exclamation fa-beat fa-4x"></i>
+                    <br />
+                    <p class="fw-bolder">Cảnh báo</p>
+                    <p>Bạn có chắc Xóa nhập kho: <span class="text-danger fw-bolder">@ViewBag.NhapKho</span> không?</p>
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <button class="btn btn-danger" type="button" onclick="xacNhanXoaNhapKho()">Xoá</button>
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Quay lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script themMoiSanPham -->
+<script>
+    function themMoiSanPham() {
+        // Thu thập dữ liệu từ input trong modal
+        var TenSanPham = $('#id_TenSanPham').val();
+        var LoaiSanPham = $('#pn_id_LoaiSanPham').val();
+        var DonViTinh = $('#id_DonViTinh').val();
+        var SanPhamLienKet = $('#id_SanPhamLienKet').val();
+        var GioiTinh = $('#id_GioiTinh').val();
+        var QuyCachDoi = $('#id_QuyCachDoi').val();
+
+        // Sử dụng AJAX để gửi dữ liệu đến controller
+        $.ajax({
+            url: '/NS_DP_SanPham/Create', // Thay đổi đường dẫn tới controller của bạn
+            type: 'POST',
+            data: {
+                TenSanPham: TenSanPham,
+                LoaiSanPham: LoaiSanPham,
+                DonViTinh: DonViTinh,
+                SanPhamLienKet: SanPhamLienKet,
+                GioiTinh: GioiTinh,
+                QuyCachDoi: QuyCachDoi
+            },
+            success: function (response) {
+                // Xử lý phản hồi từ controller (nếu cần)
+                console.log(response);
+                // Đóng modal sau khi lưu thành công
+                $('#themMoiPhieuNhapHang').modal('hide');
+                // Reload trang
+                location.reload();
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+    }
+</script>
+
+<!-- Script suaSanPham -->
+<script>
+    var IdSanPham;
+
+    function suaSanPham(button) {
+        IdSanPham = parseInt(button.getAttribute("data-id"), 10);
+        console.log("Id của item:", IdSanPham);
+        console.log(typeof IdSanPham);
+
+        $.ajax({
+            url: "/NS_DP_SanPham/" + IdSanPham,
+            type: 'GET',
+            success: function (s) {
+                // Xử lý phản hồi từ controller (nếu cần)
+                displayData(s);
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+
+        function displayData(s) {
+            // Xử lý cách hiển thị dữ liệu trên trang web (View)
+            $("#id_TenSanPham").val(s.TenSanPham);
+            $("#pn_id_LoaiSanPham").val(s.TenLoaiSanPham);
+            $("#id_DonViTinh").val(s.TenDonViTinh);
+            $("#id_SanPhamLienKet").text(s.TenSanPhamLienKet);
+            $("#id_GioiTinh").val(s.TenGioiTinh);
+        }
+    }
+
+
+    function xacNhanSuaSanPham() {
+        // Thu thập dữ liệu từ input trong modal
+        var TenSanPham = $('#id_TenSanPham').val();
+        var LoaiSanPham = $('#pn_id_LoaiSanPham').val();
+        var DonViTinh = $('#id_DonViTinh').val();
+        var SanPhamLienKet = $('#id_SanPhamLienKet').val();
+        var GioiTinh = $('#id_GioiTinh').val();
+        var QuyCachDoi = $('#id_QuyCachDoi').val();
+
+        // Sử dụng AJAX để gửi dữ liệu đến controller
+        $.ajax({
+            url: '/NS_DP_SanPham/Create', // Thay đổi đường dẫn tới controller của bạn
+            type: 'POST',
+            data: {
+                TenSanPham: TenSanPham,
+                LoaiSanPham: LoaiSanPham,
+                DonViTinh: DonViTinh,
+                SanPhamLienKet: SanPhamLienKet,
+                GioiTinh: GioiTinh,
+                QuyCachDoi: QuyCachDoi
+            },
+            success: function (response) {
+                // Xử lý phản hồi từ controller (nếu cần)
+                console.log(response);
+                // Đóng modal sau khi lưu thành công
+                $('#themMoiPhieuNhapHang').modal('hide');
+                // Reload trang
+                location.reload();
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+    }
+</script>
+
+<!-- Script xoaSanPham -->
+<script>
+    var IdSanPham;
+
+    function xoaSanPham(button) {
+        IdSanPham = parseInt(button.getAttribute("data-id"), 10);
+    }
+
+    function xacNhanXoaSanPham() {
+        var SanPham = IdSanPham;
+
+        // Gửi yêu cầu xóa sản phẩm lên server
+        $.ajax({
+            url: "/NS_DP_SanPham/Delete/" + SanPham,
+            type: "POST",
+            data: {
+                SanPham: SanPham
+            },
+            success: function (response) {
+                // Xử lý phản hồi từ controller (nếu cần)
+                console.log(response);
+                // Đóng modal sau khi xoá thành công
+                $('#modalXoaSanPham').modal('hide');
+                // Reload trang
+                location.reload();
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+    }
+</script>
+

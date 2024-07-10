@@ -1,0 +1,339 @@
+﻿@model IEnumerable<QLDP_02.Models.getSize_Result>
+
+@{
+    ViewBag.Title = "Hồ sơ size";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int stt = 1; // Khởi tạo biến đếm
+}
+
+<!-- Header page content-->
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+    <div class="container-fluid px-4">
+        <div class="page-header-content">
+            <div class="row align-items-center justify-content-between pt-3">
+                <div class="col-auto mb-3">
+                    <h1 class="page-header-title">
+                        <i class="fa-solid fa-maximize fa-lg"></i>&nbsp;SIZE
+                    </h1>
+                </div>
+                <div class="col-12 col-xl-auto mb-3">
+                    <a class="btn btn-sm btn-light text-primary" href="#!" type="button" data-bs-toggle="modal" data-bs-target="#modalThemMoiSize">
+                        <i class="me-1 fa-regular fa-square-plus"></i>
+                        Thêm mới
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main page content-->
+<div class="container-fluid px-4">
+    <div class="card">
+        <div class="card-header">Dữ liệu Size</div>
+        <div class="card-body">
+            <table id="datatablesSimple">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("STT")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Mã size")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Loại sản phẩm")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Hành động")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @stt
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MaSize)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TenLoaiSanPham)
+                            </td>
+                            <td>
+                                <button class="btn btn-datatable btn-icon btn-transparent-dark" data-id="@Html.DisplayFor(modelItem => item.Size)" onclick="suaSize(this)" type="button">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </button> |
+                                <button class="btn btn-datatable btn-icon btn-transparent-dark" data-id="@Html.DisplayFor(modelItem => item.Size)" onclick="xoaSize(this)" type="button">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        stt++; // Tăng biến đếm sau mỗi lần lặp
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal ThemMoiSize -->
+<div class="modal fade" id="modalThemMoiSize" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticThemMoiSize" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert alert-success">
+                <h5 class="modal-title" id="staticThemMoiSize">Thêm mới Size</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3 needs-validation" novalidate>
+                    <div class="form-group row mb-3">
+                        <div class="col-lg-6">
+                            <label for="id_MaSize" class="fw-500">Mã size <span class="text-danger">(*)</span>:</label>
+                            <input type="text" class="form-control" id="id_MaSize" required />
+                            <div class="invalid-feedback">Vui lòng nhập Mã size.</div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="fw-500">Loại sản phẩm <span class="text-danger">(*)</span>:</label>
+                            @Html.DropDownList("LoaiSanPham", null, new { @id = "id_LoaiSanPham", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="modal-footer pb-0">
+                        <button class="btn btn-success" type="submit" onclick="themMoiSize(this)">Xác nhận</button>
+                        <button class="btn btn-secondary" type="submit" data-bs-dismiss="modal">Quay lại</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal SuaSize -->
+<div class="modal fade" id="modalSuaSize" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticSuaSize" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert alert-success">
+                <h5 class="modal-title" id="staticSuaSize">Cập nhật Size</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3 needs-validation" novalidate>
+                    <div class="form-group row mb-3">
+                        <div class="col-lg-6">
+                            <label for="id_SuaMaSize" class="fw-500">Mã size <span class="text-danger">(*)</span>:</label>
+                            <input type="text" class="form-control" id="id_SuaMaSize" required />
+                            <div class="invalid-feedback">Vui lòng nhập Mã size.</div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="fw-500">Loại sản phẩm <span class="text-danger">(*)</span>:</label>
+                            @Html.DropDownList("LoaiSanPham", null, new { @id = "id_SuaLoaiSanPham", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="modal-footer pb-0">
+                        <button class="btn btn-success" type="submit" onclick="xacNhanSuaSanPham()">Xác nhận</button>
+                        <button class="btn btn-secondary" type="submit" data-bs-dismiss="modal">Quay lại</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal XoaSanPham -->
+<div class="modal fade" id="modalXoaSize" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticXoaSize" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticXoaSize">Xoá Size</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="fa-solid fa-triangle-exclamation fa-beat fa-4x"></i>
+                    <br />
+                    <p class="fw-bolder">Cảnh báo</p>
+                    <p>Bạn có chắc Xóa <span id="is_XoaLoaiSanPham" class="text-danger fw-bolder"></span> size <span id="id_XoaMaSize" class="text-danger fw-bolder"></span> không?</p>
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <button class="btn btn-danger" type="button" onclick="xacNhanXoaSize()">Xoá</button>
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Quay lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script Datatable -->
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script src="~/Content/AdminLayout/js/datatables/datatables-simple-demo.js"></script>
+
+<!-- Script themMoiSize -->
+<script>
+    function themMoiSize() {
+        var MaSize = $('#id_MaSize').val();
+        var LoaiSanPham = $('#id_LoaiSanPham').val();
+        console.log(MaSize, LoaiSanPham)
+        // Client-side Validation
+        if (!MaSize || !LoaiSanPham) {
+            alert("Please fill in all required fields.");
+            return; // Stop the function if validation fails
+        }
+
+        // AJAX request to the server
+        $.ajax({
+            url: '/DM_DP_Size/Create', // Adjust the URL as necessary
+            type: 'POST',
+            data: {
+                MaSize: MaSize,
+                LoaiSanPham: LoaiSanPham
+            },
+            success: function (response) {
+                console.log(response); // Debugging purpose
+                if (response.success) {
+                    alert(response.message || "Product successfully added!");
+                    location.reload(); // Reload only on success
+                } else {
+                    alert(response.message || "Failed to add product.");
+                }
+            },
+            error: function (error) {
+                console.error('Error sending data: ', error);
+                alert('There was an error processing your request.');
+            }
+        });
+    }
+</script>
+
+<!-- Script suaSize -->
+<script>
+    var IdSize;
+
+    function suaSize(button) {
+        IdSize = parseInt(button.getAttribute("data-id"), 10);
+        console.log(IdSize)
+        $.ajax({
+            url: "/DM_DP_Size/Index/" + IdSize,
+            type: 'POST',
+            data: {
+                Size: IdSize
+            },
+            success: function (data) {
+                // Xử lý phản hồi từ controller (nếu cần)
+                console.log(data);
+                $('#id_SuaMaSize').val(data.MaSize);
+                $('#id_SuaLoaiSanPham').val(data.LoaiSanPham);
+
+                $('#modalSuaSize').modal('show');
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+    }
+
+    function xacNhanSuaSanPham() {
+        // Thu thập dữ liệu từ input trong modal
+        var Size = IdSize;
+        var MaSize = $('#id_SuaMaSize').val();
+        var LoaiSanPham = $('#id_SuaLoaiSanPham').val();
+
+        // Sử dụng AJAX để gửi dữ liệu đến controller
+        $.ajax({
+            url: '/DM_DP_Size/Edit', // Thay đổi đường dẫn tới controller của bạn
+            type: 'POST',
+            data: {
+                Size: Size,
+                MaSize: MaSize,
+                LoaiSanPham: LoaiSanPham
+            },
+            success: function (response) {
+                // Xử lý phản hồi từ controller (nếu cần)
+                console.log(response);
+
+                // Reload trang sau khi sửa thành công
+                location.reload();
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+    }
+</script>
+
+<!-- Script xoaSanPham -->
+<script>
+    var IdSize;
+
+    function xoaSize(button) {
+        IdSize = parseInt(button.getAttribute("data-id"), 10);
+
+        $.ajax({
+            url: "/DM_DP_Size/Index/" + IdSize,
+            type: 'POST',
+            data: {
+                Size: IdSize
+            },
+            success: function (data) {
+                // Xử lý phản hồi từ controller (nếu cần)
+                console.log(data);
+                $('#is_XoaLoaiSanPham').text(data.TenLoaiSanPham);
+                $('#id_XoaMaSize').text(data.MaSize);
+
+                $('#modalXoaSize').modal('show');
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+    }
+
+    function xacNhanXoaSize() {
+        var Size = IdSize;
+
+        // Gửi yêu cầu xóa sản phẩm lên server
+        $.ajax({
+            url: "/DM_DP_Size/Delete/" + Size,
+            type: "POST",
+            data: {
+                Size: Size
+            },
+            success: function (response) {
+                // Xử lý phản hồi từ controller (nếu cần)
+                console.log(response);
+
+                // Reload trang
+                location.reload();
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+    }
+</script>
+
+<script>
+    (function () {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })();
+</script>
+

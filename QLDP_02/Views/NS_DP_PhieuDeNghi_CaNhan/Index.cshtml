@@ -1,0 +1,435 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int stt = 1;
+
+}
+@model IEnumerable<QLDP_02.Models.getPhieuDeNghiCaNhan_Result>
+
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+    <div class="container-fluid px-4">
+        <div class="page-header-content">
+            <div class="row align-items-center justify-content-between pt-3 ">
+                <div class="col-auto mb-3">
+                    <h1 class="page-header-title">
+                        Phiếu đề nghị ĐP cá nhân
+                    </h1>
+                </div>
+
+                <div class="col-12 col-xl-auto mb-3">
+                    <button class="btn btn-sm btn-light text-primary" href="#" id="themMoiPhieuDeNghi">
+                        <i class="me-1 fa-regular fa-square-plus"></i>
+                        Thêm mới phiếu đề nghị cá nhân
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container-fluid px-4">
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Hoàn thành</th>
+                    <th>Stt</th>
+                    <th>Mã phiếu</th>
+                    <th>Người đề nghị</th>
+                    <th>Ngày đề nghị</th>
+                    <th>Nhân viên mới</th>
+                    <th>lý do cấp phát</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr ondblclick="chonPhieuDeNghiCaNhan(@item.PhieuDeNghi_CaNhan)">
+                        <td><input class="form-check-input" onchange="" type="checkbox" @(item.IsHoanThanh == false ? "" : "checked") /></td>
+                        <td>@stt</td>
+                        <td>@item.MaPhieuDeNghi_CaNhan</td>
+                        <td>@item.NguoiDeNghi</td>
+                        <td>@item.NgayDeNghi.ToString("dd/MM/yyyy")</td>
+                        <td>@item.TrangThaiDuyet</td>
+                        <td>@item.lydo</td>
+                    </tr>
+                    stt++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Modal thêm mới/sửa phiếu đề nghị -->
+<div class="modal fade" id="modalThemMoiPhieuDeNghiCaNhan" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticThemMoiSanPham" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert alert-success">
+                <h5 class="modal-title themMoiPhieuDeNghi" id="staticThemMoiSanPham">Thêm mới Phiếu đề nghị đồng phục cá nhân</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row mb-3">
+                    <div class="col-lg-3">
+                        <label class="fw-500 required">Mã phiếu:</label>
+                        <input type="text" disabled placeholder="mã phiếu đề nghị" class="form-control" required id="maPhieuDeNghi" />
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="fw-500 required">Ngày đề nghị: </label>
+                        <input class="form-control" disabled value="" id="ngayDeNghi" />
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="fw-500 required">Người đề nghị: </label>
+                        @Html.DropDownList("NguoiDeNghi", null, new { @id = "idNguoiDeNghi", @class = "form-control" })
+
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="fw-500 required">Lý do cấp phát: </label>
+                        @Html.DropDownList("LyDoCapPhat", null, new { @id = "LyDoCapPhat", @class = "form-control", onchange = "handleLyDoCapPhatChange()" })
+
+                    </div>
+                </div>
+                <div class="modal-body row">
+                    <div class="row">
+                        <div class="col-auto">
+                            <h5>Danh sách sản phẩm</h5>
+                        </div>
+                        <div class="col-auto">
+                            <button id="themMoiSanPham" class="btn btn-sm btn-light text-primary" href="" type="button">
+                                <i id="them" class="me-1 fa-regular fa-square-plus"></i>
+                                Thêm mới sản phẩm
+                            </button>
+                        </div>
+                    </div>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <td>Stt</td>
+                                <td>Tên sản phẩm</td>
+                                <td>Tính chất</td>
+                                <td>Size</td>
+                                <td>Số lượng</td>
+                            </tr>
+                        </thead>
+                        <tbody class="modal-body capNhatPhieuDeNghi">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button">Quay lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal ThemMoiSanPham -->
+<div class="modal fade" id="modalThemMoiSanPham" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticThemMoiSanPham2" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert alert-success">
+                <h5 class="modal-title" onclick="" id="staticThemMoiSanPham">Thêm mới sản phẩm</h5>
+                <button id="iBack_ChonSP">back</button>
+                <button onclick="XacNhanChonSP()">chọn</button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td>Stt</td>
+                            <td>Tên sản phẩm</td>
+                            <td>Tính chất</td>
+                            <td>Size</td>
+                            <td>Số lượng</td>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyThemMoiSanPham">
+                        @*<tr>
+                                <td><input type="checkbox" id="horns" name="horns" /></td>
+                                <td>stt</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>*@
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function handleLyDoCapPhatChange() {
+        let idLyDoCapPhat = $("#LyDoCapPhat").val();
+        let maPhieu = $("#maPhieuDeNghi").val(); 
+        let nguoiDeNghi = $("#idNguoiDeNghi").val();
+        // Thực hiện các xử lý cần thiết khi người dùng chọn một lựa chọn trong dropdown list
+        if (maPhieu === "") {
+            return
+        }
+        else if (maPhieu !== null) {
+            console.log(maPhieu)
+            $.ajax({
+                url: '/NS_DP_PhieuDeNghi_CaNhan/CapNhat_PhieuDeNghiCaNhan',
+                type: 'POST',
+                data: {
+                    maPhieu: maPhieu,
+                    nguoiDeNghi: +nguoiDeNghi,
+                    idLyDoCapPhat: +idLyDoCapPhat
+                },
+                success: function (response) {
+                    console.log(response)
+                    if (response.success === true) {
+                        alert("cập nhật lý do thành công")
+                        window.location.reload()
+                    }
+                },
+                error: function (error) {
+                    console.error('Lỗi khi gửi dữ liệu: ', error);
+                }
+            
+            })
+        }
+        console.log("Lý do cấp phát được chọn:", idLyDoCapPhat, maPhieu, nguoiDeNghi);
+    }
+</script>
+<script>
+    $("#themMoiPhieuDeNghi").click(function () {
+        $("#maPhieuDeNghi").val("")
+        $("#ngayDeNghi").val(getCurrentDay())
+        $('.capNhatPhieuDeNghi').html('');
+        $('#modalThemMoiPhieuDeNghiCaNhan').modal('show');
+    })
+    $("#themMoiSanPham").click(function () {
+
+        let idNguoiDeNghi = $('#idNguoiDeNghi').val();
+        let lyDoCapPhat = $('#LyDoCapPhat').val();
+        if (idNguoiDeNghi === '' || lyDoCapPhat === '') {
+            alert("chọn người đề nghị và lý do cấp phát")
+            return
+        }
+        let maPhieu = $('#maPhieuDeNghi').val();
+        console.log(maPhieu)
+        if (maPhieu === "") {
+            $.ajax({
+                url: '/NS_DP_PhieuDeNghi_CaNhan/getSanPhamChuaChon',
+                type: 'POST',
+                data: {
+                    maPhieu: maPhieu,
+                    idNguoiDeNghi: +idNguoiDeNghi
+                },
+                success: function (response) {
+                    console.log(response)
+                    if (response.success === true) {
+                        let content = '';
+                        let i = 0
+                        response.data.forEach(function (item) {
+                            i++;
+                            content +=
+                                `<tr class="productRow">
+                                <td><input type="checkbox" class="cMaSanPham" value="${item.SanPham}" /></td>
+                                <td>${i}</td>
+                                <td>${item.TenSanPham}</td>
+                                <td>@Html.DropDownList("TinhChat", null, new { @id = "TinhChat", @class = "form-control" })</td>
+                                <td>@Html.DropDownList("Size", null,"", new { @id = "Size", @class = "form-control" })</td>
+                                <td><input class="form-control" id="soLuong" value="1" /></td>
+                            </tr>`
+
+                        });
+                        $('#bodyThemMoiSanPham').html(content);
+                        $('#modalThemMoiSanPham').modal('show');
+                    }
+                },
+                error: function (error) {
+                    console.error('Lỗi khi gửi dữ liệu: ', error);
+
+                }
+            });
+        }
+        else if (maPhieu !== "") {
+            $.ajax({
+                url: '/NS_DP_PhieuDeNghi_CaNhan/getSanPhamConLaiNguoiDungChuaChon',
+                type: 'POST',
+                data: {
+                    MaPhieuDeNghiCaNhan: maPhieu,
+                    idNguoiDeNghi: +idNguoiDeNghi
+                },
+                success: function (response) {
+                    console.log(response)
+                    let content = '';
+                    let i = 0
+                    response.data.forEach(function (item) {
+                        i++;
+                        content +=
+                            `<tr class="productRow">
+                            <td><input type="checkbox" class="cMaSanPham" value="${item.SanPham}" /></td>
+                            <td>${i}</td>
+                            <td>${item.TenSanPham}</td>
+                            <td>@Html.DropDownList("TinhChat", null, new { @id = "TinhChat", @class = "form-control" })</td>
+                            <td>@Html.DropDownList("Size", null,"", new { @id = "Size", @class = "form-control" })</td>
+                            <td><input class="form-control" id="soLuong" value="1" /></td>
+                        </tr>`
+                    });
+                    $('#bodyThemMoiSanPham').html(content);
+                    $('#modalThemMoiSanPham').modal('show');
+                },
+                error: function (error) {
+                    console.error('Lỗi khi gửi dữ liệu: ', error);
+                }
+            });
+        }
+
+        $('#modalThemMoiSanPham').modal('show');
+    });
+    $('#iBack_ChonSP').click(function () {
+        $('#modalThemMoiSanPham').modal('hide');
+        $('#modalThemMoiPhieuDeNghiCaNhan').modal('show');
+    });
+</script>   
+
+
+
+<script>
+    @* cập nhật phiếu đề nghị cá nhân
+        hàm này cập nhật lý do cấp phát
+        *@
+    function capNhatPhieuDeNghi(nguoiDeNghi, lyDoCapPhat, phieuDeNghiCaNhan) {
+        console.log(nguoiDeNghi, lyDoCapPhat, phieuDeNghiCaNhan)
+
+    }
+</script>
+<script>
+    function convertDate(dateString) {
+        var milliseconds = parseInt(dateString.substring(6, dateString.length - 2));
+        var date = new Date(milliseconds);
+        var formattedDate = date.toLocaleDateString(); // Adjust format as needed
+        return formattedDate;
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.2/dist/sweetalert2.all.min.js"></script>
+<script>
+
+    const chonPhieuDeNghiCaNhan = (id) => {
+        $.ajax({
+            url: '/NS_DP_PhieuDeNghi_CaNhan/ChonPhieuDeNghi',
+            type: 'POST',
+            data: {
+                id: id
+            },
+            success: function (response) {
+                console.log(response)
+                if (response.success === true) {
+                    let content = '';
+                    let i = 0
+                    response.data.forEach(function (item) {
+                        i++;
+                        content +=
+                            `<tr>
+                            <td><input type="checkbox" /></td>
+                            <td>${i}</td>
+                            <td>${item.TenSanPham}</td>
+                            <td>${item.TenTinhChatDongPhuc}</td>
+                            <td>${item.MaSize}</td>
+                            <td><input value="${item.SoLuong}"/></td>
+                        </tr>`
+
+                    });
+                    $("#maPhieuDeNghi").val(response.phieu.MaPhieuDeNghi_CaNhan)
+                    $("#ngayDeNghi").val(convertDate(response.phieu.NgayDeNghi))
+                    $("#LyDoCapPhat").val(response.phieu.LyDoCapPhat).prop('selected', true);
+                    $("#idNguoiDeNghi").val(response.phieu.MaNguoiDeNghi).prop('selected', true);
+                    $("#ngayDeNghi").prop('disabled', true);
+                    $('.capNhatPhieuDeNghi').html(content);
+                    $('#modalThemMoiPhieuDeNghiCaNhan').modal('show');
+                }
+                else if (response === false) {
+                    console.error('Lỗi');
+                }
+
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+    }
+    function themSanPhamMoi(e) {
+        e.preventDefault()
+        var checkBox = $('#idNguoiDeNghi').val()
+        if (checkBox === "") {
+            alert("Chưa chọn người đề nghị")
+            return
+        }
+    }
+
+    function XacNhanChonSP() {
+        var idNguoiDeNghi = $('#idNguoiDeNghi').val();
+        var lyDoCapPhat = $('#LyDoCapPhat').val();
+        $('body').on('change', '#idNguoiDeNghi', function () {
+            idNguoiDeNghi = $('#idNguoiDeNghi').val()
+        })
+        const selectedRows = [];
+        //lấy ra các sản phẩm đã tick
+        $('.productRow').each(function () {
+            if ($(this).find('.cMaSanPham').is(':checked')) {
+                var row = {
+                    SanPham: $(this).find('.cMaSanPham').val(),
+                    TinhChat: $(this).find('#TinhChat').val(),
+                    Size: $(this).find('#Size').val(),
+                    SoLuong: $(this).find('#soLuong').val()
+                };
+                selectedRows.push(row);
+            }
+        });
+        console.log(selectedRows)
+        if (idNguoiDeNghi == "") {
+            alert("chưa chọn người đề nghị")
+            return
+        }
+        if (selectedRows.length < 1) {
+            alert("chưa chọn sản phẩm nào")
+            return
+        }
+        if (lyDoCapPhat == "") {
+            alert("chưa chọn lý do")
+            return
+        }
+        console.log("nguoi de nghi" + idNguoiDeNghi)
+        console.log(selectedRows)
+        $.ajax({
+            url: '/NS_DP_PhieuDeNghi_CaNhan/ChonSanPham',
+            type: 'POST',
+            data: {
+                selectedRows: selectedRows,
+                idNguoiDeNghi: $('#idNguoiDeNghi').val(),
+                lyDoCapPhat: $('#LyDoCapPhat').val(),
+            },
+            success: function (response) {
+                console.log(response)
+                if (response.success === true) {
+                    $('#modalThemMoiSanPham').modal('hide');
+                    $('#modalThemMoiPhieuDeNghiCaNhan').modal('show');
+                    window.location.reload();
+                }
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        });
+
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+
+    });
+    function getCurrentDay() {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0')
+        var mm = String(today.getMonth() + 1).padStart(2, '0') //January is 0!
+        var yyyy = today.getFullYear()
+        today = dd + '-' + mm + '-' + yyyy
+        return today
+    }
+</script>
