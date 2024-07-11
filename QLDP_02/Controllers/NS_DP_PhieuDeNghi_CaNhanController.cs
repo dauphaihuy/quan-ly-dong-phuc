@@ -35,41 +35,62 @@ namespace QLDP_02.Controllers
             return randomString;
         }
         [HttpPost]
-		public ActionResult ChonSanPham(List<SelectedProduct> selectedRows,string idNguoiDeNghi,string lyDoCapPhat)
+		public ActionResult ChonSanPham(List<SelectedProduct> selectedRows,string idNguoiDeNghi,string lyDoCapPhat,string maPhieu,int PhieuDeNghi)
 		{
 			if(selectedRows.Count==0|| idNguoiDeNghi==""|| lyDoCapPhat == "")
 			{
 				return Json(new { success = false, err = "input = null" });
 			}
 			try {
+				if (maPhieu == "")
+				{
 				NS_DP_PhieuDeNghi_CaNhan nS_DP_PhieuDeNghi_CaNhan = new NS_DP_PhieuDeNghi_CaNhan
-				{
-					MaPhieuDeNghi_CaNhan = GenerateRandomMaPhieuDeNghi_CaNhan(5),
-					NguoiDeNghi = int.Parse(idNguoiDeNghi),
-					NgayDeNghi = DateTime.Now,
-					NguoiTao=1,
-					NgayTao=DateTime.Now,
-					LyDoCapPhat=int.Parse(lyDoCapPhat),
-					IsHoanThanh=false,
-					IsDel=false
-				};
-				db.NS_DP_PhieuDeNghi_CaNhan.Add(nS_DP_PhieuDeNghi_CaNhan);
-				db.SaveChanges();
-				foreach (var item in selectedRows)
-				{
-					NS_DP_PhieuDeNghi_CaNhan_ChiTiet nS_DP_PhieuDeNghi_CaNhan_ChiTiet = new NS_DP_PhieuDeNghi_CaNhan_ChiTiet
 					{
-						PhieuDeNghi_CaNhan = nS_DP_PhieuDeNghi_CaNhan.PhieuDeNghi_CaNhan,
-						SanPham = item.SanPham,
-						Size = int.Parse(item.Size),
-						SoLuong = item.SoLuong,
-						TinhChatDongPhuc = int.Parse(item.TinhChat),
-
+						MaPhieuDeNghi_CaNhan = GenerateRandomMaPhieuDeNghi_CaNhan(5),
+						NguoiDeNghi = int.Parse(idNguoiDeNghi),
+						NgayDeNghi = DateTime.Now,
+						NguoiTao=1,
+						NgayTao=DateTime.Now,
+						LyDoCapPhat=int.Parse(lyDoCapPhat),
+						IsHoanThanh=false,
+						IsDel=false
 					};
-					db.NS_DP_PhieuDeNghi_CaNhan_ChiTiet.Add(nS_DP_PhieuDeNghi_CaNhan_ChiTiet);
+					db.NS_DP_PhieuDeNghi_CaNhan.Add(nS_DP_PhieuDeNghi_CaNhan);
 					db.SaveChanges();
+					foreach (var item in selectedRows)
+					{
+						NS_DP_PhieuDeNghi_CaNhan_ChiTiet nS_DP_PhieuDeNghi_CaNhan_ChiTiet = new NS_DP_PhieuDeNghi_CaNhan_ChiTiet
+						{
+							PhieuDeNghi_CaNhan = nS_DP_PhieuDeNghi_CaNhan.PhieuDeNghi_CaNhan,
+							SanPham = item.SanPham,
+							Size = int.Parse(item.Size),
+							SoLuong = item.SoLuong,
+							TinhChatDongPhuc = int.Parse(item.TinhChat),
+
+						};
+						db.NS_DP_PhieuDeNghi_CaNhan_ChiTiet.Add(nS_DP_PhieuDeNghi_CaNhan_ChiTiet);
+						db.SaveChanges();
+					}
+					return Json(new {success=true});
 				}
-				return Json(new {success=true});
+				else
+				{
+                    foreach (var item in selectedRows)
+                    {
+						db.themSanPhamConLaiNguoiDungChuChon(PhieuDeNghi,item.SanPham, int.Parse(item.Size), item.SoLuong, int.Parse(item.TinhChat));
+						//                  NS_DP_PhieuDeNghi_CaNhan_ChiTiet nS_DP_PhieuDeNghi_CaNhan_ChiTiet = new NS_DP_PhieuDeNghi_CaNhan_ChiTiet
+						//                  {
+						//                      PhieuDeNghi_CaNhan = nS_DP_PhieuDeNghi_CaNhan.PhieuDeNghi_CaNhan,
+						//                      SanPham = item.SanPham,
+						//                      Size = int.Parse(item.Size),
+						//                      SoLuong = item.SoLuong,
+						//                      TinhChatDongPhuc = int.Parse(item.TinhChat),
+
+						//                  };
+					}
+                    return Json(new { success = true });
+                }
+				
 			}
 			catch(Exception e)
 			{

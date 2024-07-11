@@ -313,6 +313,38 @@ public partial class DB_QLDPEntities : DbContext
         return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getSanPhamConLaiChuaChon_Result>("getSanPhamConLaiChuaChon", maPhieuDeNghi_CaNhanParameter, nguoiDeNghiParameter);
     }
 
+
+    public virtual int themSanPhamConLaiNguoiDungChuChon(Nullable<int> phieuDeNghi_CaNhan, Nullable<int> sanPham, Nullable<int> size, Nullable<int> soLuong, Nullable<int> tinhChatDongPhuc)
+    {
+
+        var phieuDeNghi_CaNhanParameter = phieuDeNghi_CaNhan.HasValue ?
+            new ObjectParameter("PhieuDeNghi_CaNhan", phieuDeNghi_CaNhan) :
+            new ObjectParameter("PhieuDeNghi_CaNhan", typeof(int));
+
+
+        var sanPhamParameter = sanPham.HasValue ?
+            new ObjectParameter("SanPham", sanPham) :
+            new ObjectParameter("SanPham", typeof(int));
+
+
+        var sizeParameter = size.HasValue ?
+            new ObjectParameter("Size", size) :
+            new ObjectParameter("Size", typeof(int));
+
+
+        var soLuongParameter = soLuong.HasValue ?
+            new ObjectParameter("SoLuong", soLuong) :
+            new ObjectParameter("SoLuong", typeof(int));
+
+
+        var tinhChatDongPhucParameter = tinhChatDongPhuc.HasValue ?
+            new ObjectParameter("TinhChatDongPhuc", tinhChatDongPhuc) :
+            new ObjectParameter("TinhChatDongPhuc", typeof(int));
+
+
+        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("themSanPhamConLaiNguoiDungChuChon", phieuDeNghi_CaNhanParameter, sanPhamParameter, sizeParameter, soLuongParameter, tinhChatDongPhucParameter);
+    }
+
 }
 
 }

@@ -472,6 +472,13 @@
           <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="themSanPhamConLaiNguoiDungChuChon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PhieuDeNghi_CaNhan" Type="int" Mode="In" />
+          <Parameter Name="SanPham" Type="int" Mode="In" />
+          <Parameter Name="Size" Type="int" Mode="In" />
+          <Parameter Name="SoLuong" Type="int" Mode="In" />
+          <Parameter Name="TinhChatDongPhuc" Type="int" Mode="In" />
+        </Function>
         <Function Name="updateLyDoCapPhat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="maPhieu" Type="nvarchar" Mode="In" />
           <Parameter Name="nguoiDeNghi" Type="int" Mode="In" />
@@ -974,6 +981,13 @@
           <FunctionImport Name="getSanPhamConLaiChuaChon" ReturnType="Collection(DB_QLDPModel.getSanPhamConLaiChuaChon_Result)">
             <Parameter Name="MaPhieuDeNghi_CaNhan" Mode="In" Type="String" />
             <Parameter Name="NguoiDeNghi" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="themSanPhamConLaiNguoiDungChuChon">
+            <Parameter Name="PhieuDeNghi_CaNhan" Mode="In" Type="Int32" />
+            <Parameter Name="SanPham" Mode="In" Type="Int32" />
+            <Parameter Name="Size" Mode="In" Type="Int32" />
+            <Parameter Name="SoLuong" Mode="In" Type="Int32" />
+            <Parameter Name="TinhChatDongPhuc" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="getPhieuNhapHang_Result">
@@ -1869,6 +1883,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="themSanPhamConLaiNguoiDungChuChon" FunctionName="DB_QLDPModel.Store.themSanPhamConLaiNguoiDungChuChon" />
           
           
         </EntityContainerMapping>

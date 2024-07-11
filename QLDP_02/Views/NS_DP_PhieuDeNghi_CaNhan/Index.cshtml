@@ -73,6 +73,10 @@
                         <label class="fw-500 required">Mã phiếu:</label>
                         <input type="text" disabled placeholder="mã phiếu đề nghị" class="form-control" required id="maPhieuDeNghi" />
                     </div>
+                    <div class="col-3" hidden>
+                        <label class="fw-500 required">Số phiếu:</label>
+                        <input type="text" disabled placeholder="Số phiếu đề nghị" class="form-control" required id="PhieuDeNghi" />
+                    </div>
                     <div class="col-lg-3">
                         <label class="fw-500 required">Ngày đề nghị: </label>
                         <input class="form-control" disabled value="" id="ngayDeNghi" />
@@ -340,6 +344,7 @@
                     });
                     $("#maPhieuDeNghi").val(response.phieu.MaPhieuDeNghi_CaNhan)
                     $("#ngayDeNghi").val(convertDate(response.phieu.NgayDeNghi))
+                    $("#PhieuDeNghi").val(response.phieu.PhieuDeNghi_CaNhan)
                     $("#LyDoCapPhat").val(response.phieu.LyDoCapPhat).prop('selected', true);
                     $("#idNguoiDeNghi").val(response.phieu.MaNguoiDeNghi).prop('selected', true);
                     $("#ngayDeNghi").prop('disabled', true);
@@ -366,8 +371,11 @@
     }
 
     function XacNhanChonSP() {
-        var idNguoiDeNghi = $('#idNguoiDeNghi').val();
-        var lyDoCapPhat = $('#LyDoCapPhat').val();
+        let maPhieu = $("#maPhieuDeNghi").val()
+        var idNguoiDeNghi = $('#idNguoiDeNghi').val()
+        var lyDoCapPhat = $('#LyDoCapPhat').val()
+        var PhieuDeNghi = $('#PhieuDeNghi').val()
+        console.log(PhieuDeNghi)
         $('body').on('change', '#idNguoiDeNghi', function () {
             idNguoiDeNghi = $('#idNguoiDeNghi').val()
         })
@@ -406,6 +414,8 @@
                 selectedRows: selectedRows,
                 idNguoiDeNghi: $('#idNguoiDeNghi').val(),
                 lyDoCapPhat: $('#LyDoCapPhat').val(),
+                maPhieu: maPhieu,
+                PhieuDeNghi: PhieuDeNghi
             },
             success: function (response) {
                 console.log(response)
