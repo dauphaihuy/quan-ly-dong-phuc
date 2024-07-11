@@ -171,6 +171,7 @@
         let idLyDoCapPhat = $("#LyDoCapPhat").val();
         let maPhieu = $("#maPhieuDeNghi").val(); 
         let nguoiDeNghi = $("#idNguoiDeNghi").val();
+
         // Thực hiện các xử lý cần thiết khi người dùng chọn một lựa chọn trong dropdown list
         if (maPhieu === "") {
             return
@@ -318,6 +319,7 @@
 <script>
 
     const chonPhieuDeNghiCaNhan = (id) => {
+        
         $.ajax({
             url: '/NS_DP_PhieuDeNghi_CaNhan/ChonPhieuDeNghi',
             type: 'POST',
@@ -398,7 +400,11 @@
             return
         }
         if (selectedRows.length < 1) {
-            alert("chưa chọn sản phẩm nào")
+            Swal.fire({
+                title: "Chưa chọn sản phẩm?",
+                text: "That thing is still around?",
+                icon: "question"
+            });
             return
         }
         if (lyDoCapPhat == "") {
@@ -422,6 +428,12 @@
                 if (response.success === true) {
                     $('#modalThemMoiSanPham').modal('hide');
                     $('#modalThemMoiPhieuDeNghiCaNhan').modal('show');
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Do you want to continue',
+                        icon: 'error',
+                        confirmButtonText: 'Cool'
+                    })
                     window.location.reload();
                 }
             },
