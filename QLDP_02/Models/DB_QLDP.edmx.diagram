@@ -9,7 +9,6 @@
         <EntityTypeShape EntityType="DB_QLDPModel.DM_DP_LoaiSanPham" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_QLDPModel.DM_DP_LyDoCapPhat" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_QLDPModel.DM_DP_NhaCungCap" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_QLDPModel.DM_DP_Size" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_QLDPModel.DM_DP_TinhChatDongPhuc" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_QLDPModel.DM_DP_TrangThaiDuyet" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_QLDPModel.NS_DP_GioiTinh" Width="1.5" PointX="6.75" PointY="6.75" IsExpanded="true" />
@@ -27,6 +26,7 @@
         <EntityTypeShape EntityType="DB_QLDPModel.DM_DP_Kho" Width="1.5" PointX="13.375" PointY="13.75" />
         <EntityTypeShape EntityType="DB_QLDPModel.sysdiagrams" Width="1.5" PointX="15.375" PointY="0.75" />
         <EntityTypeShape EntityType="DB_QLDPModel.NS_QuocTich" Width="1.5" PointX="0.75" PointY="15.75" />
+        <EntityTypeShape EntityType="DB_QLDPModel.DM_DP_Size" Width="1.5" PointX="15.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -114,6 +114,7 @@
                                 <td>Tính chất</td>
                                 <td>Size</td>
                                 <td>Số lượng</td>
+                                <td></td>
                             </tr>
                         </thead>
                         <tbody class="modal-body capNhatPhieuDeNghi">
@@ -240,7 +241,7 @@
                                 <td>${i}</td>
                                 <td>${item.TenSanPham}</td>
                                 <td>@Html.DropDownList("TinhChat", null, new { @id = "TinhChat", @class = "form-control" })</td>
-                                <td>@Html.DropDownList("Size", null,"", new { @id = "Size", @class = "form-control" })</td>
+                                <td>@Html.DropDownList("Size",null, new { @id = "MaSize", @class = "form-control" })</td>
                                 <td><input class="form-control" id="soLuong" value="1" /></td>
                             </tr>`
 
@@ -275,7 +276,7 @@
                             <td>${i}</td>
                             <td>${item.TenSanPham}</td>
                             <td>@Html.DropDownList("TinhChat", null, new { @id = "TinhChat", @class = "form-control" })</td>
-                            <td>@Html.DropDownList("Size", null,"", new { @id = "Size", @class = "form-control" })</td>
+                            <td>@Html.DropDownList("MaSize", (SelectList)ViewData["Size"], "Select a size", new {@id= "MaSize", @class = "form-control" })</td>
                             <td><input class="form-control" id="soLuong" value="1" /></td>
                         </tr>`
                     });
@@ -334,13 +335,15 @@
                     response.data.forEach(function (item) {
                         i++;
                         content +=
-                            `<tr>
+                            `<tr id="tr_${item.SanPham}">
                             <td><input type="checkbox" /></td>
                             <td>${i}</td>
                             <td>${item.TenSanPham}</td>
                             <td>${item.TenTinhChatDongPhuc}</td>
                             <td>${item.MaSize}</td>
                             <td><input value="${item.SoLuong}"/></td>
+                            idPhieu, idSanPham,tenSanPham
+                            <td><input onclick="xoaSanPhamDaChon(${item.PhieuDeNghi_CaNhan}, ${ item.SanPham },'${item.TenSanPham}')" type="button" value="xóa"/></td>
                         </tr>`
 
                     });
@@ -385,10 +388,11 @@
         //lấy ra các sản phẩm đã tick
         $('.productRow').each(function () {
             if ($(this).find('.cMaSanPham').is(':checked')) {
+                console.log(this)
                 var row = {
                     SanPham: $(this).find('.cMaSanPham').val(),
                     TinhChat: $(this).find('#TinhChat').val(),
-                    Size: $(this).find('#Size').val(),
+                    Size: $(this).find('#MaSize').val(),
                     SoLuong: $(this).find('#soLuong').val()
                 };
                 selectedRows.push(row);
@@ -421,7 +425,7 @@
                 idNguoiDeNghi: $('#idNguoiDeNghi').val(),
                 lyDoCapPhat: $('#LyDoCapPhat').val(),
                 maPhieu: maPhieu,
-                PhieuDeNghi: PhieuDeNghi
+                PhieuDeNghi: +PhieuDeNghi
             },
             success: function (response) {
                 console.log(response)
@@ -442,6 +446,39 @@
             }
         });
 
+    }
+    //xóa sản phâm đã chọn
+    const xoaSanPhamDaChon = (idPhieu, idSanPham,tenSanPham) => {
+        console.log(idPhieu, idSanPham,tenSanPham)
+        Swal.fire({
+            title: `Xóa ${tenSanPham}!`,
+            text: "bạn có muốn xóa ra sản phẩm ra khỏi phiếu!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33", 
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: `Xóa ${tenSanPham} thành công!`,
+                    text: "Sản phẩm đã xóa.",
+                    icon: "success"
+                });
+            }
+            console.log(idPhieu, idSanPham, tenSanPham)
+            $.ajax({
+                url: '/NS_DP_PhieuDeNghi_CaNhan/XoaSanPham',
+                type: "post",
+                data: {
+                    idPhieu, idSanPham
+                },
+                success: function (response) {
+                    console.log(response)
+                    $(`.capNhatPhieuDeNghi #tr_${idSanPham}`).remove()
+                }
+            })
+        });
     }
     document.addEventListener("DOMContentLoaded", function () {
 

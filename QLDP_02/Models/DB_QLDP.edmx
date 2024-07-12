@@ -98,6 +98,8 @@
         <EntityType Name="DM_DP_Size">
           <Key>
             <PropertyRef Name="Size" />
+            <PropertyRef Name="MaSize" />
+            <PropertyRef Name="LoaiSanPham" />
           </Key>
           <Property Name="Size" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MaSize" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -595,22 +597,6 @@
           <Property Name="TenNhaCungCap_EN" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="TenNhaCungCap_JP" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="DM_DP_Size">
-          <Key>
-            <PropertyRef Name="Size" />
-          </Key>
-          <Property Name="Size" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MaSize" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LoaiSanPham" Type="Int32" Nullable="false" />
-          <Property Name="NguoiTao" Type="Int32" />
-          <Property Name="NgayTao" Type="DateTime" Precision="0" />
-          <Property Name="NguoiSua" Type="Int32" />
-          <Property Name="NgaySua" Type="DateTime" Precision="0" />
-          <Property Name="NguoiXoa" Type="Int32" />
-          <Property Name="NgayXoa" Type="DateTime" Precision="0" />
-          <Property Name="IsDel" Type="Boolean" />
-          <Property Name="STTSize" Type="Int32" />
-        </EntityType>
         <EntityType Name="DM_DP_TinhChatDongPhuc">
           <Key>
             <PropertyRef Name="TenTinhChatDongPhuc" />
@@ -915,7 +901,6 @@
           <EntitySet Name="DM_DP_LoaiSanPham" EntityType="Self.DM_DP_LoaiSanPham" />
           <EntitySet Name="DM_DP_LyDoCapPhat" EntityType="Self.DM_DP_LyDoCapPhat" />
           <EntitySet Name="DM_DP_NhaCungCap" EntityType="Self.DM_DP_NhaCungCap" />
-          <EntitySet Name="DM_DP_Size" EntityType="Self.DM_DP_Size" />
           <EntitySet Name="DM_DP_TinhChatDongPhuc" EntityType="Self.DM_DP_TinhChatDongPhuc" />
           <EntitySet Name="DM_DP_TrangThaiDuyet" EntityType="Self.DM_DP_TrangThaiDuyet" />
           <EntitySet Name="NS_DP_GioiTinh" EntityType="Self.NS_DP_GioiTinh" />
@@ -989,6 +974,7 @@
             <Parameter Name="SoLuong" Mode="In" Type="Int32" />
             <Parameter Name="TinhChatDongPhuc" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="DM_DP_Size" EntityType="DB_QLDPModel.DM_DP_Size" />
         </EntityContainer>
         <ComplexType Name="getPhieuNhapHang_Result">
           <Property Type="Int32" Name="PhieuNhapHang" Nullable="false" />
@@ -1213,6 +1199,24 @@
           <Property Type="String" Name="TenSanPham_EN" Nullable="true" MaxLength="150" />
           <Property Type="String" Name="TenSanPham_JP" Nullable="true" MaxLength="150" />
         </ComplexType>
+        <EntityType Name="DM_DP_Size">
+          <Key>
+            <PropertyRef Name="Size" />
+            <PropertyRef Name="MaSize" />
+            <PropertyRef Name="LoaiSanPham" />
+          </Key>
+          <Property Name="Size" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaSize" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LoaiSanPham" Type="Int32" Nullable="false" />
+          <Property Name="NguoiTao" Type="Int32" />
+          <Property Name="NgayTao" Type="DateTime" Precision="0" />
+          <Property Name="NguoiSua" Type="Int32" />
+          <Property Name="NgaySua" Type="DateTime" Precision="0" />
+          <Property Name="NguoiXoa" Type="Int32" />
+          <Property Name="NgayXoa" Type="DateTime" Precision="0" />
+          <Property Name="IsDel" Type="Boolean" />
+          <Property Name="STTSize" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1303,23 +1307,6 @@
                 <ScalarProperty Name="TenDayDu" ColumnName="TenDayDu" />
                 <ScalarProperty Name="TenNhaCungCap_EN" ColumnName="TenNhaCungCap_EN" />
                 <ScalarProperty Name="TenNhaCungCap_JP" ColumnName="TenNhaCungCap_JP" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DM_DP_Size">
-            <EntityTypeMapping TypeName="DB_QLDPModel.DM_DP_Size">
-              <MappingFragment StoreEntitySet="DM_DP_Size">
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="MaSize" ColumnName="MaSize" />
-                <ScalarProperty Name="LoaiSanPham" ColumnName="LoaiSanPham" />
-                <ScalarProperty Name="NguoiTao" ColumnName="NguoiTao" />
-                <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
-                <ScalarProperty Name="NguoiSua" ColumnName="NguoiSua" />
-                <ScalarProperty Name="NgaySua" ColumnName="NgaySua" />
-                <ScalarProperty Name="NguoiXoa" ColumnName="NguoiXoa" />
-                <ScalarProperty Name="NgayXoa" ColumnName="NgayXoa" />
-                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
-                <ScalarProperty Name="STTSize" ColumnName="STTSize" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1884,6 +1871,23 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="themSanPhamConLaiNguoiDungChuChon" FunctionName="DB_QLDPModel.Store.themSanPhamConLaiNguoiDungChuChon" />
+          <EntitySetMapping Name="DM_DP_Size">
+            <EntityTypeMapping TypeName="DB_QLDPModel.DM_DP_Size">
+              <MappingFragment StoreEntitySet="DM_DP_Size">
+                <ScalarProperty Name="STTSize" ColumnName="STTSize" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+                <ScalarProperty Name="NgayXoa" ColumnName="NgayXoa" />
+                <ScalarProperty Name="NguoiXoa" ColumnName="NguoiXoa" />
+                <ScalarProperty Name="NgaySua" ColumnName="NgaySua" />
+                <ScalarProperty Name="NguoiSua" ColumnName="NguoiSua" />
+                <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+                <ScalarProperty Name="NguoiTao" ColumnName="NguoiTao" />
+                <ScalarProperty Name="LoaiSanPham" ColumnName="LoaiSanPham" />
+                <ScalarProperty Name="MaSize" ColumnName="MaSize" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           
           
         </EntityContainerMapping>

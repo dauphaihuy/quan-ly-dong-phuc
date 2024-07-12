@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Management;
 using System.Web.ModelBinding;
@@ -18,11 +20,14 @@ namespace QLDP_02.Controllers
 			
 			ViewBag.LyDoCapPhat = new SelectList(db.DM_DP_LyDoCapPhat, "LyDoCapPhat", "TenLyDoCapPhat");
 			ViewBag.NguoiDeNghi = new SelectList(db.NS_NhanSu,"NhanSu", "Ten");
-			ViewBag.SanPham = new SelectList(db.NS_NhanSu, "SanPham", "TenSanPham");
-			ViewBag.Size = new SelectList(db.DM_DP_Size, "Size", "MaSize");
-			//ViewBag.Size = new SelectList(db.DM_DP_Size.Where(x => x.IsDel != true).Select(x => new { x.Size, x.MaSize }), "Id", "Name");
-			ViewBag.TinhChat = new SelectList(db.DM_DP_TinhChatDongPhuc, "TinhChatDongPhuc", "TenTinhChatDongPhuc");
+			ViewBag.SanPham = new SelectList(db.NS_DP_SanPham, "SanPham", "TenSanPham");
+            var sizes = db.DM_DP_Size
+                 .Select(s => new { Size = s.Size, MaSize = s.MaSize })  // Select Size and MaSize
+                 .Distinct()
+                 .ToList();
 
+            ViewData["Size"] = new SelectList(sizes, "Size", "MaSize");  // Create SelectList with MaSize as value and Size as text
+            ViewBag.TinhChat = new SelectList(db.DM_DP_TinhChatDongPhuc, "TinhChatDongPhuc", "TenTinhChatDongPhuc");
 			return View(db.getPhieuDeNghiCaNhan().Where(phieu => phieu.IsDel == false));
         }
         //random tạo mã phiếu
@@ -34,7 +39,7 @@ namespace QLDP_02.Controllers
               .Select(s => s[random.Next(s.Length)]).ToArray());
             return randomString;
         }
-        [HttpPost]
+		[HttpPost]
 		public ActionResult ChonSanPham(List<SelectedProduct> selectedRows,string idNguoiDeNghi,string lyDoCapPhat,string maPhieu,int PhieuDeNghi)
 		{
 			if(selectedRows.Count==0|| idNguoiDeNghi==""|| lyDoCapPhat == "")
@@ -78,17 +83,8 @@ namespace QLDP_02.Controllers
                     foreach (var item in selectedRows)
                     {
 						db.themSanPhamConLaiNguoiDungChuChon(PhieuDeNghi,item.SanPham, int.Parse(item.Size), item.SoLuong, int.Parse(item.TinhChat));
-						//                  NS_DP_PhieuDeNghi_CaNhan_ChiTiet nS_DP_PhieuDeNghi_CaNhan_ChiTiet = new NS_DP_PhieuDeNghi_CaNhan_ChiTiet
-						//                  {
-						//                      PhieuDeNghi_CaNhan = nS_DP_PhieuDeNghi_CaNhan.PhieuDeNghi_CaNhan,
-						//                      SanPham = item.SanPham,
-						//                      Size = int.Parse(item.Size),
-						//                      SoLuong = item.SoLuong,
-						//                      TinhChatDongPhuc = int.Parse(item.TinhChat),
-
-						//                  };
 					}
-                    return Json(new { success = true });
+                    return Json(new { success = true,data= selectedRows });
                 }
 				
 			}
@@ -167,21 +163,23 @@ namespace QLDP_02.Controllers
                 return Json(new { success = true ,data=ex.Message});
             }
 		}
-		//xóa sản phẩm
-		public JsonResult XoaSanPham(int maPhieu, int maSanPham)
-		{
+        //xóa sản phẩm
+        public JsonResult XoaSanPham(int idPhieu, int idSanPham)
+        {
             try
-			{
-                
+            {
+                var item = db.NS_DP_PhieuDeNghi_CaNhan_ChiTiet.FirstOrDefault(s => s.PhieuDeNghi_CaNhan == idPhieu && s.SanPham == idSanPham);
+                db.NS_DP_PhieuDeNghi_CaNhan_ChiTiet.Remove(item);
                 db.SaveChanges();
-                return Json(new { success = true });
+                return Json(new { success = true, item = item });
             }
             catch
-			{
+            {
                 return Json(new { success = false });
             }
         }
-	}
+
+    }
 	
 	public class SelectedProduct
 	{

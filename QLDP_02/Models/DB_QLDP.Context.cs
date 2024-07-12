@@ -43,8 +43,6 @@ public partial class DB_QLDPEntities : DbContext
 
     public virtual DbSet<DM_DP_NhaCungCap> DM_DP_NhaCungCap { get; set; }
 
-    public virtual DbSet<DM_DP_Size> DM_DP_Size { get; set; }
-
     public virtual DbSet<DM_DP_TinhChatDongPhuc> DM_DP_TinhChatDongPhuc { get; set; }
 
     public virtual DbSet<DM_DP_TrangThaiDuyet> DM_DP_TrangThaiDuyet { get; set; }
@@ -78,6 +76,8 @@ public partial class DB_QLDPEntities : DbContext
     public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
 
     public virtual DbSet<NS_QuocTich> NS_QuocTich { get; set; }
+
+    public virtual DbSet<DM_DP_Size> DM_DP_Size { get; set; }
 
 
     public virtual ObjectResult<getPhieuNhapHang_Result> getPhieuNhapHang()
