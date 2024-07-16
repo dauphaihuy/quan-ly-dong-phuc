@@ -179,6 +179,17 @@ namespace QLDP_02.Controllers
             }
         }
 
+		public JsonResult XoaPhieuDeNghi(int PhieuDeNghiCaNhan)
+		{
+			try
+			{
+				var item = db.NS_DP_PhieuDeNghi_CaNhan.FirstOrDefault(s => s.PhieuDeNghi_CaNhan == PhieuDeNghiCaNhan);
+				item.IsDel = true;
+				db.SaveChanges();
+				return Json(new { success = true, item = item });
+			}
+			catch { return Json(new { success = false }); }
+		}
     }
 	
 	public class SelectedProduct
