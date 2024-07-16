@@ -443,6 +443,9 @@
         </Function>
         <Function Name="getSanPhamYeuCau" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="getSize" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="getSizeFromSanPham" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="masp" Type="int" Mode="In" />
+        </Function>
         <Function Name="getXuatNhapKho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -486,7 +489,6 @@
           <Parameter Name="nguoiDeNghi" Type="int" Mode="In" />
           <Parameter Name="idLyDoCapPhat" Type="int" Mode="In" />
         </Function>
-        
         <EntityContainer Name="DB_QLDPModelStoreContainer">
           <EntitySet Name="DM_DP_DonViTinh" EntityType="Self.DM_DP_DonViTinh" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DM_DP_Kho" EntityType="Self.DM_DP_Kho" Schema="dbo" store:Type="Tables" />
@@ -976,6 +978,9 @@
             <Parameter Name="TinhChatDongPhuc" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="DM_DP_Size" EntityType="DB_QLDPModel.DM_DP_Size" />
+          <FunctionImport Name="getSizeFromSanPham" ReturnType="Collection(DB_QLDPModel.getSizeFromSanPham_Result)">
+            <Parameter Name="masp" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="getPhieuNhapHang_Result">
           <Property Type="Int32" Name="PhieuNhapHang" Nullable="false" />
@@ -1218,6 +1223,19 @@
           <Property Name="IsDel" Type="Boolean" />
           <Property Name="STTSize" Type="Int32" />
         </EntityType>
+        <ComplexType Name="getSizeFromSanPham_Result">
+          <Property Type="Int32" Name="Size" Nullable="false" />
+          <Property Type="String" Name="MaSize" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="LoaiSanPham" Nullable="false" />
+          <Property Type="Int32" Name="NguoiTao" Nullable="true" />
+          <Property Type="DateTime" Name="NgayTao" Nullable="true" Precision="16" />
+          <Property Type="Int32" Name="NguoiSua" Nullable="true" />
+          <Property Type="DateTime" Name="NgaySua" Nullable="true" Precision="16" />
+          <Property Type="Int32" Name="NguoiXoa" Nullable="true" />
+          <Property Type="DateTime" Name="NgayXoa" Nullable="true" Precision="16" />
+          <Property Type="Boolean" Name="IsDel" Nullable="true" />
+          <Property Type="Int32" Name="STTSize" Nullable="true" />
+          </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1889,6 +1907,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="getSizeFromSanPham" FunctionName="DB_QLDPModel.Store.getSizeFromSanPham">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_QLDPModel.getSizeFromSanPham_Result">
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="MaSize" ColumnName="MaSize" />
+                <ScalarProperty Name="LoaiSanPham" ColumnName="LoaiSanPham" />
+                <ScalarProperty Name="NguoiTao" ColumnName="NguoiTao" />
+                <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+                <ScalarProperty Name="NguoiSua" ColumnName="NguoiSua" />
+                <ScalarProperty Name="NgaySua" ColumnName="NgaySua" />
+                <ScalarProperty Name="NguoiXoa" ColumnName="NguoiXoa" />
+                <ScalarProperty Name="NgayXoa" ColumnName="NgayXoa" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+                <ScalarProperty Name="STTSize" ColumnName="STTSize" />
+                </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           
           
         </EntityContainerMapping>
@@ -1906,7 +1941,7 @@
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="True" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>

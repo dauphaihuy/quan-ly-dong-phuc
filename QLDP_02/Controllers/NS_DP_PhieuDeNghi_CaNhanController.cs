@@ -187,16 +187,24 @@ namespace QLDP_02.Controllers
 				db.SaveChanges();
 				return Json(new { success = true, item = item });
 			}
-			catch { return Json(new { success = false }); }
-		}
-		//public JsonResult getSizeFromSanPham(int idSanPham)
-		//{
-		//	try
-		//	{
-		//		db.upda
-		//	}
-		//	catch { return Json(new { success = false }); }
-		//}
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+		public JsonResult GetSizeFromSanPham(int idSanPham)
+		{
+			try
+			{
+				var item = db.getSizeFromSanPham(idSanPham).ToList();
+				
+                return Json(new { success = true ,item=item});
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
 	}
     }
 	

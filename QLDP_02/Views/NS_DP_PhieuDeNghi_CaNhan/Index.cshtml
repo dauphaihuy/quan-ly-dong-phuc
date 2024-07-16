@@ -29,7 +29,7 @@
 </header>
 <div class="container-fluid px-4">
     <div class="card">
-        <table>
+        <table id="datatablesSimple">
             <thead>
                 <tr>
                     <th>Hoàn thành</th>
@@ -39,6 +39,7 @@
                     <th>Ngày đề nghị</th>
                     <th>Nhân viên mới</th>
                     <th>lý do cấp phát</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -52,6 +53,14 @@
                         <td>@item.NgayDeNghi.ToString("dd/MM/yyyy")</td>
                         <td>@item.TrangThaiDuyet</td>
                         <td>@item.lydo</td>
+                        <td class="row">
+                            <button class="btn btn-datatable btn-icon btn-transparent-dark" onclick="chonPhieuDeNghiCaNhan(@item.PhieuDeNghi_CaNhan)">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </button>
+                            <button class="btn btn-datatable btn-icon btn-transparent-dark" onclick="XoaPhieuDeNghiCaNhan(@item.PhieuDeNghi_CaNhan)">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                        </td>
                     </tr>
                     stt++;
                 }
@@ -167,10 +176,13 @@
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script src="~/Content/AdminLayout/js/datatables/datatables-simple-demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.2/dist/sweetalert2.all.min.js"></script>
 <script>
     function handleLyDoCapPhatChange() {
         let idLyDoCapPhat = $("#LyDoCapPhat").val();
-        let maPhieu = $("#maPhieuDeNghi").val(); 
+        let maPhieu = $("#maPhieuDeNghi").val();
         let nguoiDeNghi = $("#idNguoiDeNghi").val();
 
         // Thực hiện các xử lý cần thiết khi người dùng chọn một lựa chọn trong dropdown list
@@ -197,7 +209,7 @@
                 error: function (error) {
                     console.error('Lỗi khi gửi dữ liệu: ', error);
                 }
-            
+
             })
         }
         console.log("Lý do cấp phát được chọn:", idLyDoCapPhat, maPhieu, nguoiDeNghi);
@@ -212,10 +224,30 @@
     })
     const renderSizeSanPham = (id) => {
         $.ajax({
-            url:""
+            url: "/NS_DP_PhieuDeNghi_CaNhan/GetSizeFromSanPham",
+            type:'POST',
+            data: {
+                idSanPham:+id
+            },
+            success: function (response) {
+                console.log(response);
+                let content =`<select class="form-control" id="MaSize" name="MaSize">`
+                response.item.forEach(function (item) {
+                    console.log(item)
+                    content += `
+                    <option value="${item.Size}">${item.MaSize}</option>
+                    `
+                })
+                content += '</select>'
+                $(`#sizeSanPham_${id}`).html(content)
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+
+            }
         })
-        return id
     }
+
     $("#themMoiSanPham").click(function () {
 
         let idNguoiDeNghi = $('#idNguoiDeNghi').val();
@@ -247,7 +279,7 @@
                         response.data.forEach(function (item) {
                             i++;
                             content +=
-                            `<tr class="productRow_${item.SanPham}">
+                            `<tr class="productRow">
                                 <td><input type="checkbox" class="cMaSanPham" value="${item.SanPham}" /></td>
                                 <td>${i}</td>
                                 <td>${item.TenSanPham}</td>
@@ -255,7 +287,7 @@
                                 <td id="sizeSanPham_${item.SanPham}">
                                     ${renderSizeSanPham(item.SanPham)}
                                 </td>
-                                
+
                                 <td><input class="form-control" id="soLuong" value="1" /></td>
                             </tr>`
 
@@ -290,7 +322,9 @@
                             <td>${i}</td>
                             <td>${item.TenSanPham}</td>
                             <td>@Html.DropDownList("TinhChat", null, new { @id = "TinhChat", @class = "form-control" })</td>
-                            <td>@Html.DropDownList("MaSize", (SelectList)ViewData["Size"], "Select a size", new {@id= "MaSize", @class = "form-control" })</td>
+                            <td id="sizeSanPham_${item.SanPham}">
+                                ${renderSizeSanPham(item.SanPham)}
+                            </td>
                             <td><input class="form-control" id="soLuong" value="1" /></td>
                         </tr>`
                     });
@@ -309,7 +343,7 @@
         $('#modalThemMoiSanPham').modal('hide');
         $('#modalThemMoiPhieuDeNghiCaNhan').modal('show');
     });
-</script>   
+</script>
 
 
 
@@ -330,11 +364,11 @@
         return formattedDate;
     }
 </script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.2/dist/sweetalert2.all.min.js"></script>
+
 <script>
 
     const chonPhieuDeNghiCaNhan = (id) => {
-        
+
         $.ajax({
             url: '/NS_DP_PhieuDeNghi_CaNhan/ChonPhieuDeNghi',
             type: 'POST',
@@ -357,7 +391,7 @@
                             <td>${item.MaSize}</td>
                             <td><input value="${item.SoLuong}"/></td>
                             idPhieu, idSanPham,tenSanPham
-                            <td><input onclick="xoaSanPhamDaChon(${item.PhieuDeNghi_CaNhan}, ${ item.SanPham },'${item.TenSanPham}')" type="button" value="xóa"/></td>
+                            <td><button onclick="xoaSanPhamDaChon(${item.PhieuDeNghi_CaNhan}, ${item.SanPham},'${item.TenSanPham}')" class="btn btn-danger">xóa</button></td>
                         </tr>`
 
                     });
@@ -462,14 +496,14 @@
 
     }
     //xóa sản phâm đã chọn
-    const xoaSanPhamDaChon = (idPhieu, idSanPham,tenSanPham) => {
-        console.log(idPhieu, idSanPham,tenSanPham)
+    const xoaSanPhamDaChon = (idPhieu, idSanPham, tenSanPham) => {
+        console.log(idPhieu, idSanPham, tenSanPham)
         Swal.fire({
             title: `Xóa ${tenSanPham}!`,
             text: "bạn có muốn xóa ra sản phẩm ra khỏi phiếu!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#d33", 
+            confirmButtonColor: "#d33",
             cancelButtonColor: "#3085d6",
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
@@ -490,16 +524,19 @@
                 success: function (response) {
                     console.log(response)
                     $(`.capNhatPhieuDeNghi #tr_${idSanPham}`).remove()
+                },
+                error: function (error) {
+                    console.error('Lỗi khi gửi dữ liệu: ', error);
                 }
             })
         });
     }
-<<<<<<< HEAD
+
 
     //XoaPhieuDeNghiCaNhan
     const XoaPhieuDeNghiCaNhan = id => {
         console.log(id)
-        
+
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -514,7 +551,7 @@
                     url: '/NS_DP_PhieuDeNghi_CaNhan/XoaPhieuDeNghi',
                     type: 'post',
                     data: {
-                        PhieuDeNghiCaNhan:+id
+                        PhieuDeNghiCaNhan: +id
                     },
                     success: function (response) {
                         console.log(response)
@@ -539,12 +576,11 @@
                         console.error('Lỗi khi gửi dữ liệu: ', error);
                     }
                 })
-                
+
             }
         });
     }
-=======
->>>>>>> parent of c2cc32c (xoa phieu)
+
     document.addEventListener("DOMContentLoaded", function () {
 
     });

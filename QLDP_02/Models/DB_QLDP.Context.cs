@@ -345,6 +345,18 @@ public partial class DB_QLDPEntities : DbContext
         return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("themSanPhamConLaiNguoiDungChuChon", phieuDeNghi_CaNhanParameter, sanPhamParameter, sizeParameter, soLuongParameter, tinhChatDongPhucParameter);
     }
 
+
+    public virtual ObjectResult<getSizeFromSanPham_Result> getSizeFromSanPham(Nullable<int> masp)
+    {
+
+        var maspParameter = masp.HasValue ?
+            new ObjectParameter("masp", masp) :
+            new ObjectParameter("masp", typeof(int));
+
+
+        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getSizeFromSanPham_Result>("getSizeFromSanPham", maspParameter);
+    }
+
 }
 
 }

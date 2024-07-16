@@ -187,6 +187,9 @@
     <Compile Include="Models\getSanPhamYeuCau_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\getSizeFromSanPham_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\getSize_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
