@@ -1,0 +1,35 @@
+[33mcommit 687a950df6f565d661fbda489efa97d0697d7ad6[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: VoQuocHuy <voquochuy042@gmail.com>
+Date:   Tue Jul 16 14:40:07 2024 +0700
+
+    update libra
+
+[33mcommit c2cc32cf8a74e3c5cbef1c5d9cca6c6fa037655b[m
+Author: VoQuocHuy <voquochuy042@gmail.com>
+Date:   Tue Jul 16 10:54:17 2024 +0700
+
+    xoa phieu
+
+[33mcommit c1cbdad1bc78f2d5adb0641ef9f82811706a2648[m
+Author: VoQuocHuy <voquochuy042@gmail.com>
+Date:   Fri Jul 12 16:59:43 2024 +0700
+
+    xóa ra khỏi phiếu, còn null khi xóa hết sp ra khỏi phiếu
+
+[33mcommit dee394511a6c5f4b2bc4369b6c97d184a3bf61b8[m
+Author: VoQuocHuy <voquochuy042@gmail.com>
+Date:   Thu Jul 11 13:39:52 2024 +0700
+
+    edit alert sweetalert
+
+[33mcommit 05ea6905c31b7f24bb65183c9b139da704312eb3[m
+Author: VoQuocHuy <voquochuy042@gmail.com>
+Date:   Thu Jul 11 10:17:40 2024 +0700
+
+    thêm sản phẩm còn lại người dùng chưa chọn
+
+[33mcommit dd2136087eefad41f45c40ca4f39acd37b44366d[m
+Author: VoQuocHuy <voquochuy042@gmail.com>
+Date:   Wed Jul 10 17:29:21 2024 +0700
+
+    cập nhật sửa chọn lý do, thêm đồng phục chưa chọn, thêm đồng phục đã chọn

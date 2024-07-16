@@ -179,6 +179,7 @@ namespace QLDP_02.Controllers
             }
         }
 
+<<<<<<< HEAD
 		public JsonResult XoaPhieuDeNghi(int PhieuDeNghiCaNhan)
 		{
 			try
@@ -199,6 +200,9 @@ namespace QLDP_02.Controllers
 			catch { return Json(new { success = false }); }
 		}
 	}
+=======
+    }
+>>>>>>> parent of c2cc32c (xoa phieu)
 	
 	public class SelectedProduct
 	{

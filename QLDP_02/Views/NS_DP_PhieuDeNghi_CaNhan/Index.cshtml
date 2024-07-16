@@ -29,7 +29,7 @@
 </header>
 <div class="container-fluid px-4">
     <div class="card">
-        <table id="datatablesSimple">
+        <table>
             <thead>
                 <tr>
                     <th>Hoàn thành</th>
@@ -39,7 +39,6 @@
                     <th>Ngày đề nghị</th>
                     <th>Nhân viên mới</th>
                     <th>lý do cấp phát</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -53,15 +52,6 @@
                         <td>@item.NgayDeNghi.ToString("dd/MM/yyyy")</td>
                         <td>@item.TrangThaiDuyet</td>
                         <td>@item.lydo</td>
-                        <td class="row">
-                            <button class="btn btn-datatable btn-icon btn-transparent-dark" onclick="chonPhieuDeNghiCaNhan(@item.PhieuDeNghi_CaNhan)">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </button>
-                            <button class="btn btn-datatable btn-icon btn-transparent-dark" onclick="XoaPhieuDeNghiCaNhan(@item.PhieuDeNghi_CaNhan)">
-                                <i class="fa-regular fa-trash-can"></i>
-                            </button>
-                        </td>
-
                     </tr>
                     stt++;
                 }
@@ -340,8 +330,6 @@
         return formattedDate;
     }
 </script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script src="~/Content/AdminLayout/js/datatables/datatables-simple-demo.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.2/dist/sweetalert2.all.min.js"></script>
 <script>
 
@@ -502,13 +490,11 @@
                 success: function (response) {
                     console.log(response)
                     $(`.capNhatPhieuDeNghi #tr_${idSanPham}`).remove()
-                },
-                error: function (error) {
-                    console.error('Lỗi khi gửi dữ liệu: ', error);
                 }
             })
         });
     }
+<<<<<<< HEAD
 
     //XoaPhieuDeNghiCaNhan
     const XoaPhieuDeNghiCaNhan = id => {
@@ -557,6 +543,8 @@
             }
         });
     }
+=======
+>>>>>>> parent of c2cc32c (xoa phieu)
     document.addEventListener("DOMContentLoaded", function () {
 
     });
