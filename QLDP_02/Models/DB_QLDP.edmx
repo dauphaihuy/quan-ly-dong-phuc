@@ -486,6 +486,7 @@
           <Parameter Name="nguoiDeNghi" Type="int" Mode="In" />
           <Parameter Name="idLyDoCapPhat" Type="int" Mode="In" />
         </Function>
+        
         <EntityContainer Name="DB_QLDPModelStoreContainer">
           <EntitySet Name="DM_DP_DonViTinh" EntityType="Self.DM_DP_DonViTinh" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DM_DP_Kho" EntityType="Self.DM_DP_Kho" Schema="dbo" store:Type="Tables" />
@@ -1904,8 +1905,8 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>

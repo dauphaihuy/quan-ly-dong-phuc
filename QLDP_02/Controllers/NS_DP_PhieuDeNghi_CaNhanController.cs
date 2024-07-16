@@ -190,7 +190,15 @@ namespace QLDP_02.Controllers
 			}
 			catch { return Json(new { success = false }); }
 		}
-    }
+		public JsonResult getSizeFromSanPham(int idSanPham)
+		{
+			try
+			{
+				db.upda
+			}
+			catch { return Json(new { success = false }); }
+		}
+	}
 	
 	public class SelectedProduct
 	{

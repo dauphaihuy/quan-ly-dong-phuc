@@ -220,16 +220,27 @@
         $('.capNhatPhieuDeNghi').html('');
         $('#modalThemMoiPhieuDeNghiCaNhan').modal('show');
     })
+    const renderSizeSanPham = (id) => {
+        $.ajax({
+            url:""
+        })
+        return id
+    }
     $("#themMoiSanPham").click(function () {
 
         let idNguoiDeNghi = $('#idNguoiDeNghi').val();
         let lyDoCapPhat = $('#LyDoCapPhat').val();
         if (idNguoiDeNghi === '' || lyDoCapPhat === '') {
-            alert("chọn người đề nghị và lý do cấp phát")
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "chọn người đề nghị và lý do cấp phát!",
+                footer: '<a href="#">Why do I have this issue?</a>'
+            });
             return
         }
         let maPhieu = $('#maPhieuDeNghi').val();
-        console.log(maPhieu)
+        //console.log(maPhieu)
         if (maPhieu === "") {
             $.ajax({
                 url: '/NS_DP_PhieuDeNghi_CaNhan/getSanPhamChuaChon',
@@ -246,12 +257,15 @@
                         response.data.forEach(function (item) {
                             i++;
                             content +=
-                                `<tr class="productRow">
+                            `<tr class="productRow_${item.SanPham}">
                                 <td><input type="checkbox" class="cMaSanPham" value="${item.SanPham}" /></td>
                                 <td>${i}</td>
                                 <td>${item.TenSanPham}</td>
                                 <td>@Html.DropDownList("TinhChat", null, new { @id = "TinhChat", @class = "form-control" })</td>
-                                <td>@Html.DropDownList("Size",null, new { @id = "MaSize", @class = "form-control" })</td>
+                                <td id="sizeSanPham_${item.SanPham}">
+                                    ${renderSizeSanPham(item.SanPham)}
+                                </td>
+                                
                                 <td><input class="form-control" id="soLuong" value="1" /></td>
                             </tr>`
 
@@ -518,12 +532,16 @@
                     },
                     success: function (response) {
                         console.log(response)
-                        location.reload()
                         Swal.fire({
                             title: "Deleted!",
                             text: "Xóa phiếu đề nghị thành công.",
                             icon: "success"
-                        });
+                        }).then(() => {
+                            setTimeout(() => {
+                                location.reload();
+                            }, 500);
+                        })
+
                     },
                     error: function (error) {
                         Swal.fire({
