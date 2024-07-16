@@ -178,8 +178,6 @@ namespace QLDP_02.Controllers
                 return Json(new { success = false });
             }
         }
-
-<<<<<<< HEAD
 		public JsonResult XoaPhieuDeNghi(int PhieuDeNghiCaNhan)
 		{
 			try
@@ -191,18 +189,16 @@ namespace QLDP_02.Controllers
 			}
 			catch { return Json(new { success = false }); }
 		}
-		public JsonResult getSizeFromSanPham(int idSanPham)
-		{
-			try
-			{
-				db.upda
-			}
-			catch { return Json(new { success = false }); }
-		}
+		//public JsonResult getSizeFromSanPham(int idSanPham)
+		//{
+		//	try
+		//	{
+		//		db.upda
+		//	}
+		//	catch { return Json(new { success = false }); }
+		//}
 	}
-=======
     }
->>>>>>> parent of c2cc32c (xoa phieu)
 	
 	public class SelectedProduct
 	{
@@ -212,4 +208,3 @@ namespace QLDP_02.Controllers
 		public int SoLuong { get; set; }
 	}
 
-}
