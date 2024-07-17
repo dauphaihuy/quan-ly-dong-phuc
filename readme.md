@@ -1,0 +1,1 @@
+![](/image/huy-trum-thoi-gian.jpg)

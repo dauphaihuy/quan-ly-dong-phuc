@@ -10,12 +10,12 @@
 namespace QLDP_02.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class NS_QuocTich
+    public partial class getTinhChatTuSanPham_Result
     {
-        public int QuocTich { get; set; }
-        public string MaQuocTich { get; set; }
-        public string TenQuocTich { get; set; }
+        public int TinhChatDongPhuc { get; set; }
+        public string TenTinhChatDongPhuc { get; set; }
+        public string TenTinhChatDongPhuc_EN { get; set; }
+        public string TenTinhChatDongPhuc_JP { get; set; }
     }
 }

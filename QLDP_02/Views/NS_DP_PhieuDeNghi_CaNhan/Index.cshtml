@@ -200,7 +200,7 @@
                     idLyDoCapPhat: +idLyDoCapPhat
                 },
                 success: function (response) {
-                    console.log(response)
+                    //console.log(response)
                     if (response.success === true) {
                         Swal.fire({
                             title: "Updated!",
@@ -219,7 +219,7 @@
 
             })
         }
-        console.log("Lý do cấp phát được chọn:", idLyDoCapPhat, maPhieu, nguoiDeNghi);
+        //console.log("Lý do cấp phát được chọn:", idLyDoCapPhat, maPhieu, nguoiDeNghi);
     }
 </script>
 <script>
@@ -237,10 +237,10 @@
                 idSanPham:+id
             },
             success: function (response) {
-                console.log(response);
+                //console.log(response)
                 let content =`<select class="form-control" id="MaSize" name="MaSize">`
                 response.item.forEach(function (item) {
-                    console.log(item)
+                    //console.log(item)
                     content += `
                     <option value="${item.Size}">${item.MaSize}</option>
                     `
@@ -249,15 +249,40 @@
                 $(`#sizeSanPham_${id}`).html(content)
             },
             error: function (error) {
-                console.error('Lỗi khi gửi dữ liệu: ', error);
+                console.error('Lỗi khi gửi dữ liệu: ', error)
 
             }
         })
     }
+    const renderTinhChat = (id) => {
+        $.ajax({
+            url: "/NS_DP_PhieuDeNghi_CaNhan/getTinhChatTuSanPham",
+            type: 'POST',
+            data: {
+                idSanPham: +id
+            },
+            success: function (response) {
+                console.log(response)
+                let content = `<select class="form-control" id="TinhChat" name="TinhChat">`
+                response.item.forEach(function (item) {
+                    //console.log(item)
+                    content += `
+            <option value="${item.TinhChatDongPhuc}">${item.TenTinhChatDongPhuc}</option>
+            `
+                })
+                content += '</select>'
+                $(`#tinhChatSanPham_${id}`).html(content)
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error)
 
+            }
+        })
+        return id
+    }
     $("#themMoiSanPham").click(function () {
 
-        let idNguoiDeNghi = $('#idNguoiDeNghi').val();
+        let idNguoiDeNghi = $('#idNguoiDeNghi').val()
         let lyDoCapPhat = $('#LyDoCapPhat').val();
         if (idNguoiDeNghi === '' || lyDoCapPhat === '') {
             Swal.fire({
@@ -279,7 +304,7 @@
                     idNguoiDeNghi: +idNguoiDeNghi
                 },
                 success: function (response) {
-                    console.log(response)
+                    //console.log(response)
                     if (response.success === true) {
                         let content = '';
                         let i = 0
@@ -290,7 +315,9 @@
                                 <td><input type="checkbox" class="cMaSanPham" value="${item.SanPham}" /></td>
                                 <td>${i}</td>
                                 <td>${item.TenSanPham}</td>
-                                <td>@Html.DropDownList("TinhChat", null, new { @id = "TinhChat", @class = "form-control" })</td>
+                                <td id="tinhChatSanPham_${item.SanPham}">
+                                    ${renderTinhChat(item.SanPham)}
+                                </td>
                                 <td id="sizeSanPham_${item.SanPham}">
                                     ${renderSizeSanPham(item.SanPham)}
                                 </td>
@@ -318,7 +345,7 @@
                     idNguoiDeNghi: +idNguoiDeNghi
                 },
                 success: function (response) {
-                    console.log(response)
+                    //console.log(response)
                     let content = '';
                     let i = 0
                     response.data.forEach(function (item) {
@@ -328,7 +355,9 @@
                             <td><input type="checkbox" class="cMaSanPham" value="${item.SanPham}" /></td>
                             <td>${i}</td>
                             <td>${item.TenSanPham}</td>
-                            <td>@Html.DropDownList("TinhChat", null, new { @id = "TinhChat", @class = "form-control" })</td>
+                            <td id="tinhChatSanPham_${item.SanPham}">
+                                ${renderTinhChat(item.SanPham)}
+                            </td>
                             <td id="sizeSanPham_${item.SanPham}">
                                 ${renderSizeSanPham(item.SanPham)}
                             </td>
@@ -383,7 +412,7 @@
                 id: id
             },
             success: function (response) {
-                console.log(response)
+                //console.log(response)
                 if (response.success === true) {
                     let content = '';
                     let i = 0
@@ -434,7 +463,7 @@
         var idNguoiDeNghi = $('#idNguoiDeNghi').val()
         var lyDoCapPhat = $('#LyDoCapPhat').val()
         var PhieuDeNghi = $('#PhieuDeNghi').val()
-        console.log(PhieuDeNghi)
+        //console.log(PhieuDeNghi)
         $('body').on('change', '#idNguoiDeNghi', function () {
             idNguoiDeNghi = $('#idNguoiDeNghi').val()
         })
@@ -452,7 +481,7 @@
                 selectedRows.push(row);
             }
         });
-        console.log(selectedRows)
+        //console.log(selectedRows)
         if (idNguoiDeNghi == "") {
             alert("chưa chọn người đề nghị")
             return
@@ -469,8 +498,8 @@
             alert("chưa chọn lý do")
             return
         }
-        console.log("nguoi de nghi" + idNguoiDeNghi)
-        console.log(selectedRows)
+        //console.log("nguoi de nghi" + idNguoiDeNghi)
+        //console.log(selectedRows)
         $.ajax({
             url: '/NS_DP_PhieuDeNghi_CaNhan/ChonSanPham',
             type: 'POST',
@@ -482,17 +511,20 @@
                 PhieuDeNghi: +PhieuDeNghi
             },
             success: function (response) {
-                console.log(response)
+                //console.log(response)
                 if (response.success === true) {
                     $('#modalThemMoiSanPham').modal('hide');
                     $('#modalThemMoiPhieuDeNghiCaNhan').modal('show');
                     Swal.fire({
-                        title: 'Error!',
-                        text: 'Do you want to continue',
-                        icon: 'error',
+                        title: 'Thêm thành công!',
+                        text: 'Thêm phiếu đề nghị thành công',
+                        icon: 'success',
                         confirmButtonText: 'Cool'
+                    }).then(() => {
+                        setTimeout(() => {
+                            location.reload();
+                        }, 500);
                     })
-                    window.location.reload();
                 }
             },
             error: function (error) {
@@ -503,7 +535,7 @@
     }
     //xóa sản phâm đã chọn
     const xoaSanPhamDaChon = (idPhieu, idSanPham, tenSanPham) => {
-        console.log(idPhieu, idSanPham, tenSanPham)
+        //console.log(idPhieu, idSanPham, tenSanPham)
         Swal.fire({
             title: `Xóa ${tenSanPham}!`,
             text: "bạn có muốn xóa ra sản phẩm ra khỏi phiếu!",
@@ -520,7 +552,7 @@
                     icon: "success"
                 });
             }
-            console.log(idPhieu, idSanPham, tenSanPham)
+            //console.log(idPhieu, idSanPham, tenSanPham)
             $.ajax({
                 url: '/NS_DP_PhieuDeNghi_CaNhan/XoaSanPham',
                 type: "post",
@@ -528,7 +560,7 @@
                     idPhieu, idSanPham
                 },
                 success: function (response) {
-                    console.log(response)
+                    //console.log(response)
                     $(`.capNhatPhieuDeNghi #tr_${idSanPham}`).remove()
                 },
                 error: function (error) {
@@ -541,7 +573,7 @@
 
     //XoaPhieuDeNghiCaNhan
     const XoaPhieuDeNghiCaNhan = id => {
-        console.log(id)
+        //console.log(id)
 
         Swal.fire({
             title: "Are you sure?",
@@ -560,7 +592,7 @@
                         PhieuDeNghiCaNhan: +id
                     },
                     success: function (response) {
-                        console.log(response)
+                        //console.log(response)
                         Swal.fire({
                             title: "Deleted!",
                             text: "Xóa phiếu đề nghị thành công.",

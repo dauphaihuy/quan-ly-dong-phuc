@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\huy vo\Desktop\QLDP-main\QLDP-main\QLDP_02\Models\DB_QLDP.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\huy vo\Desktop\quan-ly-dong-phuc\QLDP_02\Models\DB_QLDP.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

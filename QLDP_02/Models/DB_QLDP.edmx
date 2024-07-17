@@ -446,6 +446,9 @@
         <Function Name="getSizeFromSanPham" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="masp" Type="int" Mode="In" />
         </Function>
+        <Function Name="getTinhChatTuSanPham" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="sanPham" Type="int" Mode="In" />
+        </Function>
         <Function Name="getXuatNhapKho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -979,7 +982,10 @@
           </FunctionImport>
           <EntitySet Name="DM_DP_Size" EntityType="DB_QLDPModel.DM_DP_Size" />
           <FunctionImport Name="getSizeFromSanPham" ReturnType="Collection(DB_QLDPModel.getSizeFromSanPham_Result)">
-            <Parameter Name="masp" Mode="In" Type="Int32" />
+          <Parameter Name="masp" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="getTinhChatTuSanPham" ReturnType="Collection(DB_QLDPModel.getTinhChatTuSanPham_Result)">
+            <Parameter Name="sanPham" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="getPhieuNhapHang_Result">
@@ -1236,6 +1242,12 @@
           <Property Type="Boolean" Name="IsDel" Nullable="true" />
           <Property Type="Int32" Name="STTSize" Nullable="true" />
           </ComplexType>
+        <ComplexType Name="getTinhChatTuSanPham_Result">
+          <Property Type="Int32" Name="TinhChatDongPhuc" Nullable="false" />
+          <Property Type="String" Name="TenTinhChatDongPhuc" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="TenTinhChatDongPhuc_EN" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="TenTinhChatDongPhuc_JP" Nullable="true" MaxLength="150" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1924,6 +1936,16 @@
                 </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="getTinhChatTuSanPham" FunctionName="DB_QLDPModel.Store.getTinhChatTuSanPham">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_QLDPModel.getTinhChatTuSanPham_Result">
+                <ScalarProperty Name="TinhChatDongPhuc" ColumnName="TinhChatDongPhuc" />
+                <ScalarProperty Name="TenTinhChatDongPhuc" ColumnName="TenTinhChatDongPhuc" />
+                <ScalarProperty Name="TenTinhChatDongPhuc_EN" ColumnName="TenTinhChatDongPhuc_EN" />
+                <ScalarProperty Name="TenTinhChatDongPhuc_JP" ColumnName="TenTinhChatDongPhuc_JP" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           
           
         </EntityContainerMapping>
@@ -1940,8 +1962,8 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="True" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>

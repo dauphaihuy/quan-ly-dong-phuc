@@ -199,6 +199,18 @@ namespace QLDP_02.Controllers
                 return Json(new { success = false, error = ex.Message });
             }
         }
+		public JsonResult getTinhChatTuSanPham(int idSanPham)
+		{
+            try
+            {
+                var item = db.getTinhChatTuSanPham(idSanPham).OrderBy(s => s.TinhChatDongPhuc).ToList();
+                return Json(new { success = true, item = item });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
 	}
     }
 	
