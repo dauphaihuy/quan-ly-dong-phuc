@@ -27,8 +27,8 @@
         </div>
     </div>
 </header>
-<div class="container-fluid px-4">
-    <div class="card">
+<div class="container-fluid px-4 p-4">
+    <div class="card p-4" >
         <table id="datatablesSimple">
             <thead>
                 <tr>
@@ -190,7 +190,7 @@
             return
         }
         else if (maPhieu !== null) {
-            console.log(maPhieu)
+            //console.log(maPhieu)
             $.ajax({
                 url: '/NS_DP_PhieuDeNghi_CaNhan/CapNhat_PhieuDeNghiCaNhan',
                 type: 'POST',
@@ -202,8 +202,15 @@
                 success: function (response) {
                     console.log(response)
                     if (response.success === true) {
-                        alert("cập nhật lý do thành công")
-                        window.location.reload()
+                        Swal.fire({
+                            title: "Updated!",
+                            text: "cập nhật lý do thành công.",
+                            icon: "success"
+                        }).then(() => {
+                            setTimeout(() => {
+                                location.reload();
+                            }, 500);
+                        })
                     }
                 },
                 error: function (error) {
@@ -389,8 +396,7 @@
                             <td>${item.TenSanPham}</td>
                             <td>${item.TenTinhChatDongPhuc}</td>
                             <td>${item.MaSize}</td>
-                            <td><input value="${item.SoLuong}"/></td>
-                            idPhieu, idSanPham,tenSanPham
+                            <td><input class="form-control" value="${item.SoLuong}"/></td>
                             <td><button onclick="xoaSanPhamDaChon(${item.PhieuDeNghi_CaNhan}, ${item.SanPham},'${item.TenSanPham}')" class="btn btn-danger">xóa</button></td>
                         </tr>`
 

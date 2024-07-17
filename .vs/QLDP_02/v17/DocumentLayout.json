@@ -1,25 +1,41 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP-main\\",
+  "WorkspaceRootPath": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP-main\\qldp_02\\views\\ns_dp_phieudenghi_canhan\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|C:\\Users\\huy vo\\Desktop\\QLDP-main\\qldp_02\\views\\ns_dp_phieudenghi_canhan\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|solutionrelative:qldp_02\\views\\ns_dp_phieudenghi_canhan\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|c:\\users\\huy vo\\desktop\\qldp-main\\qldp-main\\qldp_02\\models\\db_qldp.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
-      "RelativeMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|solutionrelative:qldp_02\\models\\db_qldp.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|"
+      "AbsoluteMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|c:\\users\\huy vo\\desktop\\qldp-main\\qldp_02\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|solutionrelative:qldp_02\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|c:\\users\\huy vo\\desktop\\qldp-main\\qldp-main\\qldp_02\\controllers\\ns_dp_phieudenghi_canhancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|solutionrelative:qldp_02\\controllers\\ns_dp_phieudenghi_canhancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|c:\\users\\huy vo\\desktop\\qldp-main\\qldp_02\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|solutionrelative:qldp_02\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP-main\\qldp_02\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "AbsoluteMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|c:\\users\\huy vo\\desktop\\qldp-main\\qldp_02\\global.asax.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|solutionrelative:qldp_02\\global.asax.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|c:\\users\\huy vo\\desktop\\qldp-main\\qldp_02\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
       "RelativeMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|solutionrelative:qldp_02\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP-main\\qldp_02\\views\\ns_dp_phieunhaphang\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|c:\\users\\huy vo\\desktop\\qldp-main\\qldp_02\\packages.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|solutionrelative:qldp_02\\packages.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|C:\\Users\\huy vo\\Desktop\\QLDP-main\\qldp_02\\controllers\\ns_dp_phieudenghi_canhancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|solutionrelative:qldp_02\\controllers\\ns_dp_phieudenghi_canhancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|c:\\users\\huy vo\\desktop\\qldp-main\\qldp_02\\views\\ns_dp_xuatnhapkho\\nhapkho.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|solutionrelative:qldp_02\\views\\ns_dp_xuatnhapkho\\nhapkho.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|C:\\Users\\huy vo\\Desktop\\QLDP-main\\qldp_02\\views\\ns_dp_phieunhaphang\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{D41E61C8-C9E2-4426-BC0C-9A434E5EA0AD}|QLDP_02\\QLDP_02.csproj|solutionrelative:qldp_02\\views\\ns_dp_phieunhaphang\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
@@ -36,11 +52,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP-main\\QLDP_02\\Views\\NS_DP_PhieuDeNghi_CaNhan\\Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\Views\\NS_DP_PhieuDeNghi_CaNhan\\Index.cshtml",
               "RelativeDocumentMoniker": "QLDP_02\\Views\\NS_DP_PhieuDeNghi_CaNhan\\Index.cshtml",
-              "ToolTip": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP-main\\QLDP_02\\Views\\NS_DP_PhieuDeNghi_CaNhan\\Index.cshtml",
+              "ToolTip": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\Views\\NS_DP_PhieuDeNghi_CaNhan\\Index.cshtml",
               "RelativeToolTip": "QLDP_02\\Views\\NS_DP_PhieuDeNghi_CaNhan\\Index.cshtml",
-              "ViewState": "AQIAANYAAAAAAAAAAAAUwOoAAAA3AAAA",
+              "ViewState": "AQIAAPkAAAAAAAAAAAAUwNAAAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-07-02T07:22:01.876Z",
               "IsPinned": true,
@@ -49,14 +65,67 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "DB_QLDP.edmx [Diagram1]",
-              "DocumentMoniker": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP-main\\QLDP_02\\Models\\DB_QLDP.edmx",
-              "RelativeDocumentMoniker": "QLDP_02\\Models\\DB_QLDP.edmx",
-              "ToolTip": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP-main\\QLDP_02\\Models\\DB_QLDP.edmx [Diagram1]",
-              "RelativeToolTip": "QLDP_02\\Models\\DB_QLDP.edmx [Diagram1]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001116|",
-              "WhenOpened": "2024-07-16T09:09:24.463Z",
-              "EditorCaption": " [Diagram1]"
+              "Title": "_AdminLayout.cshtml",
+              "DocumentMoniker": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeDocumentMoniker": "QLDP_02\\Views\\Shared\\_AdminLayout.cshtml",
+              "ToolTip": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeToolTip": "QLDP_02\\Views\\Shared\\_AdminLayout.cshtml",
+              "ViewState": "AQIAALcBAAAAAAAAAAAawM4BAABYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-16T16:49:01.008Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "QLDP_02\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "QLDP_02\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-16T16:49:00.399Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Global.asax.cs",
+              "DocumentMoniker": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\Global.asax.cs",
+              "RelativeDocumentMoniker": "QLDP_02\\Global.asax.cs",
+              "ToolTip": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\Global.asax.cs",
+              "RelativeToolTip": "QLDP_02\\Global.asax.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-16T16:48:53.027Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Web.config",
+              "DocumentMoniker": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\Web.config",
+              "RelativeDocumentMoniker": "QLDP_02\\Web.config",
+              "ToolTip": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\Web.config",
+              "RelativeToolTip": "QLDP_02\\Web.config",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2024-07-16T16:48:52.17Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "packages.config",
+              "DocumentMoniker": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\packages.config",
+              "RelativeDocumentMoniker": "QLDP_02\\packages.config",
+              "ToolTip": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\packages.config",
+              "RelativeToolTip": "QLDP_02\\packages.config",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2024-07-16T16:48:50.898Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
@@ -64,42 +133,41 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Web.config",
-              "DocumentMoniker": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP-main\\QLDP_02\\Web.config",
-              "RelativeDocumentMoniker": "QLDP_02\\Web.config",
-              "ToolTip": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP-main\\QLDP_02\\Web.config",
-              "RelativeToolTip": "QLDP_02\\Web.config",
-              "ViewState": "AQIAACQAAAAAAAAAAAAUwDgAAAAUAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
-              "WhenOpened": "2024-07-16T07:35:30.926Z",
+              "DocumentIndex": 7,
+              "Title": "NhapKho.cshtml",
+              "DocumentMoniker": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\Views\\NS_DP_XuatNhapKho\\NhapKho.cshtml",
+              "RelativeDocumentMoniker": "QLDP_02\\Views\\NS_DP_XuatNhapKho\\NhapKho.cshtml",
+              "ToolTip": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\Views\\NS_DP_XuatNhapKho\\NhapKho.cshtml",
+              "RelativeToolTip": "QLDP_02\\Views\\NS_DP_XuatNhapKho\\NhapKho.cshtml",
+              "ViewState": "AQIAAIsAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-16T10:49:06.152Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "NS_DP_PhieuDeNghi_CaNhanController.cs",
-              "DocumentMoniker": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP-main\\QLDP_02\\Controllers\\NS_DP_PhieuDeNghi_CaNhanController.cs",
+              "DocumentMoniker": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\Controllers\\NS_DP_PhieuDeNghi_CaNhanController.cs",
               "RelativeDocumentMoniker": "QLDP_02\\Controllers\\NS_DP_PhieuDeNghi_CaNhanController.cs",
-              "ToolTip": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP-main\\QLDP_02\\Controllers\\NS_DP_PhieuDeNghi_CaNhanController.cs",
+              "ToolTip": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\Controllers\\NS_DP_PhieuDeNghi_CaNhanController.cs",
               "RelativeToolTip": "QLDP_02\\Controllers\\NS_DP_PhieuDeNghi_CaNhanController.cs",
-              "ViewState": "AQIAALIAAAAAAAAAAAAqwMQAAAAGAAAA",
+              "ViewState": "AQIAAJQAAAAAAAAAAAAAAL8AAAAEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-04-19T02:43:06.955Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 8,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP-main\\QLDP_02\\Views\\NS_DP_PhieuNhapHang\\Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\Views\\NS_DP_PhieuNhapHang\\Index.cshtml",
               "RelativeDocumentMoniker": "QLDP_02\\Views\\NS_DP_PhieuNhapHang\\Index.cshtml",
-              "ToolTip": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP-main\\QLDP_02\\Views\\NS_DP_PhieuNhapHang\\Index.cshtml",
+              "ToolTip": "C:\\Users\\huy vo\\Desktop\\QLDP-main\\QLDP_02\\Views\\NS_DP_PhieuNhapHang\\Index.cshtml",
               "RelativeToolTip": "QLDP_02\\Views\\NS_DP_PhieuNhapHang\\Index.cshtml",
               "ViewState": "AQIAAIsAAAAAAAAAAAAUwF4AAAAgAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-07-16T02:46:57.941Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-16T02:46:57.941Z"
             }
           ]
         }

@@ -21,12 +21,6 @@ namespace QLDP_02.Controllers
 			ViewBag.LyDoCapPhat = new SelectList(db.DM_DP_LyDoCapPhat, "LyDoCapPhat", "TenLyDoCapPhat");
 			ViewBag.NguoiDeNghi = new SelectList(db.NS_NhanSu,"NhanSu", "Ten");
 			ViewBag.SanPham = new SelectList(db.NS_DP_SanPham, "SanPham", "TenSanPham");
-            var sizes = db.DM_DP_Size
-                 .Select(s => new { Size = s.Size, MaSize = s.MaSize })  // Select Size and MaSize
-                 .Distinct()
-                 .ToList();
-
-            ViewData["Size"] = new SelectList(sizes, "Size", "MaSize");  // Create SelectList with MaSize as value and Size as text
             ViewBag.TinhChat = new SelectList(db.DM_DP_TinhChatDongPhuc, "TinhChatDongPhuc", "TenTinhChatDongPhuc");
 			return View(db.getPhieuDeNghiCaNhan().Where(phieu => phieu.IsDel == false));
         }
@@ -196,7 +190,7 @@ namespace QLDP_02.Controllers
 		{
 			try
 			{
-				var item = db.getSizeFromSanPham(idSanPham).ToList();
+				var item = db.getSizeFromSanPham(idSanPham).OrderBy(s=>s.MaSize).ToList();
 				
                 return Json(new { success = true ,item=item});
             }
