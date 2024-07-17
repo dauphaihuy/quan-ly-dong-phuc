@@ -15,10 +15,10 @@
                     </h1>
                 </div>
                 <div class="col-12 col-xl-auto mb-3">
-                    <a class="btn btn-sm btn-light text-primary" type="button" data-bs-toggle="modal" data-bs-target="#modalThemMoiNhapKho">
+                    <button onclick="themMoiPhieuNhapKho(0)" class="btn btn-sm btn-light text-primary"  data-bs-toggle="modal" data-bs-target="#modalThemMoiNhapKho">
                         <i class="me-1 fa-regular fa-square-plus"></i>
                         Thêm mới
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -26,72 +26,53 @@
 </header>
 
 <!-- Main page content-->
-<div class="container-fluid px-4">
-    <div class="card">
-        <div class="card-body">
-            <table id="datatablesSimple">
-                <thead>
-                    <tr>
-                        <td>
-                            @Html.DisplayName("Ngày nhập hàng")
-                        </td>
-                        <td>
-                            @Html.DisplayName("Mã phiếu nhập")
-                        </td>
-                        <td>
-                            @Html.DisplayName("Kho nhận")
-                        </td>
-                        <td>
-                            @Html.DisplayName("Họ tên người nhận")
-                        </td>
-                        <td>
-                            @Html.DisplayName("Tỷ giá")
-                        </td>
-                        <td>
-                            @Html.DisplayName("Nhà cung cấp")
-                        </td>
-                        <td>
-                            @Html.DisplayName("Ghi chú")
-                        </td>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NgayNhapXuat)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.MaXuatNhapKho)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TenKho)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.HoDem) @Html.DisplayFor(modelItem => item.Ten)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TyGia)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TenNhaCungCap)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.GhiChu)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.MaXuatNhapKho }) |
-                                @Html.ActionLink("Details", "Details", new { id = item.MaXuatNhapKho }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.MaXuatNhapKho })
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
+<div class="w-100 container-fluid">
+    <table id="tableNhapKho" class="table table-striped w-100">
+        <thead>
+            <tr>
+                <th>Ngày nhập hàng</th>
+                <th>Mã phiếu nhập</th>
+                <th>Kho nhận</th>
+                <th>Họ tên người nhận</th>
+                <th>Tỷ giá</th>
+                <th>Nhà cung cấp</th>
+                <th>Ghi chú</th>
+            </tr>
+        </thead>
+        @*<tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NgayNhapXuat)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaXuatNhapKho)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TenKho)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HoDem) @Html.DisplayFor(modelItem => item.Ten)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TyGia)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TenNhaCungCap)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GhiChu)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.MaXuatNhapKho }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.MaXuatNhapKho }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.MaXuatNhapKho })
+                    </td>
+                </tr>
+            }
+        </tbody>*@
+    </table>           
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
@@ -100,21 +81,22 @@
 
 <!-- Modal ThemMoiNhapKho -->
 <div class="modal fade" id="modalThemMoiNhapKho" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticThemMoiNhapKho" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-fullscreen" role="document">
         <div class="modal-content">
             <div class="modal-header alert alert-success">
                 <h5 class="modal-title" id="staticThemMoiNhapKho">Thêm mới Nhập kho</h5>
-                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button class="btn-close me-2" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button class="btn btn-secondary" type="button">Cập nhật</button>
             </div>
             <div class="modal-body">
                 <div class="form-group row mb-2">
                     <div class="col-lg-2">
                         <label class="fw-500">Mã phiếu:</label>
-                        <input type="text" class="form-control" required id="id_MaXuatNhapKho" disabled/>
+                        <input type="text" class="form-control" required id="id_MaXuatNhapKho" disabled />
                     </div>
                     <div class="col-lg-4">
                         <label class="fw-500 required">Phiếu nhập hàng <span class="text-danger">(*)</span> :</label>
-                        @Html.DropDownList("PhieuNhapHang", null, "", new { @id = "id_MaXuatNhapKho", @class = "form-control required" })
+                        @Html.DropDownList("PhieuNhapHang", null, "", new { @id = "id_MaXuatNhapKho",onchange= "thayDoiChonPhieuNhap()", @class = "form-control required" })
                     </div>
                     <div class="col-lg-2">
                         <label class="fw-500">Kho nhận<span class="text-danger">(*)</span>:</label>
@@ -135,10 +117,27 @@
                         <textarea rows="1" type="text" class="form-control" id="id_GhiChu"></textarea>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-success" type="button" onclick="themMoiNhapKho()">Xác nhận</button>
-                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Quay lại</button>
+                <div>
+                    <table id="tableDanhSachSanPham">
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Tính chất</th>
+                            <th>Size</th>
+                            <th>SL yêu cầu</th>
+                            <th>Số lượng</th>
+                            <th>Số lượng đã nhập</th>
+                            <th>Đơn giá</th>
+                            <th>Thành tiền</th>
+                            <th>Đơn vị tính</th>
+                            <th>Nhà cung cấp</th>
+                            <th>Tồn kho</th>
+                            <th>Ghi chú</th>
+                        </tr>
+                    </table>
                 </div>
+                @*<div class="modal-footer">
+                    <button class="btn btn-success" type="button" onclick="themMoiNhapKho()">Xác nhận</button>
+                </div>*@
             </div>
         </div>
     </div>
@@ -168,9 +167,55 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js" type="text/javascript"></script>
 
-<!-- Script themMoiSanPham -->
+
 <script>
+    const thayDoiChonPhieuNhap = () => {
+
+    }
+    const themMoiPhieuNhapKho = id => {
+        console.log(id)
+    }
+    $(document).ready(function () {
+        $.noConflict();
+        var table = $('#tableNhapKho').DataTable({
+            "ajax": {
+                "url": "/NS_DP_XuatNhapKho/GetDataTable",
+                "type": "GET",
+                "datatype": "json"
+            },
+            "columns": [
+                {
+                    "data": "NgayTao", "render": function (data, type, row) {
+                        console.log(data)
+                        if (type === 'display' || type === 'filter') {
+                            // Extract timestamp from /Date(1721201400000)/ format
+                            var timestamp = parseInt(data.match(/\d+/)[0]);
+
+                            // Create a Date object from the timestamp
+                            var d = new Date(timestamp);
+
+                            // Format date as DD-MM-YYYY (assuming you want day-month-year format)
+                            var formattedDate = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
+
+                            return formattedDate;
+                        }
+                        return data;
+                    }
+                },
+                { "data": "MaXuatNhapKho" },
+                { "data": "TenKho" },
+                { "data": "Ten" },
+                { "data": "TyGia" },
+                { "data": "TenNhaCungCap" },
+                { "data": "GhiChu" }
+            ]
+
+        });
+        
+    })
     function themMoiSanPham() {
         // Thu thập dữ liệu từ input trong modal
         var TenSanPham = $('#id_TenSanPham').val();

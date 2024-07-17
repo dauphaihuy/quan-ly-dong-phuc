@@ -58,15 +58,17 @@ namespace QLDP_02.Controllers
 					db.SaveChanges();
 					foreach (var item in selectedRows)
 					{
-						NS_DP_PhieuDeNghi_CaNhan_ChiTiet nS_DP_PhieuDeNghi_CaNhan_ChiTiet = new NS_DP_PhieuDeNghi_CaNhan_ChiTiet
+                        
+                        NS_DP_PhieuDeNghi_CaNhan_ChiTiet nS_DP_PhieuDeNghi_CaNhan_ChiTiet = new NS_DP_PhieuDeNghi_CaNhan_ChiTiet
 						{
-							PhieuDeNghi_CaNhan = nS_DP_PhieuDeNghi_CaNhan.PhieuDeNghi_CaNhan,
+                        
+                        PhieuDeNghi_CaNhan = nS_DP_PhieuDeNghi_CaNhan.PhieuDeNghi_CaNhan,
 							SanPham = item.SanPham,
 							Size = int.Parse(item.Size),
 							SoLuong = item.SoLuong,
-							TinhChatDongPhuc = int.Parse(item.TinhChat),
+							TinhChatDongPhuc = item.TinhChat
 
-						};
+                        };
 						db.NS_DP_PhieuDeNghi_CaNhan_ChiTiet.Add(nS_DP_PhieuDeNghi_CaNhan_ChiTiet);
 						db.SaveChanges();
 					}
@@ -76,7 +78,7 @@ namespace QLDP_02.Controllers
 				{
                     foreach (var item in selectedRows)
                     {
-						db.themSanPhamConLaiNguoiDungChuChon(PhieuDeNghi,item.SanPham, int.Parse(item.Size), item.SoLuong, int.Parse(item.TinhChat));
+						db.themSanPhamConLaiNguoiDungChuChon(PhieuDeNghi,item.SanPham, int.Parse(item.Size), item.SoLuong, item.TinhChat);
 					}
                     return Json(new { success = true,data= selectedRows });
                 }
@@ -211,13 +213,38 @@ namespace QLDP_02.Controllers
                 return Json(new { success = false, error = ex.Message });
             }
         }
+		public JsonResult toggleHoanThanhPhieuDeNghi(int idPhieuDeNghi)
+		{
+            try
+            {
+				var phieu = db.NS_DP_PhieuDeNghi_CaNhan.SingleOrDefault(s=>s.PhieuDeNghi_CaNhan==idPhieuDeNghi);
+				if (phieu == null)
+				{
+                    return Json(new { success = false,data="không tìm thấy phiếu đề nghị" });
+                }
+				if (phieu.IsHoanThanh == false)
+				{
+                    phieu.IsHoanThanh = true;
+				}
+				else if(phieu.IsHoanThanh == true)
+				{
+                    phieu.IsHoanThanh = false;
+                }
+                db.SaveChanges();
+                return Json(new { success = true, data = phieu });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
 	}
     }
 	
 	public class SelectedProduct
 	{
 		public int SanPham { get; set; }
-		public string TinhChat { get; set; }
+		public int TinhChat { get; set; }
 		public string Size { get; set; }
 		public int SoLuong { get; set; }
 	}

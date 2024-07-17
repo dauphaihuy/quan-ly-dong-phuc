@@ -303,9 +303,24 @@ SELECT GETDATE();
 select * from DM_DP_Size
 --
 select * from NS_DP_SanPham
-select * from DM_DP_TinhChatDongPhuc tcdp join NS_DP_SanPham_TinhChatDongPhuc sptcdp 
+
+alter procedure getTinhChatTuSanPham(
+	@sanPham int =null 
+)
+as 
+begin
+select tcdp.* from DM_DP_TinhChatDongPhuc tcdp join NS_DP_SanPham_TinhChatDongPhuc sptcdp 
 on tcdp.TinhChatDongPhuc = sptcdp.TinhChatDongPhuc
 join NS_DP_SanPham sp on sp.SanPham = sptcdp.SanPham
-where sp.SanPham =1
+where sp.SanPham =@sanPham
+end
+go
 
+exec getTinhChatTuSanPham 3
 select * from NS_DP_SanPham_TinhChatDongPhuc
+select * from NS_NhanSu
+select * from NS_DP_XuatNhapKho
+select * from[dbo].[NS_DP_PhieuNhapHang]
+select * from NS_DP_PhieuNhapHang_ChiTiet
+exec [dbo].[getXuatNhapKho]
+select * from NS_DP_PhieuNhapHang pnh join NS_DP_PhieuNhapHang_ChiTiet pnhct on pnh.PhieuNhapHang = pnhct.PhieuNhapHang

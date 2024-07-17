@@ -1,6 +1,7 @@
 ﻿using QLDP_02.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -15,12 +16,24 @@ namespace QLDP_02.Controllers
         public ActionResult Index()
         {
             return View();
-        }
 
+        }
+        public ActionResult GetDataTable() { 
+            var danhSachNhapKho = db.getXuatNhapKho().ToList();
+            return Json(new { data = danhSachNhapKho },JsonRequestBehavior.AllowGet);
+        
+        }
+        //
+        public JsonResult NhapKho_GetDanhSachSanPhamNhapHang(int phieuNhapHang)
+        {
+            return Json(new { success=true });
+        }
         // GET: NS_DP_XuatNhapKho/NhapKho
         public ActionResult NhapKho()
         {
-            ViewBag.PhieuNhapHang = new SelectList(db.NS_DP_PhieuNhapHang, "PhieuNhapHang", "MaPhieuNhapHang");
+            var phieuNhapHangSelect = db.NS_DP_PhieuNhapHang.Where(h=>h.IsDel!=true).ToList();
+
+            ViewBag.PhieuNhapHang = new SelectList(phieuNhapHangSelect, "PhieuNhapHang", "MaPhieuNhapHang");
             ViewBag.Kho = new SelectList(db.DM_DP_Kho, "Kho", "TenKho");
             ViewBag.NhanSu = new SelectList(db.NS_NhanSu, "NhanSu", "TenNhanSu");
             ViewBag.NhaCungCap = new SelectList(db.DM_DP_NhaCungCap, "NhaCungCap", "TenNhaCungCap");
@@ -39,8 +52,8 @@ namespace QLDP_02.Controllers
             ViewBag.LoaiSanPham = new SelectList(db.DM_DP_LoaiSanPham, "LoaiSanPham", "TenLoaiSanPham");    
             ViewBag.DonViTinh = new SelectList(db.DM_DP_DonViTinh, "DonViTinh", "TenDonViTinh");
             ViewBag.GioiTinh = new SelectList(db.NS_DP_GioiTinh, "GioiTinh", "TenGioiTinh");
-			//ViewBag.SanPhamLienKet = new SelectList(db.NS_DP_SanPham, "SanPhamLienKet", "SanPhamLienKet");
-			return View(db.getXuatNhapKho().Where(sp => sp.IsDel == false).ToList());
+            ViewBag.SanPhamLienKet = new SelectList(db.NS_DP_SanPham, "SanPhamLienKet", "SanPhamLienKet");
+            return View(db.getXuatNhapKho().Where(sp => sp.IsDel == false).ToList());
         }
 
         // GET: NS_DP_XuatNhapKho/Details/5

@@ -46,7 +46,7 @@
                 @foreach (var item in Model)
                 {
                     <tr ondblclick="chonPhieuDeNghiCaNhan(@item.PhieuDeNghi_CaNhan)">
-                        <td><input class="form-check-input" onchange="" type="checkbox" @(item.IsHoanThanh == false ? "" : "checked") /></td>
+                        <td><input class="form-check-input" @(item.IsHoanThanh==true ? "checked" : "")  onchange="toggleHoanThanh(@item.PhieuDeNghi_CaNhan)" type="checkbox" @(item.IsHoanThanh == false ? "" : "checked") /></td>
                         <td>@stt</td>
                         <td>@item.MaPhieuDeNghi_CaNhan</td>
                         <td>@item.NguoiDeNghi</td>
@@ -180,6 +180,29 @@
 <script src="~/Content/AdminLayout/js/datatables/datatables-simple-demo.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.2/dist/sweetalert2.all.min.js"></script>
 <script>
+    const toggleHoanThanh = id => {
+        console.log(id)
+        $.ajax({
+            url: '/NS_DP_PhieuDeNghi_CaNhan/toggleHoanThanhPhieuDeNghi',
+            type: 'POST',
+            data: {
+                idPhieuDeNghi:+id
+            },
+            success: function (response) {
+                console.log(response)
+                if (response.success === true) {
+                    Swal.fire({
+                        title: "Updated!",
+                        text: "cập nhật trạng thái thành công.",
+                        icon: "success"
+                    })
+                }
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error);
+            }
+        })
+    }
     function handleLyDoCapPhatChange() {
         let idLyDoCapPhat = $("#LyDoCapPhat").val();
         let maPhieu = $("#maPhieuDeNghi").val();
