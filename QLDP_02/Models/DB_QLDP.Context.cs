@@ -269,5 +269,10 @@ namespace QLDP_02.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getTinhChatTuSanPham_Result>("getTinhChatTuSanPham", sanPhamParameter);
         }
+    
+        public virtual ObjectResult<selectOptionGetPhieuNhap_Result> selectOptionGetPhieuNhap()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<selectOptionGetPhieuNhap_Result>("selectOptionGetPhieuNhap");
+        }
     }
 }

@@ -15,7 +15,7 @@
                     </h1>
                 </div>
                 <div class="col-12 col-xl-auto mb-3">
-                    <button onclick="themMoiPhieuNhapKho(0)" class="btn btn-sm btn-light text-primary"  data-bs-toggle="modal" data-bs-target="#modalThemMoiNhapKho">
+                    <button onclick="themMoiPhieuNhapKho(0)" class="btn btn-sm btn-light text-primary" data-bs-toggle="modal" data-bs-target="#modalThemMoiNhapKho">
                         <i class="me-1 fa-regular fa-square-plus"></i>
                         Thêm mới
                     </button>
@@ -75,8 +75,6 @@
     </table>           
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script src="~/Content/AdminLayout/js/datatables/datatables-simple-demo.js"></script>
 
 
 <!-- Modal ThemMoiNhapKho -->
@@ -96,7 +94,7 @@
                     </div>
                     <div class="col-lg-4">
                         <label class="fw-500 required">Phiếu nhập hàng <span class="text-danger">(*)</span> :</label>
-                        @Html.DropDownList("PhieuNhapHang", null, "", new { @id = "id_MaXuatNhapKho",onchange= "thayDoiChonPhieuNhap()", @class = "form-control required" })
+                        @Html.DropDownList("PhieuNhapHang", null, "", new { @id = "idPhieuNhapHang",onchange= "thayDoiChonPhieuNhap()", @class = "form-control required" })
                     </div>
                     <div class="col-lg-2">
                         <label class="fw-500">Kho nhận<span class="text-danger">(*)</span>:</label>
@@ -118,7 +116,7 @@
                     </div>
                 </div>
                 <div>
-                    <table id="tableDanhSachSanPham">
+                    <table id="tableDanhSachSanPham" class="table table-active">
                         <tr>
                             <th>Sản phẩm</th>
                             <th>Tính chất</th>
@@ -172,10 +170,22 @@
 
 
 <script>
+    const randomMaPhieu = (length) => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let result = '';
+        const charactersLength = characters.length;
+        for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return 'NK_'+result;
+    }
+    console.log(moment.locale())
     const thayDoiChonPhieuNhap = () => {
-
+        console.log($("#idPhieuNhapHang").val())
+        
     }
     const themMoiPhieuNhapKho = id => {
+
         console.log(id)
     }
     $(document).ready(function () {
@@ -189,7 +199,6 @@
             "columns": [
                 {
                     "data": "NgayTao", "render": function (data, type, row) {
-                        console.log(data)
                         if (type === 'display' || type === 'filter') {
                             // Extract timestamp from /Date(1721201400000)/ format
                             var timestamp = parseInt(data.match(/\d+/)[0]);

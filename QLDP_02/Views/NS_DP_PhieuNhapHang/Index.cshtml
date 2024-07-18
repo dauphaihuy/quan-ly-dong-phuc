@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
     <div class="container-fluid px-4">
         <div class="page-header-content">
@@ -25,81 +26,40 @@
     </div>
 </header>
 
+
 <!-- Main page content-->
 <div class="container-fluid px-4">
     <div class="card">
         <div class="card-header">Dữ liệu Đơn mua hàng</div>
         <div class="card-body">
-            <table id="datatablesSimple">
+            <table id="tablePhieuNhapHang" class="table">
                 <thead>
                     <tr>
-                        <th>
-                            @Html.DisplayName("Mã phiếu")
-                        </th>
-                        <th>
-                            @Html.DisplayName("Tên phiếu")
-                        </th>
-                        <th>
-                            @Html.DisplayName("Ngày đặt hàng")
-                        </th>
-                        <th>
-                            @Html.DisplayName("Tên người đặt hàng")
-                        </th>
-                        <th>
-                            @Html.DisplayName("Nhà cung cấp")
-                        </th>
-                        <th>
-                            @Html.DisplayName("Tổng SL mua")
-                        </th>
-                        <th>
-                            @Html.DisplayName("Tổng SL đã nhập")
-                        </th>
-                        <th>
-                            @Html.DisplayName("Tổng thanh toán")
-                        </th>
-                        <th>
-                            @Html.DisplayName("Hoàn thành")
-                        </th>
-                        <th>
-                            @Html.DisplayName("Ghi chú")
-                        </th>
-                        <th></th>
+                        <th>Mã phiếu</th>
+                        <th>Tên phiếu</th>
+                        <th>Ngày đặt hàng</th>
+                        <th>Tên người đặt hàng</th>
+                        <th>Nhà cung cấp</th>
+                        <th>Tổng SL mua</th>
+                        <th>Tổng SL nhập</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
                         <tr>
+                            <td>@Html.DisplayFor(modelItem => item.MaPhieuNhapHang)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TenPhieuNhapHang)</td>
+                            <td>@Html.DisplayFor(modelItem => item.NgayDatHang)</td>
+                            <td>@Html.DisplayFor(modelItem => item.HoDem) @Html.DisplayFor(modelItem => item.Ten)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TenNhaCungCap)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TongSLMua)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TongSLDaNhap)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TongThanhToan)</td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.MaPhieuNhapHang)
+                                <input type="checkbox" id="checkIsHoanThanh" @(item.IsHoanThanh == true ? "checked" : "") />
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TenPhieuNhapHang)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NgayDatHang)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.HoDem) @Html.DisplayFor(modelItem => item.Ten)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TenNhaCungCap)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TongSLMua)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TongSLDaNhap)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TongThanhToan)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IsHoanThanh)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.GhiChu)
-                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.GhiChu)</td>
                             <td>
                                 <button class="btn btn-datatable btn-icon btn-transparent-dark" type="button" data-id="@Html.DisplayFor(modelItem => item.PhieuNhapHang)" onclick="suaPhieuNhapHang(this)">
                                     <i class="fa-regular fa-pen-to-square"></i>
@@ -117,7 +77,7 @@
 </div>
 
 <!-- Modal ThemMoiPhieuNhapHang -->
-<div class="modal fade" id="modalThemMoiPhieuNhapHang" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticThemMoiPhieuNhapHang" aria-hidden="true">
+<div class="modal fade" id="modalThemMoiPhieuNhapHang" data-dismiss="modal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticThemMoiPhieuNhapHang" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen" role="document">
         <div class="modal-content">
             <div class="modal-header alert alert-success">
@@ -129,7 +89,7 @@
                     <div class="form-group row mb-2">
                         <div class="col-lg-2">
                             <label for="id_MaPhieuNhapHang" class="fw-500 required">Mã phiếu <span class="text-danger">(*)</span>:</label>
-                            <input type="text" class="form-control" required id="id_MaPhieuNhapHang" />
+                            <input type="text" value="" class="form-control" required id="id_MaPhieuNhapHang" />
                             <div class="invalid-feedback">Vui lòng nhập Mã phiếu.</div>
                         </div>
                         <div class="col-lg-3">
@@ -144,7 +104,7 @@
                         </div>
                         <div class="col-lg-2">
                             <label for="id_NhaCungCap" class="fw-500 required">Nhà cung cấp <span class="text-danger">(*)</span>:</label>
-                            @Html.DropDownList("NhaCungCap", null, new { @id = "id_NhaCungCap", @class = "form-control" })
+                            @Html.DropDownList("NhaCungCap", null, new { @id = "id_NhaCungCap", @class = "js-example-basic-single" })
                             <div class="invalid-feedback">Vui lòng chọn Nhà cung cấp.</div>
                         </div>
                         <div class="col-lg-2">
@@ -222,67 +182,83 @@
 </div>
 
 <!-- Modal ThemMoiPhieuNhapHangChiTiet -->
-<div class="modal fade" id="modalThemMoiPhieuNhapHangChiTiet" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticThemMoiPhieuNhapHangChiTiet" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade " id="modalThemMoiPhieuNhapHangChiTiet" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticThemMoiPhieuNhapHangChiTiet" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticThemMoiPhieuNhapHangChiTiet">Chọn sản phẩm</h5>
-                <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#modalThemMoiPhieuNhapHang"></button>
+                <button type="button" class="btn btn-close" id="btn-hide-chonsp"></button>
             </div>
 
             <div class="modal-body pb-0">
-                <form class="row g-3 needs-validation my-2" novalidate>
-                    <div class="form-group row mb-2">
-                        <label for="id_SanPham" class="col-lg-4 d-flex align-items-center">Sản phẩm&nbsp;<span class="text-danger">(*)</span>:</label>
-                        <div class="col-lg-8">
-                            @Html.DropDownList("TenSanPham", null, new { @id = "id_SanPham", @class = "form-control", @required = "required" })
-                            <div class="invalid-feedback">Vui lòng Chọn sản phẩm.</div>
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <td>STT</td>
+                            <td>Sản phẩm</td>
+                            <td>Tính chất</td>
+                            <td>Size</td>
+                            <td>Số lượng</td>
+                            <td>Đơn giá</td>
+                            <td>Đơn vị tính</td>
+                            <td>nhà cung cấp</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                @*<form class="row g-3 needs-validation my-2" novalidate>
+                        <div class="form-group row mb-2">
+                            <label for="id_SanPham" class="col-lg-4 d-flex align-items-center">Sản phẩm&nbsp;<span class="text-danger">(*)</span>:</label>
+                            <div class="col-lg-8">
+                                @Html.DropDownList("TenSanPham", null, new { @id = "id_SanPham", @class = "form-control", @required = "required" })
+                                <div class="invalid-feedback">Vui lòng Chọn sản phẩm.</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row mb-2">
-                        <label for="id_TinhChat" class="col-lg-4 col-lg-3 d-flex align-items-center">Tính chất:</label>
-                        <div class="col-lg-8">
-                            @Html.DropDownList("TinhChatDongPhuc", null, new { @id = "id_TinhChat", @class = "form-control" })
-                            <div class="invalid-feedback">Vui lòng Chọn tính chất.</div>
+                        <div class="form-group row mb-2">
+                            <label for="id_TinhChat" class="col-lg-4 col-lg-3 d-flex align-items-center">Tính chất:</label>
+                            <div class="col-lg-8">
+                                @Html.DropDownList("TinhChatDongPhuc", null, new { @id = "id_TinhChat", @class = "form-control" })
+                                <div class="invalid-feedback">Vui lòng Chọn tính chất.</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row mb-2">
-                        <label for="id_Size" class="col-lg-4 col-lg-3 d-flex align-items-center">Size:</label>
-                        <div class="col-lg-8">
-                            @Html.DropDownList("Size", null, new { @id = "id_Size", @class = "form-control" })
+                        <div class="form-group row mb-2">
+                            <label for="id_Size" class="col-lg-4 col-lg-3 d-flex align-items-center">Size:</label>
+                            <div class="col-lg-8">
+                                @Html.DropDownList("Size", null, new { @id = "id_Size", @class = "form-control" })
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row mb-2">
-                        <label for="id_SoLuong" class="col-lg-4 col-lg-3 d-flex align-items-center">Số lượng&nbsp;<span class="text-danger">(*)</span>:</label>
-                        <div class="col-lg-8">
-                            <input type="number" required class="form-control col-lg-8"  id="id_SoLuong" />
-                            <div class="invalid-feedback">Vui lòng Nhập số lượng.</div>
+                        <div class="form-group row mb-2">
+                            <label for="id_SoLuong" class="col-lg-4 col-lg-3 d-flex align-items-center">Số lượng&nbsp;<span class="text-danger">(*)</span>:</label>
+                            <div class="col-lg-8">
+                                <input type="number" required class="form-control col-lg-8"  id="id_SoLuong" />
+                                <div class="invalid-feedback">Vui lòng Nhập số lượng.</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row mb-2">
-                        <label for="id_DonGia" class="col-lg-4 col-lg-3 d-flex align-items-center">Đơn giá&nbsp;<span class="text-danger">(*)</span>:</label>
-                        <div class="col-lg-8">
-                            <input type="number" required class="form-control col-lg-8"  id="id_DonGia" />
-                            <div class="invalid-feedback">Vui lòng Nhập đơn giá.</div>
+                        <div class="form-group row mb-2">
+                            <label for="id_DonGia" class="col-lg-4 col-lg-3 d-flex align-items-center">Đơn giá&nbsp;<span class="text-danger">(*)</span>:</label>
+                            <div class="col-lg-8">
+                                <input type="number" required class="form-control col-lg-8"  id="id_DonGia" />
+                                <div class="invalid-feedback">Vui lòng Nhập đơn giá.</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row mb-2">
-                        <label for="id_DonViTinh" class="col-lg-4 col-lg-3 d-flex align-items-center">Đơn vị tính&nbsp;<span class="text-danger">(*)</span>:</label>
-                        <div class="col-lg-8">
-                            @Html.DropDownList("DonViTinh", null, new { @id = "id_DonViTinh", @class = "form-control", @required = "required" })
-                            <div class="invalid-feedback">Vui lòng Chọn đơn vị tính.</div>
+                        <div class="form-group row mb-2">
+                            <label for="id_DonViTinh" class="col-lg-4 col-lg-3 d-flex align-items-center">Đơn vị tính&nbsp;<span class="text-danger">(*)</span>:</label>
+                            <div class="col-lg-8">
+                                @Html.DropDownList("DonViTinh", null, new { @id = "id_DonViTinh", @class = "form-control", @required = "required" })
+                                <div class="invalid-feedback">Vui lòng Chọn đơn vị tính.</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row mb-2">
-                        <label for="id_GhiChu" class="col-lg-4 col-lg-3 d-flex align-items-center">Ghi chú:</label>
-                        <div class="col-lg-8">
-                            <input type="text" class="form-control col-lg-8" id="id_GhiChu" />
+                        <div class="form-group row mb-2">
+                            <label for="id_GhiChu" class="col-lg-4 col-lg-3 d-flex align-items-center">Ghi chú:</label>
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control col-lg-8" id="id_GhiChu" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success" onclick="themMoiPhieuNhapHangChiTiet()">Xác nhận</button>
-                    </div>
-                </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" onclick="themMoiPhieuNhapHangChiTiet()">Xác nhận</button>
+                        </div>
+                    </form>*@
             </div>
 
         </div>
@@ -428,14 +404,14 @@
                     <div class="form-group row mb-2">
                         <label for="id_SuaSoLuong" class="col-lg-4 col-lg-3 d-flex align-items-center">Số lượng&nbsp;<span class="text-danger">(*)</span>:</label>
                         <div class="col-lg-8">
-                            <input type="number" required class="form-control col-lg-8"  id="id_SuaSoLuong" />
+                            <input type="number" required class="form-control col-lg-8" id="id_SuaSoLuong" />
                             <div class="invalid-feedback">Vui lòng Nhập số lượng.</div>
                         </div>
                     </div>
                     <div class="form-group row mb-2">
                         <label for="id_SuaDonGia" class="col-lg-4 col-lg-3 d-flex align-items-center">Đơn giá&nbsp;<span class="text-danger">(*)</span>:</label>
                         <div class="col-lg-8">
-                            <input type="number" required class="form-control col-lg-8"  id="id_SuaDonGia" />
+                            <input type="number" required class="form-control col-lg-8" id="id_SuaDonGia" />
                             <div class="invalid-feedback">Vui lòng Nhập đơn giá.</div>
                         </div>
                     </div>
@@ -496,14 +472,14 @@
                     <div class="form-group row mb-2">
                         <label for="id_ThemSuaSoLuong" class="col-lg-4 col-lg-3 d-flex align-items-center">Số lượng&nbsp;<span class="text-danger">(*)</span>:</label>
                         <div class="col-lg-8">
-                            <input type="number" required class="form-control col-lg-8"  id="id_ThemSuaSoLuong" />
+                            <input type="number" required class="form-control col-lg-8" id="id_ThemSuaSoLuong" />
                             <div class="invalid-feedback">Vui lòng Nhập số lượng.</div>
                         </div>
                     </div>
                     <div class="form-group row mb-2">
                         <label for="id_ThemSuaDonGia" class="col-lg-4 col-lg-3 d-flex align-items-center">Đơn giá&nbsp;<span class="text-danger">(*)</span>:</label>
                         <div class="col-lg-8">
-                            <input type="number" required class="form-control col-lg-8"  id="id_ThemSuaDonGia" />
+                            <input type="number" required class="form-control col-lg-8" id="id_ThemSuaDonGia" />
                             <div class="invalid-feedback">Vui lòng Nhập đơn giá.</div>
                         </div>
                     </div>
@@ -580,12 +556,52 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 <script src="~/Content/AdminLayout/js/datatables/datatables-simple-demo.js"></script>
-
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
+    $(document).ready(function () {
+        $('.js-example-basic-single').select2();
+    });
+    function randomMaPhieu(length) {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let result = '';
+        const charactersLength = characters.length;
+        for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return 'NH_' + result;
+    }
+    console.log(randomMaPhieu(5))
+    function padTo2Digits(num) {
+        return num.toString().padStart(2, '0');
+    }
+
+    // Function to format the current date and time for input type="datetime-local"
+    function getCurrentDateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = padTo2Digits(now.getMonth() + 1); // Months are zero-based
+        const day = padTo2Digits(now.getDate());
+        const hours = padTo2Digits(now.getHours());
+        const minutes = padTo2Digits(now.getMinutes());
+
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+
+    // Set the current date and time to the input field
+    //$('#id_NgayDatHang').val() = getCurrentDateTime();
     // Script themMoiPhieuNhapHang
+    $("#btn-hide-chonsp").on('click', function () {
+        $('#modalThemMoiPhieuNhapHangChiTiet').modal('hide');
+
+    })
     function themMoiPhieuNhapHang() {
+        let currentaTime = getCurrentDateTime()
+        $('#id_NgayDatHang').val(currentaTime)
+        $('#id_MaPhieuNhapHang').val(randomMaPhieu(5))
         $.ajax({
             url: "/NS_DP_PhieuNhapHang/GetThemMoiPhieuNhapHang",
             type: 'GET',
@@ -634,27 +650,42 @@
         var NgayDatHang = $('#id_NgayDatHang').val();
         var NhaCungCap = $('#id_NhaCungCap').val();
         var KhoNhan = $('#id_KhoNhan').val();
-
-        if (MaPhieuNhapHang && TenPhieuNhapHang && NgayDatHang && NhaCungCap && KhoNhan) {
-            $('#modalThemMoiPhieuNhapHang').modal('hide');
-
-            $("#id_TinhChat").prepend($("<option>", {
-                value: null,
-                text: ""
-            }));
-            $("#id_TinhChat").val("");
-
-            $("#id_Size").prepend($("<option>", {
-                value: null,
-                text: ""
-            }));
-            $("#id_Size").val("");
-
-            $('#modalThemMoiPhieuNhapHangChiTiet').modal('show');
+        console.log(MaPhieuNhapHang, TenPhieuNhapHang, NgayDatHang, NhaCungCap, KhoNhan)
+        if (!MaPhieuNhapHang || !TenPhieuNhapHang || !NgayDatHang || !NhaCungCap || !KhoNhan) {
+            Swal.fire({
+                title: "Cảnh báo!",
+                text: "Chưa điền thông tin!",
+                icon: "question"
+            });
         }
         else {
-            console.error('Lỗi khi gửi dữ liệu: ');
+            $.ajax({
+
+            })
+            $('#modalThemMoiPhieuNhapHangChiTiet').modal('show');
         }
+
+        //if (MaPhieuNhapHang && TenPhieuNhapHang && NgayDatHang && NhaCungCap && KhoNhan) {
+        //    $('#modalThemMoiPhieuNhapHang').modal('hide');
+
+        //    $("#id_TinhChat").prepend($("<option>", {
+        //        value: null,
+        //        text: ""
+        //    }));
+        //    $("#id_TinhChat").val("");
+
+        //    $("#id_Size").prepend($("<option>", {
+        //        value: null,
+        //        text: ""
+        //    }));
+        //    $("#id_Size").val("");
+
+        //    $('#modalThemMoiPhieuNhapHangChiTiet').modal('show');
+        //}
+        //else {
+        //    console.error('Lỗi khi gửi dữ liệu: ');
+        //}
+
     }
 
     var IdPhieuNhapHangCurrent;
@@ -950,7 +981,6 @@
     }
 
     function checkSuaDataThemMoiPhieuNhapHangChiTiet() {
-        // Thu thập dữ liệu từ input trong modal
         var MaPhieuNhapHang = $('#id_SuaMaPhieuNhapHang').val();
         var TenPhieuNhapHang = $('#id_SuaTenPhieuNhapHang').val();
         var NgayDatHang = $('#id_SuaNgayDatHang').val();
@@ -959,7 +989,6 @@
 
         if (MaPhieuNhapHang && TenPhieuNhapHang && NgayDatHang && NhaCungCap && KhoNhan) {
             $('#modalSuaPhieuNhapHang').modal('hide');
-
             $("#id_ThemSuaTinhChat").val(null);
             $("#id_ThemSuaSize").val(null);
 

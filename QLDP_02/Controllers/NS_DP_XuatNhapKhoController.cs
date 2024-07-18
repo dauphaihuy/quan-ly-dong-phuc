@@ -31,12 +31,12 @@ namespace QLDP_02.Controllers
         // GET: NS_DP_XuatNhapKho/NhapKho
         public ActionResult NhapKho()
         {
-            var phieuNhapHangSelect = db.NS_DP_PhieuNhapHang.Where(h=>h.IsDel!=true).ToList();
+            var phieuNhapHangSelect = db.selectOptionGetPhieuNhap().ToList();
+            var NhanSuSelect = db.NS_NhanSu.Where(ns => ns.IsDel != true);
 
-            ViewBag.PhieuNhapHang = new SelectList(phieuNhapHangSelect, "PhieuNhapHang", "MaPhieuNhapHang");
+            ViewBag.PhieuNhapHang = new SelectList(phieuNhapHangSelect, "PhieuNhapHang", "MaVaTenPhieu");
             ViewBag.Kho = new SelectList(db.DM_DP_Kho, "Kho", "TenKho");
-            ViewBag.NhanSu = new SelectList(db.NS_NhanSu, "NhanSu", "TenNhanSu");
-            ViewBag.NhaCungCap = new SelectList(db.DM_DP_NhaCungCap, "NhaCungCap", "TenNhaCungCap");
+            ViewBag.NhanSu = new SelectList(NhanSuSelect, "NhanSu", "TenNhanSu");
 
             return View(db.getXuatNhapKho().Where(sp => sp.IsDel == false).ToList());
         }

@@ -320,7 +320,44 @@ exec getTinhChatTuSanPham 3
 select * from NS_DP_SanPham_TinhChatDongPhuc
 select * from NS_NhanSu
 select * from NS_DP_XuatNhapKho
+select * from [dbo].[NS_DP_XuatNhapKho_ChiTiet]
 select * from[dbo].[NS_DP_PhieuNhapHang]
 select * from NS_DP_PhieuNhapHang_ChiTiet
 exec [dbo].[getXuatNhapKho]
 select * from NS_DP_PhieuNhapHang pnh join NS_DP_PhieuNhapHang_ChiTiet pnhct on pnh.PhieuNhapHang = pnhct.PhieuNhapHang
+
+alter procedure selectOptionGetPhieuNhap
+as
+begin
+select MaVaTenPhieu=MaPhieuNhapHang+' - '+TenPhieuNhapHang,* from NS_DP_PhieuNhapHang
+where IsDel !=1 and IsHoanThanh !=1
+end 
+go
+select * from DM_DP_NhaCungCap
+--GetDanhSachSanPhamNhapHang
+select distinct * from 
+NS_DP_PhieuNhapHang pnh left join NS_DP_PhieuNhapHang_ChiTiet pnhct 
+on pnh.PhieuNhapHang = pnhct.PhieuNhapHang
+join NS_DP_SanPham sp on sp.SanPham = pnhct.SanPham
+join NS_DP_SanPham_TinhChatDongPhuc sptc on sp.SanPham = sptc.SanPham
+join DM_DP_TinhChatDongPhuc tcdp on sptc.TinhChatDongPhuc = tcdp.TinhChatDongPhuc
+join DM_DP_Size size on size.LoaiSanPham = sp.LoaiSanPham
+
+select * from NS_DP_PhieuNhapHang
+select * from NS_DP_XuatNhapKho
+select * from NS_DP_XuatNhapKho_ChiTiet
+select * from NS_DP_SanPham
+select * from DM_DP_Size
+select * from NS_DP_SanPham_TinhChatDongPhuc
+select * from NS_DP_SanPham
+select * from DM_DP_TinhChatDongPhuc
+select * from DM_DP_DonViTinh
+exec getPhieuNhapHang
+-- lấy sản phẩm từ nhà cung cấp
+
+
+
+select sp.SanPham,TenSanPham,size.MaSize,size.Size from
+NS_DP_SanPham sp join NS_DP_SanPham_TinhChatDongPhuc sptcdp on sp.SanPham=sptcdp.SanPham
+join DM_DP_TinhChatDongPhuc tcpd on sptcdp.TinhChatDongPhuc = tcpd.TinhChatDongPhuc
+join DM_DP_Size size on size.LoaiSanPham = sp.LoaiSanPham

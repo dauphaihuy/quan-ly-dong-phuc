@@ -15,10 +15,11 @@ namespace QLDP_02.Controllers
         // GET: NS_DP_PhieuNhapHang
         public ActionResult Index()
         {
-            // Modal Thêm Phiếu nhập hàng
-            ViewBag.KhoNhan = new SelectList(db.DM_DP_Kho, "Kho", "TenKho");
-            ViewBag.NhaCungCap = new SelectList(db.DM_DP_NhaCungCap, "NhaCungCap", "TenNhaCungCap");
+            var nhacc = db.DM_DP_NhaCungCap.Where(ncc => ncc.IsDel != true);
 
+            ViewBag.KhoNhan = new SelectList(db.DM_DP_Kho, "Kho", "TenKho");
+            ViewBag.NhaCungCap = new SelectList(nhacc, "NhaCungCap", "TenNhaCungCap");
+                
             // Modal Thêm Phiếu nhập hàng chi tiết
             ViewBag.TenSanPham = new SelectList(db.NS_DP_SanPham, "SanPham", "TenSanPham");
             ViewBag.TinhChatDongPhuc = new SelectList(db.DM_DP_TinhChatDongPhuc, "TinhChatDongPhuc", "TenTinhChatDongPhuc");
@@ -32,7 +33,31 @@ namespace QLDP_02.Controllers
                 .OrderByDescending(p => p.PhieuNhapHang)
                 .ToList());
         }
+        //thêm mới
+        public JsonResult NhapHang_GetDanhSachSanPhamChuaChon(int PhieuNhapHang,int NhaCungCap)
+        {
+            try
+            {
 
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { message = ex });
+            }
+        }
+        //cập nhật sản phẩm
+        public JsonResult NhapHang_GetDanhSachSanPhamDaChon(int PhieuNhapHang)
+        {
+            try
+            {
+                return Json(new { success=true });
+            }
+            catch(Exception ex)
+            {
+                return Json(new { message=ex});
+            }
+        }
         // GET: NS_DP_PhieuNhapHang/GetThemMoiPhieuNhapHang/
         public ActionResult GetThemMoiPhieuNhapHang()
         {
@@ -336,24 +361,6 @@ namespace QLDP_02.Controllers
                 return View();
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         // GET: NS_DP_PhieuNhapHang/Details/5
         public ActionResult Details(int id)
