@@ -182,10 +182,6 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script src="~/Content/AdminLayout/js/datatables/datatables-simple-demo.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.2/dist/sweetalert2.all.min.js"></script>
 <script>
     const toggleHoanThanh = id => {
         console.log(id)
@@ -549,7 +545,13 @@
                         title: 'Successful!',
                         text: 'Add form successful',
                         icon: 'success',
-                        confirmButtonText: 'Cool'
+                        confirmButtonText: 'Cool',
+                        backdrop: `
+                          rgba(0,0,123,0.1)
+                          url("https://media.tenor.com/v35v-zbtwnUAAAAi/confetti.gif")
+                          center top
+                          repeat
+                    ` 
                     }).then(() => {
                         setTimeout(() => {
                             location.reload();
@@ -573,30 +575,40 @@
             showCancelButton: true,
             confirmButtonColor: "#d33",
             cancelButtonColor: "#3085d6",
-            confirmButtonText: "Yes, delete it!"
+            confirmButtonText: "Yes, delete it!",
+            backdrop: `
+              rgba(0,0,123,0.1)
+            `         
         }).then((result) => {
             if (result.isConfirmed) {
+                //console.log(idPhieu, idSanPham, tenSanPham)
+                $.ajax({
+                    url: '/NS_DP_PhieuDeNghi_CaNhan/XoaSanPham',
+                    type: "post",
+                    data: {
+                        idPhieu, idSanPham
+                    },
+                    success: function (response) {
+                        //console.log(response)
+                        $(`.capNhatPhieuDeNghi #tr_${idSanPham}`).remove()
+                    },
+                    error: function (error) {
+                        console.error('Lỗi khi gửi dữ liệu: ', error);
+                    }
+                })
                 Swal.fire({
                     title: `Delete ${tenSanPham} successful!`,
                     text: `${tenSanPham} have deleted.`,
-                    icon: "success"
+                    icon: "success",
+                    backdrop: `
+                      rgba(0,0,123,0.1)
+                      url("https://media.tenor.com/v35v-zbtwnUAAAAi/confetti.gif")
+                      center top
+                      repeat
+                    ` 
                 });
             }
-            //console.log(idPhieu, idSanPham, tenSanPham)
-            $.ajax({
-                url: '/NS_DP_PhieuDeNghi_CaNhan/XoaSanPham',
-                type: "post",
-                data: {
-                    idPhieu, idSanPham
-                },
-                success: function (response) {
-                    //console.log(response)
-                    $(`.capNhatPhieuDeNghi #tr_${idSanPham}`).remove()
-                },
-                error: function (error) {
-                    console.error('Lỗi khi gửi dữ liệu: ', error);
-                }
-            })
+            
         });
     }
 
@@ -612,7 +624,13 @@
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
+            confirmButtonText: "Yes, delete it!",
+            backdrop: `
+            rgba(0,0,123,0.1)
+            url("https://media.tenor.com/Mwzug9zxYh0AAAAi/nyan-cat-every-nyan.gif")
+            center top
+            repeat
+          `
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
@@ -626,7 +644,13 @@
                         Swal.fire({
                             title: "Deleted!",
                             text: "Delete proposal Successful.",
-                            icon: "success"
+                            icon: "success",
+                            backdrop: `
+                              rgba(0,0,123,0.1)
+                              url("https://media.tenor.com/mf4K_Vbg7hoAAAAi/soft-meme.gif")
+                              center top
+                              repeat
+                            `
                         }).then(() => {
                             setTimeout(() => {
                                 location.reload();

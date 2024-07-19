@@ -22,7 +22,7 @@ namespace QLDP_02.Controllers
 			ViewBag.NguoiDeNghi = new SelectList(db.NS_NhanSu,"NhanSu", "Ten");
 			ViewBag.SanPham = new SelectList(db.NS_DP_SanPham, "SanPham", "TenSanPham");
             ViewBag.TinhChat = new SelectList(db.DM_DP_TinhChatDongPhuc, "TinhChatDongPhuc", "TenTinhChatDongPhuc");
-			return View(db.getPhieuDeNghiCaNhan().Where(phieu => phieu.IsDel == false));
+			return View(db.getPhieuDeNghiCaNhan().Where(phieu => phieu.IsDel == false).OrderByDescending(phieu => phieu.PhieuDeNghi_CaNhan));
         }
         //random tạo mã phiếu
         public string GenerateRandomMaPhieuDeNghi_CaNhan(int length)

@@ -104,7 +104,8 @@
                         </div>
                         <div class="col-lg-2">
                             <label for="id_NhaCungCap" class="fw-500 required">Nhà cung cấp <span class="text-danger">(*)</span>:</label>
-                            @Html.DropDownList("NhaCungCap", null, new { @id = "id_NhaCungCap", @class = "js-example-basic-single" })
+                            @Html.DropDownList("NhaCungCap", null, new { @id = "id_NhaCungCap", @class = "form-select" })
+                       
                             <div class="invalid-feedback">Vui lòng chọn Nhà cung cấp.</div>
                         </div>
                         <div class="col-lg-2">
@@ -191,7 +192,7 @@
             </div>
 
             <div class="modal-body pb-0">
-                <table id="datatablesSimple">
+                <table id="tableChonSanPham" class="table table-striped">
                     <thead>
                         <tr>
                             <td>STT</td>
@@ -559,12 +560,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 <script src="~/Content/AdminLayout/js/datatables/datatables-simple-demo.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $('.js-example-basic-single').select2();
-    });
     function randomMaPhieu(length) {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         let result = '';
@@ -598,10 +594,9 @@
         $('#modalThemMoiPhieuNhapHangChiTiet').modal('hide');
 
     })
+    $('#id_NgayDatHang').val(getCurrentDateTime())
+    $('#id_MaPhieuNhapHang').val(randomMaPhieu(5))
     function themMoiPhieuNhapHang() {
-        let currentaTime = getCurrentDateTime()
-        $('#id_NgayDatHang').val(currentaTime)
-        $('#id_MaPhieuNhapHang').val(randomMaPhieu(5))
         $.ajax({
             url: "/NS_DP_PhieuNhapHang/GetThemMoiPhieuNhapHang",
             type: 'GET',
@@ -660,7 +655,15 @@
         }
         else {
             $.ajax({
-
+                url: "/NS_DP_PhieuNhapHang/NhapHang_GetDanhSachSanPhamChuaChon",
+                type: 'POST',
+                data: {
+                    PhieuNhapHang,
+                    NhaCungCap
+                },
+                success: function (data) {
+                    console.log(data);
+                },
             })
             $('#modalThemMoiPhieuNhapHangChiTiet').modal('show');
         }
