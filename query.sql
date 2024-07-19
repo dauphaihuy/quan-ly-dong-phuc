@@ -355,13 +355,23 @@ select * from DM_DP_DonViTinh
 exec getPhieuNhapHang
 -- lấy sản phẩm từ nhà cung cấp
 
-
+alter procedure getSanPhamByNhaCungCap (
+	@NhaCungCap int=null
+)
+as
+begin
 select sp.SanPham,TenSanPham,size.MaSize,size.Size,
-sptcdp.DonGia,dvt.TenDonViTinh,sp.DonViTinh,ncc.NhaCungCap,ncc.TenNhaCungCap ,tcpd.TenTinhChatDongPhuc
+sptcdp.DonGia,dvt.TenDonViTinh,sp.DonViTinh,ncc.NhaCungCap,ncc.TenNhaCungCap ,
+tcpd.TenTinhChatDongPhuc,tcpd.TinhChatDongPhuc
 from
 NS_DP_SanPham sp join NS_DP_SanPham_TinhChatDongPhuc sptcdp on sp.SanPham=sptcdp.SanPham
-join DM_DP_TinhChatDongPhuc tcpd on sptcdp.TinhChatDongPhuc = tcpd.TinhChatDongPhuc
+left join DM_DP_TinhChatDongPhuc tcpd on sptcdp.TinhChatDongPhuc = tcpd.TinhChatDongPhuc
 join DM_DP_Size size on size.LoaiSanPham = sp.LoaiSanPham
 join DM_DP_NhaCungCap ncc on ncc.NhaCungCap = sptcdp.NhaCungCap
 join DM_DP_DonViTinh dvt on dvt.DonViTinh=sp.DonViTinh
-where ncc.NhaCungCap=1
+where ncc.NhaCungCap=@NhaCungCap
+order by sp.SanPham
+end
+go
+
+exec getSanPhamByNhaCungCap 1
