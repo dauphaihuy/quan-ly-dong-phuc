@@ -250,10 +250,12 @@
 </script>
 <script>
     $("#themMoiPhieuDeNghi").click(function () {
+        $(".themMoiPhieuDeNghi").html("Thêm mới phiếu đề nghị cá nhân")
         $("#maPhieuDeNghi").val("")
         $("#ngayDeNghi").val(getCurrentDay())
         $('.capNhatPhieuDeNghi').html('');
-        $('#modalThemMoiPhieuDeNghiCaNhan').modal('show');
+        $('#modalThemMoiPhieuDeNghiCaNhan').modal('show')
+
     })
     const renderSizeSanPham = (id) => {
         $.ajax({
@@ -309,7 +311,7 @@
     $("#themMoiSanPham").click(function () {
 
         let idNguoiDeNghi = $('#idNguoiDeNghi').val()
-        let lyDoCapPhat = $('#LyDoCapPhat').val();
+        let lyDoCapPhat = $('#LyDoCapPhat').val()
         if (idNguoiDeNghi === '' || lyDoCapPhat === '') {
             Swal.fire({
                 icon: "error",
@@ -319,7 +321,7 @@
             });
             return
         }
-        let maPhieu = $('#maPhieuDeNghi').val();
+        let maPhieu = $('#maPhieuDeNghi').val()
         //console.log(maPhieu)
         if (maPhieu === "") {
             $.ajax({
@@ -332,7 +334,7 @@
                 success: function (response) {
                     //console.log(response)
                     if (response.success === true) {
-                        let content = '';
+                        let content = ''
                         let i = 0
                         response.data.forEach(function (item) {
                             i++;
@@ -352,15 +354,15 @@
                             </tr>`
 
                         });
-                        $('#bodyThemMoiSanPham').html(content);
-                        $('#modalThemMoiSanPham').modal('show');
+                        $('#bodyThemMoiSanPham').html(content)
+                        $('#modalThemMoiSanPham').modal('show')
                     }
                 },
                 error: function (error) {
-                    console.error('Lỗi khi gửi dữ liệu: ', error);
+                    console.error('Lỗi khi gửi dữ liệu: ', error)
 
                 }
-            });
+            })
         }
         else if (maPhieu !== "") {
             $.ajax({
@@ -372,10 +374,10 @@
                 },
                 success: function (response) {
                     //console.log(response)
-                    let content = '';
+                    let content = ''
                     let i = 0
                     response.data.forEach(function (item) {
-                        i++;
+                        i++
                         content +=
                             `<tr class="productRow">
                             <td><input type="checkbox" class="cMaSanPham" value="${item.SanPham}" /></td>
@@ -389,21 +391,21 @@
                             </td>
                             <td><input class="form-control" id="soLuong" value="1" /></td>
                         </tr>`
-                    });
-                    $('#bodyThemMoiSanPham').html(content);
-                    $('#modalThemMoiSanPham').modal('show');
+                    })
+                    $('#bodyThemMoiSanPham').html(content)
+                    $('#modalThemMoiSanPham').modal('show')
                 },
                 error: function (error) {
-                    console.error('Lỗi khi gửi dữ liệu: ', error);
+                    console.error('Lỗi khi gửi dữ liệu: ', error)
                 }
-            });
+            })
         }
 
-        $('#modalThemMoiSanPham').modal('show');
-    });
+        $('#modalThemMoiSanPham').modal('show')
+    })
     $('#iBack_ChonSP').click(function () {
-        $('#modalThemMoiSanPham').modal('hide');
-        $('#modalThemMoiPhieuDeNghiCaNhan').modal('show');
+        $('#modalThemMoiSanPham').modal('hide')
+        $('#modalThemMoiPhieuDeNghiCaNhan').modal('show')
     });
 </script>
 
@@ -420,17 +422,17 @@
 </script>
 <script>
     function convertDate(dateString) {
-        var milliseconds = parseInt(dateString.substring(6, dateString.length - 2));
-        var date = new Date(milliseconds);
-        var formattedDate = date.toLocaleDateString(); // Adjust format as needed
-        return formattedDate;
+        var milliseconds = parseInt(dateString.substring(6, dateString.length - 2))
+        var date = new Date(milliseconds)
+        var formattedDate = date.toLocaleDateString() // Adjust format as needed
+        return formattedDate
     }
 </script>
 
 <script>
 
     const chonPhieuDeNghiCaNhan = (id) => {
-
+        $(".themMoiPhieuDeNghi").html("Cập nhật phiếu đề nghị cá nhân")
         $.ajax({
             url: '/NS_DP_PhieuDeNghi_CaNhan/ChonPhieuDeNghi',
             type: 'POST',
@@ -449,7 +451,7 @@
                             <td><input type="checkbox" /></td>
                             <td>${i}</td>
                             <td>${item.TenSanPham}</td>
-                            <td>${item.TenTinhChatDongPhuc}</td>
+                            <td>${item.TenTinhChatDongPhuc == null ? "" : item.TenTinhChatDongPhuc}</td>
                             <td>${item.MaSize}</td>
                             <td><input class="form-control" value="${item.SoLuong}"/></td>
                             <td><button onclick="xoaSanPhamDaChon(${item.PhieuDeNghi_CaNhan}, ${item.SanPham},'${item.TenSanPham}')" class="btn btn-danger">xóa</button></td>
@@ -459,21 +461,21 @@
                     $("#maPhieuDeNghi").val(response.phieu.MaPhieuDeNghi_CaNhan)
                     $("#ngayDeNghi").val(convertDate(response.phieu.NgayDeNghi))
                     $("#PhieuDeNghi").val(response.phieu.PhieuDeNghi_CaNhan)
-                    $("#LyDoCapPhat").val(response.phieu.LyDoCapPhat).prop('selected', true);
-                    $("#idNguoiDeNghi").val(response.phieu.MaNguoiDeNghi).prop('selected', true);
-                    $("#ngayDeNghi").prop('disabled', true);
-                    $('.capNhatPhieuDeNghi').html(content);
-                    $('#modalThemMoiPhieuDeNghiCaNhan').modal('show');
+                    $("#LyDoCapPhat").val(response.phieu.LyDoCapPhat).prop('selected', true)
+                    $("#idNguoiDeNghi").val(response.phieu.MaNguoiDeNghi).prop('selected', true)
+                    $("#ngayDeNghi").prop('disabled', true)
+                    $('.capNhatPhieuDeNghi').html(content)
+                    $('#modalThemMoiPhieuDeNghiCaNhan').modal('show')
                 }
                 else if (response === false) {
-                    console.error('Lỗi');
+                    console.error('Lỗi')
                 }
 
             },
             error: function (error) {
-                console.error('Lỗi khi gửi dữ liệu: ', error);
+                console.error('Lỗi khi gửi dữ liệu: ', error)
             }
-        });
+        })
     }
     function themSanPhamMoi(e) {
         e.preventDefault()
@@ -493,7 +495,7 @@
         $('body').on('change', '#idNguoiDeNghi', function () {
             idNguoiDeNghi = $('#idNguoiDeNghi').val()
         })
-        const selectedRows = [];
+        const selectedRows = []
         //lấy ra các sản phẩm đã tick
         $('.productRow').each(function () {
             if ($(this).find('.cMaSanPham').is(':checked')) {
@@ -503,10 +505,10 @@
                     TinhChat: $(this).find('#TinhChat').val(),
                     Size: $(this).find('#MaSize').val(),
                     SoLuong: $(this).find('#soLuong').val()
-                };
-                selectedRows.push(row);
+                }
+                selectedRows.push(row)
             }
-        });
+        })
         //console.log(selectedRows)
         if (idNguoiDeNghi == "") {
             alert("chưa chọn người đề nghị")
@@ -517,7 +519,7 @@
                 title: "You haven't choose your product?",
                 text: "That thing is still around?",
                 icon: "question"
-            });
+            })
             return
         }
         if (lyDoCapPhat == "") {

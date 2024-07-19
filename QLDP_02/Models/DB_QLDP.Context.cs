@@ -274,5 +274,14 @@ namespace QLDP_02.Models
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<selectOptionGetPhieuNhap_Result>("selectOptionGetPhieuNhap");
         }
+    
+        public virtual ObjectResult<getSanPhamByNhaCungCap_Result> getSanPhamByNhaCungCap(Nullable<int> nhaCungCap)
+        {
+            var nhaCungCapParameter = nhaCungCap.HasValue ?
+                new ObjectParameter("NhaCungCap", nhaCungCap) :
+                new ObjectParameter("NhaCungCap", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getSanPhamByNhaCungCap_Result>("getSanPhamByNhaCungCap", nhaCungCapParameter);
+        }
     }
 }

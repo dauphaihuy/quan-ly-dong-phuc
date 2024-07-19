@@ -181,6 +181,9 @@
     <Compile Include="Models\getPhieuNhapHang_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\getSanPhamByNhaCungCap_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\getSanPhamConLaiChuaChon_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>

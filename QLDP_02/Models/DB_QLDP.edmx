@@ -437,6 +437,9 @@
         </Function>
         <Function Name="getPhieuDeNghiCaNhan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="getPhieuNhapHang" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="getSanPhamByNhaCungCap" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NhaCungCap" Type="int" Mode="In" />
+        </Function>
         <Function Name="getSanPhamConLaiChuaChon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MaPhieuDeNghi_CaNhan" Type="nvarchar" Mode="In" />
           <Parameter Name="NguoiDeNghi" Type="int" Mode="In" />
@@ -989,6 +992,9 @@
           <Parameter Name="sanPham" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="selectOptionGetPhieuNhap" ReturnType="Collection(DB_QLDPModel.selectOptionGetPhieuNhap_Result)" />
+          <FunctionImport Name="getSanPhamByNhaCungCap" ReturnType="Collection(DB_QLDPModel.getSanPhamByNhaCungCap_Result)">
+            <Parameter Name="NhaCungCap" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="getPhieuNhapHang_Result">
           <Property Type="Int32" Name="PhieuNhapHang" Nullable="false" />
@@ -1275,6 +1281,19 @@
           <Property Type="Boolean" Name="IsDel" Nullable="false" />
           <Property Type="Boolean" Name="IsHoanThanh" Nullable="true" />
           <Property Type="Int32" Name="NhaCungCap" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="getSanPhamByNhaCungCap_Result">
+          <Property Type="Int32" Name="SanPham" Nullable="false" />
+          <Property Type="String" Name="TenSanPham" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="MaSize" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Size" Nullable="false" />
+          <Property Type="Decimal" Name="DonGia" Nullable="true" Precision="10" Scale="2" />
+          <Property Type="String" Name="TenDonViTinh" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="DonViTinh" Nullable="true" />
+          <Property Type="Int32" Name="NhaCungCap" Nullable="false" />
+          <Property Type="String" Name="TenNhaCungCap" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="TenTinhChatDongPhuc" Nullable="true" MaxLength="150" />
+          <Property Type="Int32" Name="TinhChatDongPhuc" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2001,6 +2020,23 @@
                 <ScalarProperty Name="IsDel" ColumnName="IsDel" />
                 <ScalarProperty Name="IsHoanThanh" ColumnName="IsHoanThanh" />
                 <ScalarProperty Name="NhaCungCap" ColumnName="NhaCungCap" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="getSanPhamByNhaCungCap" FunctionName="DB_QLDPModel.Store.getSanPhamByNhaCungCap">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_QLDPModel.getSanPhamByNhaCungCap_Result">
+                <ScalarProperty Name="SanPham" ColumnName="SanPham" />
+                <ScalarProperty Name="TenSanPham" ColumnName="TenSanPham" />
+                <ScalarProperty Name="MaSize" ColumnName="MaSize" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="DonGia" ColumnName="DonGia" />
+                <ScalarProperty Name="TenDonViTinh" ColumnName="TenDonViTinh" />
+                <ScalarProperty Name="DonViTinh" ColumnName="DonViTinh" />
+                <ScalarProperty Name="NhaCungCap" ColumnName="NhaCungCap" />
+                <ScalarProperty Name="TenNhaCungCap" ColumnName="TenNhaCungCap" />
+                <ScalarProperty Name="TenTinhChatDongPhuc" ColumnName="TenTinhChatDongPhuc" />
+                <ScalarProperty Name="TinhChatDongPhuc" ColumnName="TinhChatDongPhuc" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

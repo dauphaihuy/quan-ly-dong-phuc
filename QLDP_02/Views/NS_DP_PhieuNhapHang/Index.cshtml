@@ -195,6 +195,7 @@
                 <table id="tableChonSanPham" class="table table-striped">
                     <thead>
                         <tr>
+                            <td></td>
                             <td>STT</td>
                             <td>Sản phẩm</td>
                             <td>Tính chất</td>
@@ -206,6 +207,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        
                     </tbody>
                 </table>
                 @*<form class="row g-3 needs-validation my-2" novalidate>
@@ -557,9 +559,6 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script src="~/Content/AdminLayout/js/datatables/datatables-simple-demo.js"></script>
 <script>
     function randomMaPhieu(length) {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -645,7 +644,7 @@
         var NgayDatHang = $('#id_NgayDatHang').val();
         var NhaCungCap = $('#id_NhaCungCap').val();
         var KhoNhan = $('#id_KhoNhan').val();
-        console.log(MaPhieuNhapHang, TenPhieuNhapHang, NgayDatHang, NhaCungCap, KhoNhan)
+        
         if (!MaPhieuNhapHang || !TenPhieuNhapHang || !NgayDatHang || !NhaCungCap || !KhoNhan) {
             Swal.fire({
                 title: "Cảnh báo!",
@@ -654,17 +653,37 @@
             });
         }
         else {
+            console.log(NhaCungCap)
             $.ajax({
-                url: "/NS_DP_PhieuNhapHang/NhapHang_GetDanhSachSanPhamChuaChon",
+                url: '/NS_DP_PhieuNhapHang/NhapHang_GetDanhSachSanPhamChuaChon',
                 type: 'POST',
                 data: {
-                    PhieuNhapHang,
-                    NhaCungCap
+                    NhaCungCap: +NhaCungCap
                 },
-                success: function (data) {
-                    console.log(data);
+                success: function (response) {
+                    console.log(response);
+                    let content = ``
+                    let stt=1
+                    response.item.forEach((item) => {
+                       content+= `<tr>
+                            <td><input type="checkbox" /></td>
+                            <td>${stt}</td>
+                            <td>${item.TenSanPham}</td>
+                            <td>${item.TenTinhChatDongPhuc == null ? "" : item.TenTinhChatDongPhuc}</td>
+                            <td>${item.MaSize}</td>
+                            <td><input class="form-control" type="text" value="1" /></td>
+                            <td>${item.DonGia.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) }</td>
+                            <td>${item.TenDonViTinh}</td>
+                            <td>${item.TenNhaCungCap}</td>
+                        </tr>`
+                        stt++
+                    })
+                    $("#tableChonSanPham tbody").html(content)
                 },
-            })
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                }
+            });
             $('#modalThemMoiPhieuNhapHangChiTiet').modal('show');
         }
 

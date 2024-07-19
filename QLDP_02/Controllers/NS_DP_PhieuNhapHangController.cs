@@ -34,12 +34,19 @@ namespace QLDP_02.Controllers
                 .ToList());
         }
         //thêm mới
-        public JsonResult NhapHang_GetDanhSachSanPhamChuaChon(int PhieuNhapHang,int NhaCungCap)
+        public JsonResult NhapHang_GetDanhSachSanPhamChuaChon(int NhaCungCap)
         {
             try
             {
-
-                return Json(new { success = true });
+                if (NhaCungCap == 0)
+                {
+                    return Json(new { success = false});
+                }
+                else
+                {
+                    var item = db.getSanPhamByNhaCungCap(NhaCungCap);
+                    return Json(new { success = true, item = item });
+                }
             }
             catch (Exception ex)
             {

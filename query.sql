@@ -356,8 +356,12 @@ exec getPhieuNhapHang
 -- lấy sản phẩm từ nhà cung cấp
 
 
-
-select sp.SanPham,TenSanPham,size.MaSize,size.Size from
+select sp.SanPham,TenSanPham,size.MaSize,size.Size,
+sptcdp.DonGia,dvt.TenDonViTinh,sp.DonViTinh,ncc.NhaCungCap,ncc.TenNhaCungCap ,tcpd.TenTinhChatDongPhuc
+from
 NS_DP_SanPham sp join NS_DP_SanPham_TinhChatDongPhuc sptcdp on sp.SanPham=sptcdp.SanPham
 join DM_DP_TinhChatDongPhuc tcpd on sptcdp.TinhChatDongPhuc = tcpd.TinhChatDongPhuc
 join DM_DP_Size size on size.LoaiSanPham = sp.LoaiSanPham
+join DM_DP_NhaCungCap ncc on ncc.NhaCungCap = sptcdp.NhaCungCap
+join DM_DP_DonViTinh dvt on dvt.DonViTinh=sp.DonViTinh
+where ncc.NhaCungCap=1
