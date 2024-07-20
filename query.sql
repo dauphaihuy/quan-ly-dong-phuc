@@ -370,8 +370,12 @@ join DM_DP_Size size on size.LoaiSanPham = sp.LoaiSanPham
 join DM_DP_NhaCungCap ncc on ncc.NhaCungCap = sptcdp.NhaCungCap
 join DM_DP_DonViTinh dvt on dvt.DonViTinh=sp.DonViTinh
 where ncc.NhaCungCap=@NhaCungCap
-order by sp.SanPham
+order by sp.SanPham, MaSize
 end
 go
 
 exec getSanPhamByNhaCungCap 1
+
+
+select * from NS_DP_PhieuNhapHang
+select * from NS_DP_PhieuNhapHang_ChiTiet

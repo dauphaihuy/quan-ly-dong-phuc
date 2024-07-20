@@ -350,7 +350,7 @@
                                     ${renderSizeSanPham(item.SanPham)}
                                 </td>
 
-                                <td><input class="form-control" id="soLuong" value="1" /></td>
+                                <td><input class="form-control" onfocusout="checkInput(this)" id="soLuong" type="number" value="1" /></td>
                             </tr>`
 
                         });
@@ -485,7 +485,17 @@
             return
         }
     }
-
+    function checkInput(element) {
+        console.log(element.value)
+        if (element.value <= 0) {
+            element.value = 1
+            Swal.fire({
+                title: "Good job!",
+                text: "You clicked the button!",
+                icon: "success"
+            })
+        }
+    }
     function XacNhanChonSP() {
         let maPhieu = $("#maPhieuDeNghi").val()
         var idNguoiDeNghi = $('#idNguoiDeNghi').val()
@@ -499,7 +509,6 @@
         //lấy ra các sản phẩm đã tick
         $('.productRow').each(function () {
             if ($(this).find('.cMaSanPham').is(':checked')) {
-                console.log(this)
                 var row = {
                     SanPham: $(this).find('.cMaSanPham').val(),
                     TinhChat: $(this).find('#TinhChat').val(),

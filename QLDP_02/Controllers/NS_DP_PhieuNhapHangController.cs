@@ -5,13 +5,37 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 
 namespace QLDP_02.Controllers
 {
     public class NS_DP_PhieuNhapHangController : Controller
     {
+        public class Product
+        {
+           public int soLuong { get; set; }
+           public int donGia { get; set; }
+           public int SanPham { get; set; }
+           public int Size { get; set; }
+           public int TinhChat { get; set; }
+           public int NhaCungCap { get; set; }
+        }
         private DB_QLDPEntities db = new DB_QLDPEntities();
+        public JsonResult ChonSpPhieuNhap(List<Product> SelectedRows,string MaPhieuNhap,string tenPhieuNhap)
+        {
+            try
+            {
+                if (MaPhieuNhap == "")
+                {
 
+                }
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { message = ex });
+            }
+        }
         // GET: NS_DP_PhieuNhapHang
         public ActionResult Index()
         {
@@ -58,7 +82,7 @@ namespace QLDP_02.Controllers
         {
             try
             {
-                return Json(new { success=true });
+                return Json(new { success=true, PhieuNhapHang });
             }
             catch(Exception ex)
             {

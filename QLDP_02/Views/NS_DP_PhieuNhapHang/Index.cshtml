@@ -89,7 +89,7 @@
                     <div class="form-group row mb-2">
                         <div class="col-lg-2">
                             <label for="id_MaPhieuNhapHang" class="fw-500 required">Mã phiếu <span class="text-danger">(*)</span>:</label>
-                            <input type="text" value="" class="form-control" required id="id_MaPhieuNhapHang" />
+                            <input type="text" disabled value="" class="form-control" required id="id_MaPhieuNhapHang" />
                             <div class="invalid-feedback">Vui lòng nhập Mã phiếu.</div>
                         </div>
                         <div class="col-lg-3">
@@ -188,7 +188,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticThemMoiPhieuNhapHangChiTiet">Chọn sản phẩm</h5>
-                <button type="button" class="btn btn-close" id="btn-hide-chonsp"></button>
+                <div>
+                    <button type="button" id="btn-hide-chonsp" class="btn btn-secondary">Back</button>
+                    <button type="button" class="btn btn-success" onclick="chonSpPhieuNhap()" id="chonSpPhieuNhap">Save</button>
+                </div>
             </div>
 
             <div class="modal-body pb-0">
@@ -206,7 +209,7 @@
                             <td>nhà cung cấp</td>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="table-body-chon-sp">
                         
                     </tbody>
                 </table>
@@ -594,7 +597,7 @@
 
     })
     $('#id_NgayDatHang').val(getCurrentDateTime())
-    $('#id_MaPhieuNhapHang').val(randomMaPhieu(5))
+    //$('#id_MaPhieuNhapHang').val(randomMaPhieu(5))
     function themMoiPhieuNhapHang() {
         $.ajax({
             url: "/NS_DP_PhieuNhapHang/GetThemMoiPhieuNhapHang",
@@ -636,7 +639,48 @@
             }
         });
     }
+    const chonSpPhieuNhap=()=>{
+        const tableBody = $('#table-body-chon-sp');
+        const checkedRows = [];
+        const tableRows = document.querySelectorAll('#tableChonSanPham tbody tr');
+        tableRows.forEach((row, index) => {
+            // Get the checkbox in the first cell
+            const checkbox = row.querySelector('input[type="checkbox"]');
+            // Check if the checkbox is checked
+            if (checkbox.checked) {
+                const rowData = {
+                    soLuong: +row.querySelector('input[type="number"]').value,
+                    donGia: +row.querySelectorAll('input[type="number"]')[1].value,
+                    SanPham: +row.cells[9].textContent,
+                    Size: +row.cells[10].textContent,
+                    TinhChat: +row.cells[11].textContent,
+                    NhaCungCap: +row.cells[12].textContent
+                }
+                checkedRows.push(rowData)
+            }
 
+        })
+        console.log(tableRows.length)
+        if (tableRows.length == 0) {
+            Swal.fire({
+                title: "Did you miss out something!",
+                text: "Choose your product!",
+                icon: "question"
+            });
+            return;
+        }
+        $.ajax({
+            url: "/NS_DP_PhieuNhapHang/ChonSpPhieuNhap",
+            type: 'post',
+            data: {
+                SelectedRows: checkedRows,
+                MaPhieuNhap: $("#id_MaPhieuNhapHang").val(),
+                tenPhieuNhap: $("#id_TenPhieuNhapHang").val(),
+            },
+
+        })
+        console.log(checkedRows);
+    }
     function checkDataThemMoiPhieuNhapHangChiTiet() {
         // Thu thập dữ liệu từ input trong modal
         var MaPhieuNhapHang = $('#id_MaPhieuNhapHang').val();
@@ -645,7 +689,7 @@
         var NhaCungCap = $('#id_NhaCungCap').val();
         var KhoNhan = $('#id_KhoNhan').val();
         
-        if (!MaPhieuNhapHang || !TenPhieuNhapHang || !NgayDatHang || !NhaCungCap || !KhoNhan) {
+        if (!TenPhieuNhapHang || !NgayDatHang || !NhaCungCap || !KhoNhan) {
             Swal.fire({
                 title: "Cảnh báo!",
                 text: "Chưa điền thông tin!",
@@ -671,14 +715,14 @@
                             <td>${item.TenSanPham}</td>
                             <td>${item.TenTinhChatDongPhuc == null ? "" : item.TenTinhChatDongPhuc}</td>
                             <td>${item.MaSize}</td>
-                            <td><input class="form-control" type="text" value="1" /></td>
-                            <td>${item.DonGia.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) }</td>
+                            <td><input class="form-control" type="number" value="1" /></td>
+                            <td><input class="form-control" type="number" value="${item.DonGia}" /></td>
                             <td>${item.TenDonViTinh}</td>
                             <td>${item.TenNhaCungCap}</td>
-                            <td>
-                                <button>123</button>
-                                <button>123</button>
-                            </td>
+                            <td style = "display:none">${item.SanPham}</td>
+                            <td style = "display:none">${item.Size}</td>
+                            <td style = "display:none">${item.TinhChatDongPhuc}</td>
+                            <td style = "display:none">${item.NhaCungCap}</td>
                         </tr>`
                         stt++
                     })

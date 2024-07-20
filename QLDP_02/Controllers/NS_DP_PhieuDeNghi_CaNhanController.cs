@@ -248,4 +248,3 @@ namespace QLDP_02.Controllers
 		public string Size { get; set; }
 		public int SoLuong { get; set; }
 	}
-
