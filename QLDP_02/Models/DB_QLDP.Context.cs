@@ -195,11 +195,6 @@ namespace QLDP_02.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("updateLyDoCapPhat", maPhieuParameter, nguoiDeNghiParameter, idLyDoCapPhatParameter);
         }
     
-        public virtual ObjectResult<getDanhSachSanPham_Result> getDanhSachSanPham()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getDanhSachSanPham_Result>("getDanhSachSanPham");
-        }
-    
         public virtual ObjectResult<getDanhSachSanPhamTheoGioiTinhNhanSu_Result> getDanhSachSanPhamTheoGioiTinhNhanSu(Nullable<int> nhanSu)
         {
             var nhanSuParameter = nhanSu.HasValue ?
@@ -282,6 +277,21 @@ namespace QLDP_02.Models
                 new ObjectParameter("NhaCungCap", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getSanPhamByNhaCungCap_Result>("getSanPhamByNhaCungCap", nhaCungCapParameter);
+        }
+    
+        public virtual int getSanhSachSanPham()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("getSanhSachSanPham");
+        }
+    
+        public virtual ObjectResult<PhieuNhap_GetSanhSachSanPham_Result> PhieuNhap_GetSanhSachSanPham()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PhieuNhap_GetSanhSachSanPham_Result>("PhieuNhap_GetSanhSachSanPham");
+        }
+    
+        public virtual ObjectResult<getDanhSachSanPham_Result> getDanhSachSanPham()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getDanhSachSanPham_Result>("getDanhSachSanPham");
         }
     }
 }

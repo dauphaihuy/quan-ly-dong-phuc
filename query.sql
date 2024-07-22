@@ -5,7 +5,28 @@ where PhieuDeNghi_CaNhan = 11
 select * from [dbo].[NS_DP_PhieuDeNghi_CaNhan_ChiTiet]
 exec [getDanhSachSanPham]
 select * from DM_DP_LyDoCapPhat
-
+USE [DB_QLDP]
+GO
+/****** Object:  StoredProcedure [dbo].[getDanhSachSanPham]    Script Date: 13/04/2024 9:22:25 SA ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+create PROCEDURE [dbo].[getDanhSachSanPham]
+AS
+BEGIN
+	SELECT s.*, L.TenLoaiSanPham, D.TenDonViTinh, G.TenGioiTinh, NS_DP_SanPham_LienKet.TenSanPhamLK
+	FROM NS_DP_SanPham S 
+		LEFT JOIN DM_DP_LoaiSanPham L ON S.LoaiSanPham = L.LoaiSanPham
+		LEFT JOIN DM_DP_DonViTinh D ON D.DonViTinh = S.DonViTinh
+		LEFT JOIN NS_DP_GioiTinh G ON G.GioiTinh = S.GioiTinh
+		LEFT JOIN (select SanPham, TenSanPham TenSanPhamLK from NS_DP_SanPham) NS_DP_SanPham_LienKet on NS_DP_SanPham_LienKet.SanPham = S.SanPhamLienKet
+END
 update [NS_DP_PhieuDeNghi_CaNhan]
 set IsHoanThanh=0
 where PhieuDeNghi_CaNhan in(12,13,14)
@@ -377,5 +398,35 @@ go
 exec getSanPhamByNhaCungCap 1
 
 
-select * from NS_DP_PhieuNhapHang
+select * from NS_DP_PhieuNhapHang 
 select * from NS_DP_PhieuNhapHang_ChiTiet
+
+-- lấy sản phẩm tất cả sản phẩm đã chọn 
+
+select *
+from NS_DP_PhieuNhapHang_ChiTiet pnhct join NS_DP_SanPham sp on pnhct.SanPham = sp.SanPham
+join DM_DP_DonViTinh dvt on pnhct.DonViTinh = dvt.DonViTinh
+exec [dbo].[getPhieuNhapHang]
+
+select sum(SoLuong) from NS_DP_PhieuNhapHang_ChiTiet
+where PhieuNhapHang = 3
+
+select * from NS_DP_SanPham_TinhChatDongPhuc
+
+alter procedure PhieuNhap_GetSanhSachSanPham
+as 
+begin
+select pnhct.*,sp.TenSanPham,tcdp.TenTinhChatDongPhuc, size.MaSize, dvt.TenDonViTinh,
+SoLuongConLai = pnhct.SoLuong - SoLuongDaNhap 
+from NS_DP_PhieuNhapHang pnh 
+	left join NS_DP_PhieuNhapHang_ChiTiet pnhct
+	on pnh.PhieuNhapHang = pnhct.PhieuNhapHang
+	left join NS_DP_SanPham sp on pnhct.SanPham = sp.SanPham
+	left join DM_DP_TinhChatDongPhuc tcdp on tcdp.TinhChatDongPhuc = pnhct.TinhChatDongPhuc
+	left join DM_DP_Size size on size.Size = pnhct.Size
+	left join DM_DP_DonViTinh dvt on pnhct.DonViTinh = dvt.DonViTinh
+where IsHoanThanh !=1
+end 
+go
+exec  PhieuNhap_GetSanhSachSanPham
+TRUNCATE TABLE NS_DP_PhieuNhapHang

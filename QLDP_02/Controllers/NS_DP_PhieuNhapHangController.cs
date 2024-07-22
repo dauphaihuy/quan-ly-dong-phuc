@@ -60,14 +60,19 @@ namespace QLDP_02.Controllers
                     NguoiTao = 1,
                     NgayTao = DateTime.Now,
                     IsDel = false,
-                    IsHoanThanh=false
+                    IsHoanThanh=false,
+                    TongSLDaNhap = 0
                 };
                 db.NS_DP_PhieuNhapHang.Add(p);
                 db.SaveChanges();
                 var PhieuNhap = db.NS_DP_PhieuNhapHang.Where(pr => pr.MaPhieuNhapHang == MaPhieuNhapMoi).Select(pr => pr.PhieuNhapHang).FirstOrDefault();
                 var maPhieu = db.NS_DP_PhieuNhapHang.Where(pr => pr.MaPhieuNhapHang == MaPhieuNhapMoi).Select(pr => pr.PhieuNhapHang).FirstOrDefault();
+                int tongSLMua = 0;
+                int tongThanhToan = 0;
                 foreach (var item in SelectedRows)
-                { 
+                {
+                    tongSLMua += item.soLuong;
+                    tongThanhToan += item.soLuong * item.donGia;
                     NS_DP_PhieuNhapHang_ChiTiet c = new NS_DP_PhieuNhapHang_ChiTiet
                     {
                         PhieuNhapHang = PhieuNhap,
@@ -84,13 +89,36 @@ namespace QLDP_02.Controllers
                     db.NS_DP_PhieuNhapHang_ChiTiet.Add(c);
                     db.SaveChanges();
                 }
-                return Json(new { success = true ,selectedProduct= SelectedRows ,MaPhieu= maPhieu, TenPhieu= TenPhieuNhap, GhiChu , KhoNhan });
+                p.TongSLMua = tongSLMua;
+                p.TongThanhToan = tongThanhToan;
+                db.SaveChanges();
+                return Json(new { success = true ,selectedProduct= SelectedRows ,PhieuNhap= maPhieu, TenPhieu= TenPhieuNhap, GhiChu , KhoNhan ,MaPhieuNhap=p.MaPhieuNhapHang});
             }
             catch (Exception ex)
             {
                 return Json(new { message = ex });
             }
         }
+        public JsonResult PhieuNhap_GetSanPhamByPhieuNhap(int MaPhieu)
+        {
+            try
+            {
+                if (MaPhieu == 0)
+                {
+                    return Json(new { success = false });
+                }
+                else
+                {
+                    var item = db.PhieuNhap_GetSanhSachSanPham().Where(sp=>sp.PhieuNhapHang == MaPhieu);
+                    return Json(new { success = true, item });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { message = ex });
+            }
+        }
+
         // GET: NS_DP_PhieuNhapHang
         public ActionResult Index()
         {
