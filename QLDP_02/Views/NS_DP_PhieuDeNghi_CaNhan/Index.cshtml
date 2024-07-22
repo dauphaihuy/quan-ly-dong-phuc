@@ -255,7 +255,7 @@
         $("#ngayDeNghi").val(getCurrentDay())
         $('.capNhatPhieuDeNghi').html('');
         $('#modalThemMoiPhieuDeNghiCaNhan').modal('show')
-
+        $("#idNguoiDeNghi").prop("disabled", false);
     })
     const renderSizeSanPham = (id) => {
         $.ajax({
@@ -290,7 +290,7 @@
                 idSanPham: +id
             },
             success: function (response) {
-                console.log(response)
+                //console.log(response)
                 let content = `<select class="form-control" id="TinhChat" name="TinhChat">`
                 response.item.forEach(function (item) {
                     //console.log(item)
@@ -389,7 +389,7 @@
                             <td id="sizeSanPham_${item.SanPham}">
                                 ${renderSizeSanPham(item.SanPham)}
                             </td>
-                            <td><input class="form-control" id="soLuong" value="1" /></td>
+                            <td><input class="form-control" onfocusout="checkInput(this)" id="soLuong" value="1" /></td>
                         </tr>`
                     })
                     $('#bodyThemMoiSanPham').html(content)
@@ -433,6 +433,8 @@
 
     const chonPhieuDeNghiCaNhan = (id) => {
         $(".themMoiPhieuDeNghi").html("Cập nhật phiếu đề nghị cá nhân")
+        $("#idNguoiDeNghi").prop("disabled", true);
+
         $.ajax({
             url: '/NS_DP_PhieuDeNghi_CaNhan/ChonPhieuDeNghi',
             type: 'POST',
@@ -485,15 +487,29 @@
             return
         }
     }
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+    
     function checkInput(element) {
-        console.log(element.value)
-        if (element.value <= 0) {
-            element.value = 1
-            Swal.fire({
-                title: "Good job!",
-                text: "You clicked the button!",
-                icon: "success"
-            })
+        if (+element.value < 1) {
+            //console.log(+element.value)
+            if (+element.value == 0)
+                element.value = 1
+            else 
+                element.value = -+element.value
+            Toast.fire({
+                icon: "info",
+                title: "Quantity must be greater than 0!"
+            });
         }
     }
     function XacNhanChonSP() {
@@ -524,10 +540,9 @@
             return
         }
         if (selectedRows.length < 1) {
-            Swal.fire({
+            Toast.fire({
+                icon: "question",
                 title: "You haven't choose your product?",
-                text: "That thing is still around?",
-                icon: "question"
             })
             return
         }
@@ -550,8 +565,6 @@
             success: function (response) {
                 //console.log(response)
                 if (response.success === true) {
-                    $('#modalThemMoiSanPham').modal('hide');
-                    $('#modalThemMoiPhieuDeNghiCaNhan').modal('show');
                     Swal.fire({
                         title: 'Successful!',
                         text: 'Add form successful',

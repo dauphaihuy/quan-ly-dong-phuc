@@ -131,40 +131,20 @@
                         <button class="btn btn-success btn-sm col-md-auto" type="button" onclick="checkDataThemMoiPhieuNhapHangChiTiet()">Thêm sản phẩm</button>
                     </div>
                     <div class="modal-body p-2 pt-0">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table " id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th>
-                                        @Html.DisplayName("Sản phẩm")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Tính chất")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Size")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Số lượng")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Đơn giá")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Thành tiền")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("SL đã nhập")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("SL còn lại")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Đơn vị tính")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Ghi chú (Nếu có)")
-                                    </th>
-                                    <th></th>
+                                    <th>Stt</th>
+                                    <th>@Html.DisplayName("Sản phẩm")</th>
+                                    <th>@Html.DisplayName("Tính chất")</th>
+                                    <th>@Html.DisplayName("Size")</th>
+                                    <th>@Html.DisplayName("Số lượng")</th>
+                                    <th>@Html.DisplayName("Đơn giá")</th>
+                                    <th>@Html.DisplayName("Thành tiền")</th>
+                                    <th>@Html.DisplayName("SL đã nhập")</th>
+                                    <th>@Html.DisplayName("SL còn lại")</th>
+                                    <th>@Html.DisplayName("Đơn vị tính")</th>
+                                    <th>@Html.DisplayName("Ghi chú (Nếu có)")</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -328,36 +308,16 @@
                         <table class="table table-bordered" id="suaDataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th>
-                                        @Html.DisplayName("Sản phẩm")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Tính chất")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Size")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Số lượng")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Đơn giá")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Thành tiền")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("SL đã nhập")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("SL còn lại")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Đơn vị tính")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Ghi chú (Nếu có)")
-                                    </th>
+                                    <th> @Html.DisplayName("Sản phẩm") </th>
+                                    <th> @Html.DisplayName("Tính chất") </th>
+                                    <th> @Html.DisplayName("Size") </th>
+                                    <th> @Html.DisplayName("Số lượng") </th>
+                                    <th> @Html.DisplayName("Đơn giá") </th>
+                                    <th> @Html.DisplayName("Thành tiền") </th>
+                                    <th> @Html.DisplayName("SL đã nhập") </th>
+                                    <th> @Html.DisplayName("SL còn lại") </th>
+                                    <th> @Html.DisplayName("Đơn vị tính") </th>
+                                    <th> @Html.DisplayName("Ghi chú (Nếu có)") </th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -639,6 +599,19 @@
             }
         });
     }
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top",
+        showConfirmButton: false,
+        timer:3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+    
+    // thêm sản phẩm vào phiếu nhập hàng
     const chonSpPhieuNhap=()=>{
         const tableBody = $('#table-body-chon-sp');
         const checkedRows = [];
@@ -660,12 +633,10 @@
             }
 
         })
-        console.log(tableRows.length)
-        if (tableRows.length == 0) {
-            Swal.fire({
-                title: "Did you miss out something!",
-                text: "Choose your product!",
-                icon: "question"
+        if (checkedRows.length == 0) {
+            Toast.fire({
+                icon: "question",
+                title: "No product has been selected."
             });
             return;
         }
@@ -675,11 +646,23 @@
             data: {
                 SelectedRows: checkedRows,
                 MaPhieuNhap: $("#id_MaPhieuNhapHang").val(),
-                tenPhieuNhap: $("#id_TenPhieuNhapHang").val(),
+                TenPhieuNhap: $("#id_TenPhieuNhapHang").val(),
+                GhiChu: $('#id_GhiChu').val(),
+                KhoNhan: +$('#id_KhoNhan').val(),
             },
+            success: function (response){
+                console.log(response)
+                if (response.success = true) {
+                    Toast.fire({
+                        icon: "success",
+                        title: "Product added successfully."
+                    });
+                    $('#modalThemMoiPhieuNhapHangChiTiet').modal('hide');
+                }
+            }
 
         })
-        console.log(checkedRows);
+        console.log();
     }
     function checkDataThemMoiPhieuNhapHangChiTiet() {
         // Thu thập dữ liệu từ input trong modal
@@ -690,11 +673,11 @@
         var KhoNhan = $('#id_KhoNhan').val();
         
         if (!TenPhieuNhapHang || !NgayDatHang || !NhaCungCap || !KhoNhan) {
-            Swal.fire({
-                title: "Cảnh báo!",
-                text: "Chưa điền thông tin!",
-                icon: "question"
+            Toast.fire({
+                icon: "question",
+                title: "Input is null."
             });
+            return;
         }
         else {
             console.log(NhaCungCap)

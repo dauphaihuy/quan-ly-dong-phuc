@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Management;
 using System.Web.ModelBinding;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using QLDP_02.Models;
 
 namespace QLDP_02.Controllers
@@ -36,6 +37,12 @@ namespace QLDP_02.Controllers
 		[HttpPost]
 		public ActionResult ChonSanPham(List<SelectedProduct> selectedRows,string idNguoiDeNghi,string lyDoCapPhat,string maPhieu,int PhieuDeNghi)
 		{
+			foreach(var item in selectedRows){
+				if (item.SoLuong <= 0)
+				{
+                    return Json(new { success = false, err = "Số lượng < 0" });
+                }
+			}
 			if(selectedRows.Count==0|| idNguoiDeNghi==""|| lyDoCapPhat == "")
 			{
 				return Json(new { success = false, err = "input = null" });

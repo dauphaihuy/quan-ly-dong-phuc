@@ -1,8 +1,11 @@
-﻿using QLDP_02.Models;
+﻿using Microsoft.Ajax.Utilities;
+using QLDP_02.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Services.Description;
@@ -21,15 +24,67 @@ namespace QLDP_02.Controllers
            public int NhaCungCap { get; set; }
         }
         private DB_QLDPEntities db = new DB_QLDPEntities();
-        public JsonResult ChonSpPhieuNhap(List<Product> SelectedRows,string MaPhieuNhap,string tenPhieuNhap)
+        public static string GenerateRandomString(int length)
+        {
+            string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            StringBuilder sb = new StringBuilder();
+            Random random = new Random();
+            for (int i = 0; i < length; i++)
+            {
+                sb.Append(chars[random.Next(chars.Length)]);
+            }
+            return "PN_"+sb.ToString();
+        }
+        public JsonResult ChonSpPhieuNhap(List<Product> SelectedRows,string MaPhieuNhap,string TenPhieuNhap,string GhiChu,int KhoNhan)
         {
             try
             {
-                if (MaPhieuNhap == "")
+                if (TenPhieuNhap == "" || TenPhieuNhap==null)
                 {
-
+                    return Json(new { success = false,message="Tên phiếu không được để trống" });
                 }
-                return Json(new { success = true });
+                if (SelectedRows.Count ==0)
+                {
+                    return Json(new { error = false, message = "Chưa chọn sản phẩm" });
+                }
+                string MaPhieuNhapMoi = GenerateRandomString(6);
+
+                NS_DP_PhieuNhapHang p = new NS_DP_PhieuNhapHang { 
+                    MaPhieuNhapHang = MaPhieuNhapMoi,
+                    TenPhieuNhapHang = TenPhieuNhap,
+                    NgayDatHang = DateTime.Now,
+                    KhoNhan = KhoNhan,
+                    NhaCungCap = SelectedRows[0].NhaCungCap,
+                    GhiChu = GhiChu,
+                    NguoiDatHang = 1,
+                    NguoiTao = 1,
+                    NgayTao = DateTime.Now,
+                    IsDel = false,
+                    IsHoanThanh=false
+                };
+                db.NS_DP_PhieuNhapHang.Add(p);
+                db.SaveChanges();
+                var PhieuNhap = db.NS_DP_PhieuNhapHang.Where(pr => pr.MaPhieuNhapHang == MaPhieuNhapMoi).Select(pr => pr.PhieuNhapHang).FirstOrDefault();
+                var maPhieu = db.NS_DP_PhieuNhapHang.Where(pr => pr.MaPhieuNhapHang == MaPhieuNhapMoi).Select(pr => pr.PhieuNhapHang).FirstOrDefault();
+                foreach (var item in SelectedRows)
+                { 
+                    NS_DP_PhieuNhapHang_ChiTiet c = new NS_DP_PhieuNhapHang_ChiTiet
+                    {
+                        PhieuNhapHang = PhieuNhap,
+                        SanPham = item.SanPham,
+                        Size = item.Size,
+                        TinhChatDongPhuc = item.TinhChat,
+                        SoLuong = item.soLuong,
+                        DonGia = item.donGia,
+                        DonViTinh = 1,
+                        ThanhTien = item.soLuong * item.donGia,
+                        SoLuongDaNhap = 0,
+                        GhiChu = GhiChu
+                    };
+                    db.NS_DP_PhieuNhapHang_ChiTiet.Add(c);
+                    db.SaveChanges();
+                }
+                return Json(new { success = true ,selectedProduct= SelectedRows ,MaPhieu= maPhieu, TenPhieu= TenPhieuNhap, GhiChu , KhoNhan });
             }
             catch (Exception ex)
             {
