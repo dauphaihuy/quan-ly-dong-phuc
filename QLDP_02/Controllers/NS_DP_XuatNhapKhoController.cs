@@ -12,18 +12,6 @@ namespace QLDP_02.Controllers
     {
         private DB_QLDPEntities db = new DB_QLDPEntities();
 
-        // GET: NS_DP_XuatNhapKho
-        public ActionResult Index()
-        {
-            return View();
-
-        }
-        public ActionResult GetDataTable() { 
-            var danhSachNhapKho = db.getXuatNhapKho().ToList();
-            return Json(new { data = danhSachNhapKho },JsonRequestBehavior.AllowGet);
-        
-        }
-        //
         public JsonResult NhapKho_GetDanhSachSanPhamNhapHang(int phieuNhapHang)
         {
             return Json(new { success=true });
@@ -31,100 +19,22 @@ namespace QLDP_02.Controllers
         // GET: NS_DP_XuatNhapKho/NhapKho
         public ActionResult NhapKho()
         {
-            var phieuNhapHangSelect = db.selectOptionGetPhieuNhap().ToList();
-            var NhanSuSelect = db.NS_NhanSu.Where(ns => ns.IsDel != true);
-
-            ViewBag.PhieuNhapHang = new SelectList(phieuNhapHangSelect, "PhieuNhapHang", "MaVaTenPhieu");
-            ViewBag.Kho = new SelectList(db.DM_DP_Kho, "Kho", "TenKho");
-            ViewBag.NhanSu = new SelectList(NhanSuSelect, "NhanSu", "TenNhanSu");
-
-            return View(db.getXuatNhapKho().Where(sp => sp.IsDel == false).ToList());
-        }
-
-        // GET: NS_DP_XuatNhapKho/NhapKho
-        public ActionResult XuatKho()
-        {
-            ViewBag.PhieuNhapHang = new SelectList(db.NS_DP_PhieuNhapHang, "PhieuNhapHang", "MaPhieuNhapHang");
-            ViewBag.Kho = new SelectList(db.DM_DP_Kho, "Kho", "TenKho");
-            ViewBag.NhanSu = new SelectList(db.NS_NhanSu, "NhanSu", "TenNhanSu");
-
-            //ViewBag.NhaCungCap = new SelectList(db.DM_DP_NhaCungCap, "NhaCungCap", "TenNhaCungCap");
-            ViewBag.LoaiSanPham = new SelectList(db.DM_DP_LoaiSanPham, "LoaiSanPham", "TenLoaiSanPham");    
-            ViewBag.DonViTinh = new SelectList(db.DM_DP_DonViTinh, "DonViTinh", "TenDonViTinh");
-            ViewBag.GioiTinh = new SelectList(db.NS_DP_GioiTinh, "GioiTinh", "TenGioiTinh");
-            ViewBag.SanPhamLienKet = new SelectList(db.NS_DP_SanPham, "SanPhamLienKet", "SanPhamLienKet");
-            return View(db.getXuatNhapKho().Where(sp => sp.IsDel == false).ToList());
-        }
-
-        // GET: NS_DP_XuatNhapKho/Details/5
-        public ActionResult Details(int id)
-        {
+            var SelectPhieuNhap = db.NhapKho_SelectPhieuNhapHang().Where(phieu => phieu.IsDel != true);
+            var SelectKhoNhan = db.DM_DP_Kho;
+            ViewBag.SelectPhieuNhap = new SelectList(SelectPhieuNhap, "PhieuNhapHang", "TenVaMaPhieu");
+            ViewBag.SelectKhoNhan = new SelectList(SelectKhoNhan, "Kho", "TenKho");
             return View();
         }
-
-        // GET: NS_DP_XuatNhapKho/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: NS_DP_XuatNhapKho/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public JsonResult NhapKho_ChonPhieuNhapHan(int PhieuNhap)
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                //var result = db.().Where(phieu => phieu.PhieuNhapHang == PhieuNhap);
+                return Json(new { success = true });
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
-            }
-        }
-
-        // GET: NS_DP_XuatNhapKho/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: NS_DP_XuatNhapKho/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: NS_DP_XuatNhapKho/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: NS_DP_XuatNhapKho/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
+                return Json(new { success = false, err = ex.Message });
             }
         }
     }

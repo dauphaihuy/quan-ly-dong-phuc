@@ -1,5 +1,4 @@
-﻿@model IEnumerable<QLDP_02.Models.getXuatNhapKho_Result>
-
+﻿
 @{
     ViewBag.Title = "Nhập kho";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -15,7 +14,7 @@
                     </h1>
                 </div>
                 <div class="col-12 col-xl-auto mb-3">
-                    <button onclick="themMoiPhieuNhapKho(0)" class="btn btn-sm btn-light text-primary" data-bs-toggle="modal" data-bs-target="#modalThemMoiNhapKho">
+                    <button onclick="" class="btn btn-sm btn-light text-primary" data-bs-toggle="modal" data-bs-target="#modalThemMoiNhapKho">
                         <i class="me-1 fa-regular fa-square-plus"></i>
                         Thêm mới
                     </button>
@@ -39,39 +38,7 @@
                 <th>Ghi chú</th>
             </tr>
         </thead>
-        @*<tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NgayNhapXuat)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MaXuatNhapKho)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TenKho)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.HoDem) @Html.DisplayFor(modelItem => item.Ten)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TyGia)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TenNhaCungCap)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.GhiChu)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.MaXuatNhapKho }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.MaXuatNhapKho }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.MaXuatNhapKho })
-                    </td>
-                </tr>
-            }
-        </tbody>*@
+       <tbody></tbody>
     </table>           
 </div>
 
@@ -83,28 +50,26 @@
         <div class="modal-content">
             <div class="modal-header alert alert-success">
                 <h5 class="modal-title" id="staticThemMoiNhapKho">Thêm mới Nhập kho</h5>
-                <button class="btn-close me-2" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                <button class="btn btn-secondary" type="button">Cập nhật</button>
+                <div>
+                    <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-circle-arrow-left me-2"></i></i>Quay lại</button>
+                    <button class="btn btn-outline-success" type="button">Cập nhật <i class="fa-regular fa-paper-plane ms-2"></i></button>
+                </div>
             </div>
             <div class="modal-body">
                 <div class="form-group row mb-2">
-                    <div class="col-lg-2">
-                        <label class="fw-500">Mã phiếu:</label>
-                        <input type="text" class="form-control" required id="id_MaXuatNhapKho" disabled />
-                    </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <label class="fw-500 required">Phiếu nhập hàng <span class="text-danger">(*)</span> :</label>
-                        @Html.DropDownList("PhieuNhapHang", null, "", new { @id = "idPhieuNhapHang",onchange= "thayDoiChonPhieuNhap()", @class = "form-control required" })
+                        @Html.DropDownList("SelectPhieuNhap", null,"Chọn phiếu nhập", new { @id = "SelectPhieuNhap", @class = "form-control", onchange = "handleSelectPhieuNhap()" })
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg-3">
                         <label class="fw-500">Kho nhận<span class="text-danger">(*)</span>:</label>
-                        @Html.DropDownList("Kho", null, "", new { @id = "id_Kho", @class = "form-control required" })
+                        @Html.DropDownList("SelectKhoNhan", null, new { @id = "SelectKhoNhan", @class = "form-control"})
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg-3">
                         <label class="fw-500">Ngày nhận:</label>
                         <input type="datetime-local" class="form-control" required id="id_NgayNhapXuat" />
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg-3">
                         <label class="fw-500">Tỷ giá<span class="text-danger">(*)</span> :</label>
                         <input type="number" placeholder="0" class="form-control" required id="id_TyGia" />
                     </div>
@@ -154,22 +119,29 @@
                     <i class="fa-solid fa-triangle-exclamation fa-beat fa-4x"></i>
                     <br />
                     <p class="fw-bolder">Cảnh báo</p>
-                    <p>Bạn có chắc Xóa nhập kho: <span class="text-danger fw-bolder">@ViewBag.NhapKho</span> không?</p>
                 </div>
 
                 <div class="modal-footer justify-content-center">
-                    <button class="btn btn-danger" type="button" onclick="xacNhanXoaNhapKho()">Xoá</button>
+                    <button class="btn btn-danger" type="button" onclick="">Xoá</button>
                     <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Quay lại</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js" type="text/javascript"></script>
-
 
 <script>
+    
+    const handleSelectPhieuNhap = () => {
+        console.log($("#SelectPhieuNhap").val())
+        $.ajax({
+            url: "",
+            type: "post",
+            data: {
+                maPhieuNhap: $("#SelectPhieuNhap").val()
+            },
+        })
+    }
     const randomMaPhieu = (length) => {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         let result = '';
@@ -179,186 +151,7 @@
         }
         return 'NK_'+result;
     }
-    console.log(moment.locale())
-    const thayDoiChonPhieuNhap = () => {
-        console.log($("#idPhieuNhapHang").val())
-        
-    }
-    const themMoiPhieuNhapKho = id => {
-
-        console.log(id)
-    }
-    $(document).ready(function () {
-        $.noConflict();
-        var table = $('#tableNhapKho').DataTable({
-            "ajax": {
-                "url": "/NS_DP_XuatNhapKho/GetDataTable",
-                "type": "GET",
-                "datatype": "json"
-            },
-            "columns": [
-                {
-                    "data": "NgayTao", "render": function (data, type, row) {
-                        if (type === 'display' || type === 'filter') {
-                            // Extract timestamp from /Date(1721201400000)/ format
-                            var timestamp = parseInt(data.match(/\d+/)[0]);
-
-                            // Create a Date object from the timestamp
-                            var d = new Date(timestamp);
-
-                            // Format date as DD-MM-YYYY (assuming you want day-month-year format)
-                            var formattedDate = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
-
-                            return formattedDate;
-                        }
-                        return data;
-                    }
-                },
-                { "data": "MaXuatNhapKho" },
-                { "data": "TenKho" },
-                { "data": "Ten" },
-                { "data": "TyGia" },
-                { "data": "TenNhaCungCap" },
-                { "data": "GhiChu" }
-            ]
-
-        });
-        
-    })
-    function themMoiSanPham() {
-        // Thu thập dữ liệu từ input trong modal
-        var TenSanPham = $('#id_TenSanPham').val();
-        var LoaiSanPham = $('#pn_id_LoaiSanPham').val();
-        var DonViTinh = $('#id_DonViTinh').val();
-        var SanPhamLienKet = $('#id_SanPhamLienKet').val();
-        var GioiTinh = $('#id_GioiTinh').val();
-        var QuyCachDoi = $('#id_QuyCachDoi').val();
-
-        // Sử dụng AJAX để gửi dữ liệu đến controller
-        $.ajax({
-            url: '/NS_DP_SanPham/Create', // Thay đổi đường dẫn tới controller của bạn
-            type: 'POST',
-            data: {
-                TenSanPham: TenSanPham,
-                LoaiSanPham: LoaiSanPham,
-                DonViTinh: DonViTinh,
-                SanPhamLienKet: SanPhamLienKet,
-                GioiTinh: GioiTinh,
-                QuyCachDoi: QuyCachDoi
-            },
-            success: function (response) {
-                // Xử lý phản hồi từ controller (nếu cần)
-                console.log(response);
-                // Đóng modal sau khi lưu thành công
-                $('#themMoiPhieuNhapHang').modal('hide');
-                // Reload trang
-                location.reload();
-            },
-            error: function (error) {
-                console.error('Lỗi khi gửi dữ liệu: ', error);
-            }
-        });
-    }
+    
 </script>
 
-<!-- Script suaSanPham -->
-<script>
-    var IdSanPham;
-
-    function suaSanPham(button) {
-        IdSanPham = parseInt(button.getAttribute("data-id"), 10);
-        console.log("Id của item:", IdSanPham);
-        console.log(typeof IdSanPham);
-
-        $.ajax({
-            url: "/NS_DP_SanPham/" + IdSanPham,
-            type: 'GET',
-            success: function (s) {
-                // Xử lý phản hồi từ controller (nếu cần)
-                displayData(s);
-            },
-            error: function (error) {
-                console.error('Lỗi khi gửi dữ liệu: ', error);
-            }
-        });
-
-        function displayData(s) {
-            // Xử lý cách hiển thị dữ liệu trên trang web (View)
-            $("#id_TenSanPham").val(s.TenSanPham);
-            $("#pn_id_LoaiSanPham").val(s.TenLoaiSanPham);
-            $("#id_DonViTinh").val(s.TenDonViTinh);
-            $("#id_SanPhamLienKet").text(s.TenSanPhamLienKet);
-            $("#id_GioiTinh").val(s.TenGioiTinh);
-        }
-    }
-
-
-    function xacNhanSuaSanPham() {
-        // Thu thập dữ liệu từ input trong modal
-        var TenSanPham = $('#id_TenSanPham').val();
-        var LoaiSanPham = $('#pn_id_LoaiSanPham').val();
-        var DonViTinh = $('#id_DonViTinh').val();
-        var SanPhamLienKet = $('#id_SanPhamLienKet').val();
-        var GioiTinh = $('#id_GioiTinh').val();
-        var QuyCachDoi = $('#id_QuyCachDoi').val();
-
-        // Sử dụng AJAX để gửi dữ liệu đến controller
-        $.ajax({
-            url: '/NS_DP_SanPham/Create', // Thay đổi đường dẫn tới controller của bạn
-            type: 'POST',
-            data: {
-                TenSanPham: TenSanPham,
-                LoaiSanPham: LoaiSanPham,
-                DonViTinh: DonViTinh,
-                SanPhamLienKet: SanPhamLienKet,
-                GioiTinh: GioiTinh,
-                QuyCachDoi: QuyCachDoi
-            },
-            success: function (response) {
-                // Xử lý phản hồi từ controller (nếu cần)
-                console.log(response);
-                // Đóng modal sau khi lưu thành công
-                $('#themMoiPhieuNhapHang').modal('hide');
-                // Reload trang
-                location.reload();
-            },
-            error: function (error) {
-                console.error('Lỗi khi gửi dữ liệu: ', error);
-            }
-        });
-    }
-</script>
-
-<!-- Script xoaSanPham -->
-<script>
-    var IdSanPham;
-
-    function xoaSanPham(button) {
-        IdSanPham = parseInt(button.getAttribute("data-id"), 10);
-    }
-
-    function xacNhanXoaSanPham() {
-        var SanPham = IdSanPham;
-
-        // Gửi yêu cầu xóa sản phẩm lên server
-        $.ajax({
-            url: "/NS_DP_SanPham/Delete/" + SanPham,
-            type: "POST",
-            data: {
-                SanPham: SanPham
-            },
-            success: function (response) {
-                // Xử lý phản hồi từ controller (nếu cần)
-                console.log(response);
-                // Đóng modal sau khi xoá thành công
-                $('#modalXoaSanPham').modal('hide');
-                // Reload trang
-                location.reload();
-            },
-            error: function (error) {
-                console.error('Lỗi khi gửi dữ liệu: ', error);
-            }
-        });
-    }
-</script>
 

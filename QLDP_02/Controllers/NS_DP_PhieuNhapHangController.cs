@@ -22,6 +22,8 @@ namespace QLDP_02.Controllers
            public int Size { get; set; }
            public int TinhChat { get; set; }
            public int NhaCungCap { get; set; }
+           public int DonViTinh { get; set; }
+
         }
         private DB_QLDPEntities db = new DB_QLDPEntities();
         public static string GenerateRandomString(int length)
@@ -81,7 +83,7 @@ namespace QLDP_02.Controllers
                         TinhChatDongPhuc = item.TinhChat,
                         SoLuong = item.soLuong,
                         DonGia = item.donGia,
-                        DonViTinh = 1,
+                        DonViTinh = item.DonViTinh,
                         ThanhTien = item.soLuong * item.donGia,
                         SoLuongDaNhap = 0,
                         GhiChu = GhiChu
@@ -92,7 +94,7 @@ namespace QLDP_02.Controllers
                 p.TongSLMua = tongSLMua;
                 p.TongThanhToan = tongThanhToan;
                 db.SaveChanges();
-                return Json(new { success = true ,selectedProduct= SelectedRows ,PhieuNhap= maPhieu, TenPhieu= TenPhieuNhap, GhiChu , KhoNhan ,MaPhieuNhap=p.MaPhieuNhapHang});
+                return Json(new { success = true ,selectedProduct= SelectedRows ,PhieuNhap= maPhieu, TenPhieu= TenPhieuNhap, GhiChu , KhoNhan ,PhieuNhapHang=p,MaPhieuNhap=p.MaPhieuNhapHang});
             }
             catch (Exception ex)
             {

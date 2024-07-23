@@ -356,14 +356,14 @@ end
 go
 select * from DM_DP_NhaCungCap
 --GetDanhSachSanPhamNhapHang
-select distinct * from 
-NS_DP_PhieuNhapHang pnh left join NS_DP_PhieuNhapHang_ChiTiet pnhct 
-on pnh.PhieuNhapHang = pnhct.PhieuNhapHang
-join NS_DP_SanPham sp on sp.SanPham = pnhct.SanPham
-join NS_DP_SanPham_TinhChatDongPhuc sptc on sp.SanPham = sptc.SanPham
-join DM_DP_TinhChatDongPhuc tcdp on sptc.TinhChatDongPhuc = tcdp.TinhChatDongPhuc
-join DM_DP_Size size on size.LoaiSanPham = sp.LoaiSanPham
-
+	select distinct * from 
+	NS_DP_PhieuNhapHang pnh left join NS_DP_PhieuNhapHang_ChiTiet pnhct 
+	on pnh.PhieuNhapHang = pnhct.PhieuNhapHang
+	join NS_DP_SanPham sp on sp.SanPham = pnhct.SanPham
+	join NS_DP_SanPham_TinhChatDongPhuc sptc on sp.SanPham = sptc.SanPham
+	join DM_DP_TinhChatDongPhuc tcdp on sptc.TinhChatDongPhuc = tcdp.TinhChatDongPhuc
+	join DM_DP_Size size on size.LoaiSanPham = sp.LoaiSanPham
+where pnhct = 17
 select * from NS_DP_PhieuNhapHang
 select * from NS_DP_XuatNhapKho
 select * from NS_DP_XuatNhapKho_ChiTiet
@@ -390,8 +390,8 @@ left join DM_DP_TinhChatDongPhuc tcpd on sptcdp.TinhChatDongPhuc = tcpd.TinhChat
 join DM_DP_Size size on size.LoaiSanPham = sp.LoaiSanPham
 join DM_DP_NhaCungCap ncc on ncc.NhaCungCap = sptcdp.NhaCungCap
 join DM_DP_DonViTinh dvt on dvt.DonViTinh=sp.DonViTinh
-where ncc.NhaCungCap=@NhaCungCap
-order by sp.SanPham, MaSize
+where ncc.NhaCungCap=1
+order by sp.SanPham asc, MaSize asc
 end
 go
 
@@ -429,4 +429,78 @@ where IsHoanThanh !=1
 end 
 go
 exec  PhieuNhap_GetSanhSachSanPham
+
 TRUNCATE TABLE NS_DP_PhieuNhapHang
+select * from NS_DP_PhieuNhapHang
+--23/07/2024
+select * from NS_DP_PhieuNhapHang
+create procedure NhapKho_SelectPhieuNhapHang
+as
+begin
+select PhieuNhapHang, TenVaMaPhieu= MaPhieuNhapHang +' - '+TenPhieuNhapHang,IsDel,IsHoanThanh from NS_DP_PhieuNhapHang
+where IsDel !=1 and IsHoanThanh !=1
+end 
+go
+create procedure NhapKho_SelectKhoNhan
+as
+begin
+select * from DM_DP_Kho
+where IsDel !=1 
+end 
+go
+--
+drop proc NhapKho_ChonPhieuNhapHan
+create procedure NhapKho_ChonPhieuNhapHan
+as
+begin
+select * from NS_DP_PhieuNhapHang pnh 
+join DM_DP_Kho kho
+on pnh.KhoNhan = kho.Kho
+end
+go
+
+--
+SELECT ROW_NUMBER() OVER(ORDER BY NS_DP_XuatNhapKho_ChiTiet.TinhChatDongPhuc, MaSize, GioiTinh, NS_DP_SanPham.SanPham) AS STT,
+	   NS_DP_XuatNhapKho_ChiTiet.ID,
+	   NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho,
+	   NS_DP_XuatNhapKho_ChiTiet.SanPham,
+	   TenSanPham,
+	   NS_DP_XuatNhapKho_ChiTiet.Size,
+	   NS_DP_XuatNhapKho_ChiTiet.SoLuong,
+	   SoLuongDaNhap,
+	   NS_DP_XuatNhapKho_ChiTiet.DonGia,
+	   NS_DP_XuatNhapKho_ChiTiet.DonViTinh,
+	   TenDonViTinh,
+	   NS_DP_XuatNhapKho_ChiTiet.ThanhTien,
+	   NS_DP_XuatNhapKho_ChiTiet.GhiChu,
+	   MaSize,
+	   NS_DP_SanPham.LoaiSanPham,
+	   ISNULL(TonKho.TonKho,0) TonKho, --ISNULL(expression, replacement_value)
+	   NS_DP_PhieuNhapHang_ChiTiet.SoLuong SoLuongYeuCau,
+	   ISNULL(NS_DP_XuatNhapKho_ChiTiet.TinhChatDongPhuc,0) TinhChatDongPhuc,
+	   NS_DP_XuatNhapKho_ChiTiet.NhaCungCap,
+	   ISNULL(NS_DP_XuatNhapKho_ChiTiet.TinhChatDongPhuc,0) TinhChatDongPhuc1
+FROM dbo.NS_DP_XuatNhapKho_ChiTiet
+	INNER JOIN dbo.NS_DP_XuatNhapKho ON NS_DP_XuatNhapKho.XuatNhapKho = NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho
+	INNER JOIN dbo.NS_DP_SanPham ON NS_DP_SanPham.SanPham = NS_DP_XuatNhapKho_ChiTiet.SanPham
+	LEFT JOIN dbo.DM_DP_DonViTinh ON DM_DP_DonViTinh.DonViTinh = NS_DP_XuatNhapKho_ChiTiet.DonViTinh
+	LEFT JOIN dbo.DM_DP_Size ON DM_DP_Size.Size = NS_DP_XuatNhapKho_ChiTiet.Size
+	LEFT JOIN dbo.NS_DP_PhieuNhapHang ON PhieuNhapHang = IDPhieu
+	LEFT JOIN dbo.NS_DP_PhieuNhapHang_ChiTiet ON NS_DP_PhieuNhapHang_ChiTiet.PhieuNhapHang = NS_DP_PhieuNhapHang.PhieuNhapHang 
+											 AND NS_DP_PhieuNhapHang_ChiTiet.SanPham = NS_DP_XuatNhapKho_ChiTiet.SanPham 
+											 AND NS_DP_PhieuNhapHang_ChiTiet.Size = NS_DP_XuatNhapKho_ChiTiet.Size
+											 AND ISNULL(NS_DP_PhieuNhapHang_ChiTiet.TinhChatDongPhuc,0) = ISNULL(NS_DP_XuatNhapKho_ChiTiet.TinhChatDongPhuc,0)
+
+	LEFT JOIN (SELECT SanPham,Size, Kho, ISNULL(TinhChatDongPhuc,0) TinhChatDongPhuc, SUM(SoLuong) TonKho, NS_DP_XuatNhapKho_ChiTiet.NhaCungCap
+				FROM dbo.NS_DP_XuatNhapKho_ChiTiet
+					INNER JOIN dbo.NS_DP_XuatNhapKho ON NS_DP_XuatNhapKho.XuatNhapKho = NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho
+				WHERE ISNULL(NS_DP_XuatNhapKho.IsDel,0) = 0
+				GROUP BY SanPham,Size,Kho,ISNULL(TinhChatDongPhuc,0),NS_DP_XuatNhapKho_ChiTiet.NhaCungCap
+				) TonKho ON TonKho.SanPham = NS_DP_XuatNhapKho_ChiTiet.SanPham 
+					AND TonKho.Size = NS_DP_XuatNhapKho_ChiTiet.Size 
+					AND TonKho.Kho = NS_DP_XuatNhapKho.Kho
+					AND ISNULL(TonKho.TinhChatDongPhuc,0) = ISNULL(NS_DP_XuatNhapKho_ChiTiet.TinhChatDongPhuc,0)
+					AND TonKho.NhaCungCap = NS_DP_XuatNhapKho_ChiTiet.NhaCungCap
+
+WHERE 1 = 1 AND LoaiPhieu = 1 AND ISNULL(NS_DP_XuatNhapKho.IsDel,0) = 0
+

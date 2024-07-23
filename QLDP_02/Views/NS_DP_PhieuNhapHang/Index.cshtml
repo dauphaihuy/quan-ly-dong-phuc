@@ -173,8 +173,8 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="staticThemMoiPhieuNhapHangChiTiet">Chọn sản phẩm</h5>
                 <div>
-                    <button type="button" id="btn-hide-chonsp" class="btn btn-secondary">Back</button>
-                    <button type="button" class="btn btn-success" onclick="chonSpPhieuNhap()" id="chonSpPhieuNhap">Save</button>
+                    <button type="button" id="btn-hide-chonsp" class="btn btn-outline-secondary"><i class="fa-solid fa-arrow-left-long me-2"></i>Back</button>
+                    <button type="button" class="btn btn-outline-success" onclick="chonSpPhieuNhap()" id="chonSpPhieuNhap">Save<i class="fa-regular fa-paper-plane ms-1"></i></button>
                 </div>
             </div>
 
@@ -339,14 +339,18 @@
         </div>
     </div>
 </div>
-
+<script>
+    function hidemodalSuaPhieuNhapHangChiTiet() {
+                $('#modalSuaPhieuNhapHangChiTiet').modal('hide');
+    }
+</script>
 <!-- Modal SuaPhieuNhapHangChiTiet -->
-<div class="modal fade" id="modalSuaPhieuNhapHangChiTiet" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticSuaPhieuNhapHangChiTiet" aria-hidden="true">
+<div class="modal fade" id="modalSuaPhieuNhapHangChiTiet" tabindex="-1" role="dialog" aria-labelledby="staticSuaPhieuNhapHangChiTiet" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticSuaPhieuNhapHangChiTiet">Cập nhật sản phẩm</h5>
-                <button type="button" class="btn-close" data-bs-toggle="modal"></button>
+                <button type="button"  class="btn-close" onclick="hidemodalSuaPhieuNhapHangChiTiet()"></button>
             </div>
 
             <div class="modal-body pb-0">
@@ -572,7 +576,7 @@
             success: function (data) {
                 // Cập nhật HTML của bảng
                 $('#dataTable tbody').empty(); // Xóa nội dung cũ trong tbody
-
+                console.log(data)
                 $.each(data, function (index, item) {
                     var newRow =
                         "<tr>" +
@@ -606,17 +610,7 @@
             }
         });
     }
-    const Toast = Swal.mixin({
-        toast: true,
-        position: "top",
-        showConfirmButton: false,
-        timer:3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        }
-    });
+    
     
     // thêm sản phẩm vào phiếu nhập hàng
     const chonSpPhieuNhap=()=>{
@@ -634,7 +628,8 @@
                     SanPham: +row.cells[9].textContent,
                     Size: +row.cells[10].textContent,
                     TinhChat: +row.cells[11].textContent,
-                    NhaCungCap: +row.cells[12].textContent
+                    NhaCungCap: +row.cells[12].textContent,
+                    DonViTinh: +row.cells[13].textContent,
                 }
                 checkedRows.push(rowData)
             }
@@ -658,7 +653,6 @@
                 KhoNhan: +$('#id_KhoNhan').val(),
             },
             success: function (response){
-                console.log(response)
                 $("#id_MaPhieuNhapHang").val(response.MaPhieuNhap)
                 $("#id_TenPhieuNhapHang").val(response.TenPhieu)
                 if (response.success = true) {
@@ -690,8 +684,8 @@
                             <td>${item.TenTinhChatDongPhuc == null ? "" : item.TenTinhChatDongPhuc}</td>
                             <td>${item.MaSize}</td>
                             <td>${item.SoLuong}</td>
-                            <td>${item.DonGia}</td>
-                            <td>${item.ThanhTien}</td>
+                            <td>${formatCurrencyVND(item.DonGia)}</td>
+                            <td>${formatCurrencyVND(item.ThanhTien)}</td>
                             <td>${item.SoLuongDaNhap}</td>
                             <td>${item.SoLuongConLai}</td>
                             <td>${item.TenDonViTinh}</td>
@@ -709,32 +703,6 @@
                 $('#dataTable tbody').html(content)
             }
         })
-    }
-    function checkPriceInput(element) {
-        if (+element.value < 1) {
-            //console.log(+element.value)
-            if (+element.value == 0)
-                element.value = 1
-            else
-                element.value = -+element.value
-            Toast.fire({
-                icon: "info",
-                title: "Price must be greater than 0!"
-            });
-        }
-    }
-    function checkQuantityInput(element) {
-        if (+element.value < 1) {
-            //console.log(+element.value)
-            if (+element.value == 0)
-                element.value = 1
-            else
-                element.value = -+element.value
-            Toast.fire({
-                icon: "info",
-                title: "Quantity must be greater than 0!"
-            });
-        }
     }
     function checkDataThemMoiPhieuNhapHangChiTiet() {
         // Thu thập dữ liệu từ input trong modal
@@ -770,14 +738,15 @@
                             <td>${item.TenSanPham}</td>
                             <td>${item.TenTinhChatDongPhuc == null ? "" : item.TenTinhChatDongPhuc}</td>
                             <td>${item.MaSize}</td>
-                            <td><input class="form-control" type="number" onfocusout="checkQuantityInput(this)" value="1" /></td>
-                            <td><input class="form-control" type="number" onfocusout="checkPriceInput(this)" value="${item.DonGia}" /></td>
+                            <td><input class="form-control" type="number" onfocusout="checkInput(this,'Quantity')" value="1" /></td>
+                            <td><input class="form-control" type="number" onfocusout="checkInput(this,'Price')" value="${item.DonGia}" /></td>
                             <td>${item.TenDonViTinh}</td>
                             <td>${item.TenNhaCungCap}</td>
                             <td style = "display:none">${item.SanPham}</td>
                             <td style = "display:none">${item.Size}</td>
                             <td style = "display:none">${item.TinhChatDongPhuc}</td>
                             <td style = "display:none">${item.NhaCungCap}</td>
+                            <td style = "display:none">${item.DonViTinh}</td>
                         </tr>`
                         stt++
                     })
@@ -989,6 +958,7 @@
     // Script suaPhieuNhapHang
     var IdPhieuNhapHang;
     function suaPhieuNhapHang(button) {
+        $("#id_SuaNhaCungCap").prop("disabled", true);
         IdPhieuNhapHang = parseInt(button.getAttribute("data-id"), 10);
 
         $.ajax({
@@ -1002,7 +972,7 @@
                 console.log(data);
                 $('#id_SuaMaPhieuNhapHang').val(data.MaPhieuNhapHang);
                 $('#id_SuaTenPhieuNhapHang').val(data.TenPhieuNhapHang);
-
+                $("#id_SuaTongSLDaNhap").val(data.TongSLDaNhap)
                 var NgayDH = parseInt(data.NgayDatHang.replace("/Date(", "").replace(")/", ""), 10);
                 var serverDateTime = new Date(NgayDH);
                 $('#id_SuaNgayDatHang').val(serverDateTime.toISOString().slice(0, 16));
@@ -1038,8 +1008,8 @@
                         "<td>" + (item.TenTinhChatDongPhuc !== null ? item.TenTinhChatDongPhuc : "") + "</td>" +
                         "<td>" + (item.MaSize !== null ? item.MaSize : "") + "</td>" +
                         "<td>" + (item.SoLuong !== null ? item.SoLuong : "") + "</td>" +
-                        "<td>" + (item.DonGia !== null ? item.DonGia : "") + "</td>" +
-                        "<td>" + (item.ThanhTien !== null ? item.ThanhTien : "") + "</td>" +
+                        "<td>" + (item.DonGia !== null ? formatCurrencyVND(item.DonGia) : "") + "</td>" +
+                        "<td>" + (item.ThanhTien !== null ? formatCurrencyVND(item.ThanhTien) : "") + "</td>" +
                         "<td>" + (item.SoLuongDaNhap !== null ? item.SoLuongDaNhap : "") + "</td>" +
                         "<td>" + ((item.SoLuong !== null && item.SoLuongDaNhap !== null) ? (item.SoLuong - item.SoLuongDaNhap) : "") + "</td>" +
                         "<td>" + (item.TenDonViTinh !== null ? item.TenDonViTinh : "") + "</td>" +
@@ -1181,8 +1151,6 @@
                 PhieuNhapHangChiTiet: IdPhieuNhapHangChiTiet
             },
             success: function (data) {
-                $('#modalSuaPhieuNhapHang').modal('hide');
-
                 // Xử lý phản hồi từ controller (nếu cần)
                 console.log(data)
 
@@ -1195,7 +1163,7 @@
                     value: null,
                     text: ""
                 }));
-
+                $("#id_SuaSanPham").prop("disabled", true);
                 $('#id_SuaSanPham').val(data.SanPham);
                 $('#id_SuaTinhChat').val(data.TinhChatDongPhuc);
                 $('#id_SuaSize').val(data.Size);
@@ -1378,7 +1346,7 @@
                         "<td>" + (item.MaSize !== null ? item.MaSize : "") + "</td>" +
                         "<td>" + (item.SoLuong !== null ? item.SoLuong : "") + "</td>" +
                         "<td>" + (item.DonGia !== null ? item.DonGia : "") + "</td>" +
-                        "<td>" + (item.ThanhTien !== null ? item.ThanhTien : "") + "</td>" +
+                        "<td>" + (item.ThanhTien !== null ? formatCurrencyVND(item.ThanhTien) : "") + "</td>" +
                         "<td>" + (item.SoLuongDaNhap !== null ? item.SoLuongDaNhap : "") + "</td>" +
                         "<td>" + ((item.SoLuong !== null && item.SoLuongDaNhap !== null) ? (item.SoLuong - item.SoLuongDaNhap) : "") + "</td>" +
                         "<td>" + (item.TenDonViTinh !== null ? item.TenDonViTinh : "") + "</td>" +

@@ -293,5 +293,15 @@ namespace QLDP_02.Models
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getDanhSachSanPham_Result>("getDanhSachSanPham");
         }
+    
+        public virtual ObjectResult<NhapKho_GetSelectPhieuNhapHang_Result> NhapKho_GetSelectPhieuNhapHang()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NhapKho_GetSelectPhieuNhapHang_Result>("NhapKho_GetSelectPhieuNhapHang");
+        }
+    
+        public virtual ObjectResult<NhapKho_SelectPhieuNhapHang_Result> NhapKho_SelectPhieuNhapHang()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NhapKho_SelectPhieuNhapHang_Result>("NhapKho_SelectPhieuNhapHang");
+        }
     }
 }
