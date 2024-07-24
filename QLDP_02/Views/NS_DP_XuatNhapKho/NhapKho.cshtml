@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Nhập kho";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -52,18 +51,22 @@
                 <h5 class="modal-title" id="staticThemMoiNhapKho">Thêm mới Nhập kho</h5>
                 <div>
                     <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-circle-arrow-left me-2"></i></i>Quay lại</button>
-                    <button class="btn btn-outline-success" type="button">Cập nhật <i class="fa-regular fa-paper-plane ms-2"></i></button>
+                    <button class="btn btn-outline-success"onclick="capNhatPhieuNhapKho()" type="button">Cập nhật <i class="fa-regular fa-paper-plane ms-2"></i></button>
                 </div>
             </div>
             <div class="modal-body">
                 <div class="form-group row mb-2">
-                    <div class="col-lg-3">
-                        <label class="fw-500 required">Phiếu nhập hàng <span class="text-danger">(*)</span> :</label>
-                        @Html.DropDownList("SelectPhieuNhap", null,"Chọn phiếu nhập", new { @id = "SelectPhieuNhap", @class = "form-control", onchange = "handleSelectPhieuNhap()" })
+                    <div class="col-lg-2">
+                        <label class="fw-500 required">Mã phiếu<span class="text-danger">(*)</span> :</label>
+                        <input type="text" disabled class="form-control" required id="MaPhieuNhapKho" />
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
+                        <label class="fw-500 required">Phiếu nhập hàng <span class="text-danger">(*)</span> :</label>
+                        @Html.DropDownList("SelectPhieuNhap", null, "Chọn phiếu nhập", new { @id = "SelectPhieuNhap", @class = "form-control", onchange = "handleSelectPhieuNhap()" })
+                    </div>
+                    <div class="col-lg-2">
                         <label class="fw-500">Kho nhận<span class="text-danger">(*)</span>:</label>
-                        @Html.DropDownList("SelectKhoNhan", null, new { @id = "SelectKhoNhan", @class = "form-control"})
+                        @Html.DropDownList("SelectKhoNhan", null, new { @id = "SelectKhoNhan", @class = "form-control" })
                     </div>
                     <div class="col-lg-3">
                         <label class="fw-500">Ngày nhận:</label>
@@ -71,7 +74,7 @@
                     </div>
                     <div class="col-lg-3">
                         <label class="fw-500">Tỷ giá<span class="text-danger">(*)</span> :</label>
-                        <input type="number" placeholder="0" class="form-control" required id="id_TyGia" />
+                        <input type="number" placeholder="0" class="form-control" required id="id_TyGia" value="0" />
                     </div>
                 </div>
                 <div class="form-group row mb-2">
@@ -81,26 +84,30 @@
                     </div>
                 </div>
                 <div>
-                    <table id="tableDanhSachSanPham" class="table table-active">
-                        <tr>
-                            <th>Sản phẩm</th>
-                            <th>Tính chất</th>
-                            <th>Size</th>
-                            <th>SL yêu cầu</th>
-                            <th>Số lượng</th>
-                            <th>Số lượng đã nhập</th>
-                            <th>Đơn giá</th>
-                            <th>Thành tiền</th>
-                            <th>Đơn vị tính</th>
-                            <th>Nhà cung cấp</th>
-                            <th>Tồn kho</th>
-                            <th>Ghi chú</th>
-                        </tr>
+                    <table id="tableDanhSachSanPham" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Sản phẩm</th>
+                                <th>Tính chất</th>
+                                <th>Size</th>
+                                <th>SL yêu cầu</th>
+                                <th>Số lượng</th>
+                                <th>Số lượng đã nhập</th>
+                                <th>Đơn giá</th>
+                                <th>Thành tiền</th>
+                                <th>Đơn vị tính</th>
+                                <th>Nhà cung cấp</th>
+                                <th>Tồn kho</th>
+                                <th>Ghi chú</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
                     </table>
                 </div>
-                @*<div class="modal-footer">
-                    <button class="btn btn-success" type="button" onclick="themMoiNhapKho()">Xác nhận</button>
-                </div>*@
+               
             </div>
         </div>
     </div>
@@ -131,15 +138,99 @@
 </div>
 
 <script>
-    
-    const handleSelectPhieuNhap = () => {
-        console.log($("#SelectPhieuNhap").val())
+    // cập nhật sản phẩm phiếu nhập kho
+    const capNhatPhieuNhapKho = () => {
+        let ngayNhapXuat = $("#id_NgayNhapXuat").val()
+        let khoNhan = $("#SelectKhoNhan").val()
+        let phieuNhap = $("#SelectPhieuNhap").val()
+        let tyGia = $("#id_TyGia").val()
+        let xuatNhapkho = $("#MaPhieuNhapKho").val()
+        let ghiChu = $("#id_GhiChu").val()
+        console.log(ngayNhapXuat, 'kho:' + khoNhan, 'phieuNhap:' + phieuNhap, 'tyGia:' + tyGia, 'xuatNhapkho:' + xuatNhapkho)
+        const tableRows = document.querySelectorAll('#tableDanhSachSanPham tbody tr');
+        const danhSachSanPhamNhapKho = []
+        console.log(tableRows)
+        tableRows.forEach((row, index) => {
+            const data = {
+                STT: row.cells[0].textContent,
+                PhieuNhaphang: row.cells[1].textContent,
+                SanPham: row.cells[2].textContent,
+                TenSanPham: row.cells[3].textContent,
+                Size: row.cells[5].textContent,
+                SoLuong: row.querySelector('input[type="number"]').value,
+                SoLuongDaNhap: row.cells[8].textContent,
+                DonGia: row.cells[9].textContent,
+                DonViTinh: row.cells[15].textContent,
+                TenDonViTinh: row.cells[11].textContent,
+                ThanhTien: row.cells[10].textContent,
+                GhiChu: row.cells[14].textContent,
+                MaSize: row.cells[16].textContent,
+                TonKho: row.cells[13].textContent,
+                SoLuongYeuCau: row.cells[6].textContent,
+                TinhChatDongPhuc: row.cells[4].textContent,
+                NhaCungCap: row.cells[12].textContent,
+            }
+            tableRows.push(data)
+        })
+        return 
         $.ajax({
-            url: "",
+            url: "/NS_DP_XuatNhapKho/CapNhat_PhieuNhapKho",
+            type: 'post',
+            data: {
+                ngayNhap: ngayNhapXuat,
+                khoNhan: +khoNhan,
+                phieuNhapHang: +phieuNhap,
+                tyGia: tyGia,
+                ghiChu: ghiChu,
+                xuatNhapkho: xuatNhapkho == "" ? 0 : xuatNhapKho,
+            },
+            success: function (response) {
+                console.log(response)
+                $("#")
+            }
+        })
+    }
+
+    const handleSelectPhieuNhap = () => {
+        //console.log($("#SelectPhieuNhap").val())
+        $.ajax({
+            url: "/NS_DP_XuatNhapKho/NhapKho_ChonPhieuNhapHan",
             type: "post",
             data: {
                 maPhieuNhap: $("#SelectPhieuNhap").val()
             },
+            success: function (response) {
+                console.log(response)
+                if (response.success) {
+                    let content =``
+                    response.item.forEach((item) => {
+                        content +=`<tr class="productRow">
+                            0<td>${item.stt}</td> 
+                            <td style = "display:none">${item.PhieuNhapHang}</td>
+                            2<td style = "display:none">${item.SanPham}</td>
+                            <td>${item.TenSanPham}</td>
+                            4<td>${item.TenTinhChatDongPhuc == null ? "" : item.TenTinhChatDongPhuc}</td>
+                            <td>${item.MaSize}</td>
+                            <td>${item.SoLuongYeuCau}</td>
+                            <td><input class="form-control" type="number" id="SoLuong_${item.PhieuNhapHang}" placeholder="số lượng" value="${item.SoLuongYeuCau}"/></td>
+                            <td>${item.SoLuongDaNhap}</td>
+                            <td>${item.DonGia}</td>
+                            <td>${item.ThanhTien}</td>
+                            11<td>${item.TenDonViTinh}</td>
+                            <td>${item.TenNhaCungCap}</td>
+                            <td>${item.TonKho == null ? "0" : item.TonKho}</td>
+                            <td>${item.GhiChu}</td>
+                            15<td style = "display:none">${item.DonViTinh}</td>
+                            <td style = "display:none">${item.Size}</td>
+                        </tr>`
+                    })
+                    $("#tableDanhSachSanPham tbody").html('')
+                    $("#tableDanhSachSanPham tbody").append(content)
+                    if ($('#tableDanhSachSanPham tbody tr').length == 0) {
+                        $("#tableDanhSachSanPham tbody").html('<tr><td colspan="13" class="text-center">Không có dữ liệu</td></tr>')
+                    }
+                }
+            }
         })
     }
     const randomMaPhieu = (length) => {

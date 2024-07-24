@@ -49,6 +49,7 @@ namespace QLDP_02.Models
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<NS_QuocTich> NS_QuocTich { get; set; }
         public virtual DbSet<DM_DP_Size> DM_DP_Size { get; set; }
+        public virtual DbSet<NS_DP_LoaiPhieu> NS_DP_LoaiPhieu { get; set; }
     
         public virtual ObjectResult<getPhieuNhapHang_Result> getPhieuNhapHang()
         {
@@ -302,6 +303,15 @@ namespace QLDP_02.Models
         public virtual ObjectResult<NhapKho_SelectPhieuNhapHang_Result> NhapKho_SelectPhieuNhapHang()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NhapKho_SelectPhieuNhapHang_Result>("NhapKho_SelectPhieuNhapHang");
+        }
+    
+        public virtual ObjectResult<NhapKho_ChangeSelectPhieuNhap_Result> NhapKho_ChangeSelectPhieuNhap(Nullable<int> maPhieu)
+        {
+            var maPhieuParameter = maPhieu.HasValue ?
+                new ObjectParameter("maPhieu", maPhieu) :
+                new ObjectParameter("maPhieu", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NhapKho_ChangeSelectPhieuNhap_Result>("NhapKho_ChangeSelectPhieuNhap", maPhieuParameter);
         }
     }
 }
