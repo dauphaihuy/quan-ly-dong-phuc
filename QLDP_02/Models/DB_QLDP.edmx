@@ -464,6 +464,7 @@
         <Function Name="NhapKho_ChangeSelectPhieuNhap" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="maPhieu" Type="int" Mode="In" />
         </Function>
+        <Function Name="NhapKho_getAllDanhSachNhapHang" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="NhapKho_GetSelectPhieuNhapHang" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="NhapKho_SelectPhieuNhapHang" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="PhieuNhap_GetSanhSachSanPham" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
@@ -1015,6 +1016,7 @@
           <FunctionImport Name="NhapKho_GetSelectPhieuNhapHang" ReturnType="Collection(DB_QLDPModel.NhapKho_GetSelectPhieuNhapHang_Result)" />
           <FunctionImport Name="NhapKho_SelectPhieuNhapHang" ReturnType="Collection(DB_QLDPModel.NhapKho_SelectPhieuNhapHang_Result)" />
           <EntitySet Name="NS_DP_LoaiPhieu" EntityType="DB_QLDPModel.NS_DP_LoaiPhieu" />
+          <FunctionImport Name="NhapKho_getAllDanhSachNhapHang" ReturnType="Collection(DB_QLDPModel.NhapKho_getAllDanhSachNhapHang_Result)" />
           <FunctionImport Name="NhapKho_ChangeSelectPhieuNhap" ReturnType="Collection(DB_QLDPModel.NhapKho_ChangeSelectPhieuNhap_Result)">
             <Parameter Name="maPhieu" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -1355,6 +1357,29 @@
           <Property Name="LoaiPhieu" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TenLoaiPhieu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <ComplexType Name="NhapKho_getAllDanhSachNhapHang_Result">
+          <Property Type="Int64" Name="stt" Nullable="true" />
+          <Property Type="Int32" Name="XuatNhapKho" Nullable="false" />
+          <Property Type="String" Name="MaXuatNhapKho" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Kho" Nullable="false" />
+          <Property Type="Int32" Name="LoaiPhieu" Nullable="false" />
+          <Property Type="Int32" Name="IDPhieu" Nullable="false" />
+          <Property Type="String" Name="GhiChu" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="SDTNguoiLap" Nullable="true" MaxLength="11" />
+          <Property Type="Int32" Name="NguoiTao" Nullable="false" />
+          <Property Type="DateTime" Name="NgayTao" Nullable="false" Precision="16" />
+          <Property Type="Int32" Name="NguoiSua" Nullable="true" />
+          <Property Type="DateTime" Name="NgaySua" Nullable="true" Precision="16" />
+          <Property Type="Int32" Name="NguoiXoa" Nullable="true" />
+          <Property Type="DateTime" Name="NgayXoa" Nullable="true" Precision="16" />
+          <Property Type="Boolean" Name="IsDel" Nullable="false" />
+          <Property Type="Int32" Name="NguoiNhapXuat" Nullable="true" />
+          <Property Type="DateTime" Name="NgayNhapXuat" Nullable="true" Precision="16" />
+          <Property Type="Int32" Name="NhaCungCap" Nullable="true" />
+          <Property Type="Decimal" Name="TyGia" Nullable="true" Precision="8" Scale="5" />
+          <Property Type="String" Name="TenKho" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="TenNhaCungCap" Nullable="true" MaxLength="255" />
+        </ComplexType>
         <ComplexType Name="NhapKho_ChangeSelectPhieuNhap_Result">
           <Property Type="Int64" Name="stt" Nullable="true" />
           <Property Type="Int32" Name="PhieuNhapHang" Nullable="false" />
@@ -2176,6 +2201,33 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="NhapKho_getAllDanhSachNhapHang" FunctionName="DB_QLDPModel.Store.NhapKho_getAllDanhSachNhapHang">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_QLDPModel.NhapKho_getAllDanhSachNhapHang_Result">
+                <ScalarProperty Name="stt" ColumnName="stt" />
+                <ScalarProperty Name="XuatNhapKho" ColumnName="XuatNhapKho" />
+                <ScalarProperty Name="MaXuatNhapKho" ColumnName="MaXuatNhapKho" />
+                <ScalarProperty Name="Kho" ColumnName="Kho" />
+                <ScalarProperty Name="LoaiPhieu" ColumnName="LoaiPhieu" />
+                <ScalarProperty Name="IDPhieu" ColumnName="IDPhieu" />
+                <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+                <ScalarProperty Name="SDTNguoiLap" ColumnName="SDTNguoiLap" />
+                <ScalarProperty Name="NguoiTao" ColumnName="NguoiTao" />
+                <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+                <ScalarProperty Name="NguoiSua" ColumnName="NguoiSua" />
+                <ScalarProperty Name="NgaySua" ColumnName="NgaySua" />
+                <ScalarProperty Name="NguoiXoa" ColumnName="NguoiXoa" />
+                <ScalarProperty Name="NgayXoa" ColumnName="NgayXoa" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+                <ScalarProperty Name="NguoiNhapXuat" ColumnName="NguoiNhapXuat" />
+                <ScalarProperty Name="NgayNhapXuat" ColumnName="NgayNhapXuat" />
+                <ScalarProperty Name="NhaCungCap" ColumnName="NhaCungCap" />
+                <ScalarProperty Name="TyGia" ColumnName="TyGia" />
+                <ScalarProperty Name="TenKho" ColumnName="TenKho" />
+                <ScalarProperty Name="TenNhaCungCap" ColumnName="TenNhaCungCap" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="NhapKho_ChangeSelectPhieuNhap" FunctionName="DB_QLDPModel.Store.NhapKho_ChangeSelectPhieuNhap">
             <ResultMapping>
               <ComplexTypeMapping TypeName="DB_QLDPModel.NhapKho_ChangeSelectPhieuNhap_Result">

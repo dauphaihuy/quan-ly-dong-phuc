@@ -390,7 +390,7 @@ left join DM_DP_TinhChatDongPhuc tcpd on sptcdp.TinhChatDongPhuc = tcpd.TinhChat
 join DM_DP_Size size on size.LoaiSanPham = sp.LoaiSanPham
 join DM_DP_NhaCungCap ncc on ncc.NhaCungCap = sptcdp.NhaCungCap
 join DM_DP_DonViTinh dvt on dvt.DonViTinh=sp.DonViTinh
-where ncc.NhaCungCap=1
+where ncc.NhaCungCap=@NhaCungCap
 order by sp.SanPham asc, MaSize asc
 end
 go
@@ -542,23 +542,66 @@ from NS_DP_PhieuNhapHang join NS_DP_PhieuNhapHang_ChiTiet
 	join NS_DP_SanPham on NS_DP_PhieuNhapHang_ChiTiet.SanPham = NS_DP_SanPham.SanPham
 	join DM_DP_Kho on DM_DP_Kho.Kho = NS_DP_PhieuNhapHang.KhoNhan
 	left join (
-		select sum(NS_DP_XuatNhapKho_ChiTiet.SoLuong) TonKho,SanPham,Size from NS_DP_XuatNhapKho 
-		join NS_DP_XuatNhapKho_ChiTiet on NS_DP_XuatNhapKho.XuatNhapKho = NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho
-		group by SanPham, Size,NS_DP_XuatNhapKho.XuatNhapKho 
+		select sum(NS_DP_XuatNhapKho_ChiTiet.SoLuong) TonKho,SanPham,Size 
+		from NS_DP_XuatNhapKho_ChiTiet 
+		group by SanPham, Size
 				) TonKho 
 	on NS_DP_PhieuNhapHang_ChiTiet.SanPham = TonKho.SanPham and TonKho.Size = NS_DP_PhieuNhapHang_ChiTiet.Size
 where NS_DP_PhieuNhapHang.PhieuNhapHang = @maPhieu
 end
 go
 
-exec NhapKho_ChangeSelectPhieuNhap 2
+--
+select sum(NS_DP_XuatNhapKho_ChiTiet.SoLuong) TonKho,SanPham,Size 
+		from NS_DP_XuatNhapKho_ChiTiet 
+		group by SanPham, Size
+--
+select *  
+from NS_DP_XuatNhapKho 
+		join NS_DP_XuatNhapKho_ChiTiet on NS_DP_XuatNhapKho.XuatNhapKho = NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho
 
 
+exec NhapKho_ChangeSelectPhieuNhap 4
+select * from DM_DP_Kho
 select * from NS_DP_PhieuNhapHang
+alter proc NhapKho_getAllDanhSachNhapHang
+as
+begin
+	select distinct ROW_NUMBER() OVER(ORDER BY NS_DP_XuatNhapKho.XuatNhapKho) 
+	stt,
+	NS_DP_XuatNhapKho.*,
+	DM_DP_Kho.TenKho,
+	DM_DP_NhaCungCap.TenNhaCungCap from NS_DP_XuatNhapKho
+	left join DM_DP_NhaCungCap on NS_DP_XuatNhapKho.NhaCungCap = DM_DP_NhaCungCap.NhaCungCap
+	left join DM_DP_Kho on NS_DP_XuatNhapKho.Kho = DM_DP_Kho.Kho
+end 
+go
+select * from DM_DP_NhaCungCap
+select * from NS_DP_XuatNhapKho_ChiTiet
+exec NhapKho_getAllDanhSachNhapHang
 select * from NS_DP_PhieuNhapHang_ChiTiet
+where PhieuNhapHang = 2 and SanPham =6 and Size=14
+
+select * from NS_DP_XuatNhapKho
+where 1=1
+order by XuatNhapKho
+
+delete from NS_DP_XuatNhapKho where XuatNhapKho between 50 and 62
+select * from NS_DP_XuatNhapKho_ChiTiet
+Select * from NS_DP_SanPham
+update table NS_DP_XuatNhapKho_ChiTiet
+set SanPham = @sanPham
+	Size =@Size
+	SoLuong= @SoLuong
+	DonViTinh = @DonViTinh
+	GhiChu = @GhiChu
+	DonGia = @DonGia
+	ThanhTien = @SoLuong * @DonGia
+	TinhChatDongPhuc = @TinhChatDongPhuc
+	NhaCungCap = @NhaCungCap
 
 select * from NS_DP_XuatNhapKho
 order by XuatNhapKho
 select * from NS_DP_XuatNhapKho_ChiTiet
-Select * from NS_DP_SanPham
-select * from NS_DP_PhieuNhapHang_ChiTiet
+truncate table NS_DP_XuatNhapKho
+exec getSanPhamByNhaCungCap 2

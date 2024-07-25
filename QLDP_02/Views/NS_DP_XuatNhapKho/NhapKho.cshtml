@@ -13,7 +13,7 @@
                     </h1>
                 </div>
                 <div class="col-12 col-xl-auto mb-3">
-                    <button onclick="" class="btn btn-sm btn-light text-primary" data-bs-toggle="modal" data-bs-target="#modalThemMoiNhapKho">
+                    <button onclick="" class="btn btn-sm btn-light text-primary" id="btnThemMoi">
                         <i class="me-1 fa-regular fa-square-plus"></i>
                         Thêm mới
                     </button>
@@ -28,10 +28,10 @@
     <table id="tableNhapKho" class="table table-striped w-100">
         <thead>
             <tr>
+                <th>Stt</th>
                 <th>Ngày nhập hàng</th>
                 <th>Mã phiếu nhập</th>
                 <th>Kho nhận</th>
-                <th>Họ tên người nhận</th>
                 <th>Tỷ giá</th>
                 <th>Nhà cung cấp</th>
                 <th>Ghi chú</th>
@@ -50,7 +50,7 @@
             <div class="modal-header alert alert-success">
                 <h5 class="modal-title" id="staticThemMoiNhapKho">Thêm mới Nhập kho</h5>
                 <div>
-                    <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-circle-arrow-left me-2"></i></i>Quay lại</button>
+                    <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-circle-arrow-left me-2"></i>Quay lại</button>
                     <button class="btn btn-outline-success"onclick="capNhatPhieuNhapKho()" type="button">Cập nhật <i class="fa-regular fa-paper-plane ms-2"></i></button>
                 </div>
             </div>
@@ -59,6 +59,7 @@
                     <div class="col-lg-2">
                         <label class="fw-500 required">Mã phiếu<span class="text-danger">(*)</span> :</label>
                         <input type="text" disabled class="form-control" required id="MaPhieuNhapKho" />
+                        <input id="xuatNhapKho"type="number" value="0" style = "display:none"/>
                     </div>
                     <div class="col-lg-2">
                         <label class="fw-500 required">Phiếu nhập hàng <span class="text-danger">(*)</span> :</label>
@@ -138,41 +139,53 @@
 </div>
 
 <script>
+    $("#btnThemMoi").on('click', function () {
+        $("#modalThemMoiNhapKho").modal('show')
+    })
     // cập nhật sản phẩm phiếu nhập kho
     const capNhatPhieuNhapKho = () => {
         let ngayNhapXuat = $("#id_NgayNhapXuat").val()
         let khoNhan = $("#SelectKhoNhan").val()
         let phieuNhap = $("#SelectPhieuNhap").val()
         let tyGia = $("#id_TyGia").val()
-        let xuatNhapkho = $("#MaPhieuNhapKho").val()
+        let maXuatNhapkho = $("#MaPhieuNhapKho").val()
+        let xuatNhapKho = $("#xuatNhapKho").val()
         let ghiChu = $("#id_GhiChu").val()
-        console.log(ngayNhapXuat, 'kho:' + khoNhan, 'phieuNhap:' + phieuNhap, 'tyGia:' + tyGia, 'xuatNhapkho:' + xuatNhapkho)
+
+        console.log(ngayNhapXuat)
+        console.log(khoNhan)
+        console.log(phieuNhap)
+        console.log(tyGia)
+        console.log(maXuatNhapkho)
+        console.log('xnk'+xuatNhapKho)
+        console.log(ghiChu)
+
         const tableRows = document.querySelectorAll('#tableDanhSachSanPham tbody tr');
         const danhSachSanPhamNhapKho = []
-        console.log(tableRows)
+        console.log(danhSachSanPhamNhapKho)
         tableRows.forEach((row, index) => {
             const data = {
-                STT: row.cells[0].textContent,
-                PhieuNhaphang: row.cells[1].textContent,
-                SanPham: row.cells[2].textContent,
+                STT: +row.cells[0].textContent,
+                PhieuNhaphang: +row.cells[1].textContent,
+                SanPham: +row.cells[2].textContent,
                 TenSanPham: row.cells[3].textContent,
-                Size: row.cells[5].textContent,
-                SoLuong: row.querySelector('input[type="number"]').value,
-                SoLuongDaNhap: row.cells[8].textContent,
-                DonGia: row.cells[9].textContent,
-                DonViTinh: row.cells[15].textContent,
+                Size: +row.cells[5].textContent,
+                SoLuong: +row.querySelector('input[type="number"]').value,
+                SoLuongDaNhap: +row.cells[8].textContent,
+                DonGia: +row.cells[9].textContent,
+                DonViTinh: +row.cells[15].textContent,
                 TenDonViTinh: row.cells[11].textContent,
-                ThanhTien: row.cells[10].textContent,
+                ThanhTien: +row.cells[10].textContent,
                 GhiChu: row.cells[14].textContent,
-                MaSize: row.cells[16].textContent,
-                TonKho: row.cells[13].textContent,
-                SoLuongYeuCau: row.cells[6].textContent,
-                TinhChatDongPhuc: row.cells[4].textContent,
-                NhaCungCap: row.cells[12].textContent,
+                MaSize: +row.cells[16].textContent,
+                TonKho: +row.cells[13].textContent,
+                SoLuongYeuCau: +row.cells[6].textContent,
+                TinhChatDongPhuc: +row.cells[4].textContent,
+                NhaCungCap: +row.cells[17].textContent,
             }
-            tableRows.push(data)
+            danhSachSanPhamNhapKho.push(data)
         })
-        return 
+        //console.log(danhSachSanPhamNhapKho)
         $.ajax({
             url: "/NS_DP_XuatNhapKho/CapNhat_PhieuNhapKho",
             type: 'post',
@@ -182,14 +195,60 @@
                 phieuNhapHang: +phieuNhap,
                 tyGia: tyGia,
                 ghiChu: ghiChu,
-                xuatNhapkho: xuatNhapkho == "" ? 0 : xuatNhapKho,
+                xuatNhapKho: +$("#xuatNhapKho").val(),
+                maXuatNhapkho: maXuatNhapkho
             },
             success: function (response) {
                 console.log(response)
-                $("#")
+                $("#xuatNhapKho").val(response.phieuXuatNhapKho.XuatNhapKho)
+                $("#MaPhieuNhapKho").val(response.phieuXuatNhapKho.MaXuatNhapKho)
+                $.ajax({
+                    url: "/NS_DP_XuatNhapKho/NhapKho_ThemSanPham",
+                    type: 'post',
+                    data: {
+                        xuatNhapKho: response.phieuXuatNhapKho.XuatNhapKho,
+                        danhSachSanPhamNhapKho: danhSachSanPhamNhapKho
+                    },
+                    success: function (response) {
+                        console.log(response)
+                    }
+                })
             }
         })
     }
+    function convertDateTimestamp(dateTimeString) {
+        const timestamp = parseInt(dateTimeString.replace('/Date(', '').replace(')/', ''));
+        const dateObj = new Date(timestamp);
+        const formattedDate = dateObj.toLocaleDateString('default', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        return formattedDate;
+    }
+    const renderDataTable = () => {
+        $.ajax({
+            url: "/NS_DP_XuatNhapKho/getAllDanhSachNhapHang",
+            type: "post",
+            success: function (response) {
+                console.log(response)
+                let content = ``
+                response.item.forEach((item) => {
+                    content += `<tr>
+                        <td>${item.stt}</td>
+                        <td>${convertDateTimestamp(item.NgayTao)}</td>
+                        <td>${item.MaXuatNhapKho}</td>
+                        <td>${item.TenKho}</td>
+                        <td>${item.TyGia}</td>
+                        <td>${item.TenNhaCungCap}</td>
+                        <td>${item.GhiChu == null ? "" : item.GhiChu}</td>
+                    </tr>`
+                })
+                $("#tableNhapKho tbody").html('')
+                $("#tableNhapKho tbody").append(content)
+                if ($('#tableNhapKho tbody tr').length == 0) {
+                    $("#tableNhapKho tbody").html('<tr><td colspan="7" class="text-center">Không có dữ liệu</td></tr>')
+                }
+            }
+        })
+    }
+    renderDataTable()
 
     const handleSelectPhieuNhap = () => {
         //console.log($("#SelectPhieuNhap").val())
@@ -205,23 +264,24 @@
                     let content =``
                     response.item.forEach((item) => {
                         content +=`<tr class="productRow">
-                            0<td>${item.stt}</td> 
+                            <td>${item.stt}</td> 
                             <td style = "display:none">${item.PhieuNhapHang}</td>
-                            2<td style = "display:none">${item.SanPham}</td>
+                            <td style = "display:none">${item.SanPham}</td>
                             <td>${item.TenSanPham}</td>
-                            4<td>${item.TenTinhChatDongPhuc == null ? "" : item.TenTinhChatDongPhuc}</td>
+                            <td>${item.TenTinhChatDongPhuc == null ? "" : item.TenTinhChatDongPhuc}</td>
                             <td>${item.MaSize}</td>
                             <td>${item.SoLuongYeuCau}</td>
-                            <td><input class="form-control" type="number" id="SoLuong_${item.PhieuNhapHang}" placeholder="số lượng" value="${item.SoLuongYeuCau}"/></td>
+                            <td><input class="form-control" type="number" id="SoLuong_${item.PhieuNhapHang}" placeholder="số lượng" value="${item.SoLuongYeuCau - item.SoLuongDaNhap}"/></td>
                             <td>${item.SoLuongDaNhap}</td>
                             <td>${item.DonGia}</td>
                             <td>${item.ThanhTien}</td>
-                            11<td>${item.TenDonViTinh}</td>
+                            <td>${item.TenDonViTinh}</td>
                             <td>${item.TenNhaCungCap}</td>
                             <td>${item.TonKho == null ? "0" : item.TonKho}</td>
                             <td>${item.GhiChu}</td>
-                            15<td style = "display:none">${item.DonViTinh}</td>
+                            <td style = "display:none">${item.DonViTinh}</td>
                             <td style = "display:none">${item.Size}</td>
+                            <td style = "display:none">${item.NhaCungCap}</td>
                         </tr>`
                     })
                     $("#tableDanhSachSanPham tbody").html('')

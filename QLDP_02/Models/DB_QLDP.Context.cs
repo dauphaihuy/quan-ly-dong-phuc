@@ -305,6 +305,11 @@ namespace QLDP_02.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NhapKho_SelectPhieuNhapHang_Result>("NhapKho_SelectPhieuNhapHang");
         }
     
+        public virtual ObjectResult<NhapKho_getAllDanhSachNhapHang_Result> NhapKho_getAllDanhSachNhapHang()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NhapKho_getAllDanhSachNhapHang_Result>("NhapKho_getAllDanhSachNhapHang");
+        }
+    
         public virtual ObjectResult<NhapKho_ChangeSelectPhieuNhap_Result> NhapKho_ChangeSelectPhieuNhap(Nullable<int> maPhieu)
         {
             var maPhieuParameter = maPhieu.HasValue ?

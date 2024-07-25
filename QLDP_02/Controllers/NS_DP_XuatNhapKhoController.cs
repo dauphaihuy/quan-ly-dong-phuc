@@ -11,27 +11,39 @@ namespace QLDP_02.Controllers
 {
     public class XuatNhapKhoChiTiet
     {
-        int STT { get; set; }
-        int PhieuNhaphang {get;set; }
-        int SanPham { get; set; }
-        string TenSanPham { get; set; }
-        int Size { get; set; }
-        int SoLuong { get; set; }
-        int SoLuongDaNhap { get; set; }
-        int DonGia { get; set; }
-        int DonViTinh  { get; set; }
-        string TenDonViTinh { get; set; }
-        int ThanhTien { get; set; }
-        string GhiChu { get; set; }
-        int MaSize { get; set; }
-        int TonKho { get; set; }
-        int SoLuongYeuCau { get; set; }
-        int TinhChatDongPhuc { get; set; }
-        int NhaCungCap { get; set; }
+        public int STT { get; set; }
+        public int PhieuNhaphang {get;set; }
+        public int SanPham { get; set; }
+        public string TenSanPham { get; set; }
+        public int Size { get; set; }
+        public int SoLuong { get; set; }
+        public int SoLuongDaNhap { get; set; }
+        public int DonGia { get; set; }
+        public int DonViTinh  { get; set; }
+        public string TenDonViTinh { get; set; }
+        public int ThanhTien { get; set; }
+        public string GhiChu { get; set; }
+        public int MaSize { get; set; }
+        public int TonKho { get; set; }
+        public int SoLuongYeuCau { get; set; }
+        public int TinhChatDongPhuc { get; set; }
+        public int NhaCungCap { get; set; }
     }
     public class NS_DP_XuatNhapKhoController : Controller
     {
         private DB_QLDPEntities db = new DB_QLDPEntities();
+        public JsonResult getAllDanhSachNhapHang()
+        {
+            try
+            {
+                var result = db.NhapKho_getAllDanhSachNhapHang().Where(x => x.IsDel != true);
+                return Json(new { success = true, item = result });
+            }
+            catch(Exception e)
+            {
+                return Json(new{ success = false, err = e.Message });
+            }
+        }
 
         public JsonResult NhapKho_GetDanhSachSanPhamNhapHang(int phieuNhapHang)
         {
@@ -95,11 +107,65 @@ namespace QLDP_02.Controllers
                     db.SaveChanges();
                     return Json(new { success = true , phieuXuatNhapKho= xnkRow });
                 }
+                if (xuatNhapKho != 0)
+                {
+                    var phieu = db.NS_DP_XuatNhapKho.Where(x => x.MaXuatNhapKho == maXuatNhapKho).FirstOrDefault();
+                    return Json(new { success = true , phieuXuatNhapKho  = phieu});
+                }
                 return Json(new { success = true });
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, err = ex.Message });
+            }
+        }
+        public JsonResult NhapKho_ThemSanPham(int XuatNhapKho, List<XuatNhapKhoChiTiet> danhSachSanPhamNhapKho)
+        {
+            try
+            {
+                foreach(var item in danhSachSanPhamNhapKho)
+                {
+                    var capnhatphieuNhapChiTiet = db.NS_DP_PhieuNhapHang_ChiTiet.Where(x => x.PhieuNhapHang == item.PhieuNhaphang && x.SanPham == item.SanPham && x.Size == item.MaSize).FirstOrDefault();
+                    var phieuNhapHang =db.NS_DP_PhieuNhapHang.Where(x=>x.PhieuNhapHang == item.PhieuNhaphang).FirstOrDefault();
+                    if (item.SoLuong > capnhatphieuNhapChiTiet.SoLuong || item.SoLuong + capnhatphieuNhapChiTiet.SoLuongDaNhap > item.SoLuongYeuCau)
+                    {
+                        return Json(new { success = false, message = "số lượng nhập lớn hơn số lượng yêu cầu" });
+                    }
+                    else
+                    {
+                        capnhatphieuNhapChiTiet.SoLuongDaNhap = item.SoLuong + capnhatphieuNhapChiTiet.SoLuongDaNhap;
+                        phieuNhapHang.TongSLDaNhap = item.SoLuong + phieuNhapHang.TongSLDaNhap;
+                        phieuNhapHang.NhaCungCap = item.NhaCungCap;
+                        if (phieuNhapHang.TongSLMua == phieuNhapHang.TongSLDaNhap)
+                        {
+                            phieuNhapHang.IsHoanThanh = true;
+                        }
+                        var xnk = db.NS_DP_XuatNhapKho.Where(x => x.XuatNhapKho == XuatNhapKho).FirstOrDefault();
+                        xnk.NhaCungCap = item.NhaCungCap;
+                        NS_DP_XuatNhapKho_ChiTiet xnkct = new NS_DP_XuatNhapKho_ChiTiet
+                        {
+                            XuatNhapKho = XuatNhapKho,
+                            SanPham = item.SanPham,
+                            Size = item.MaSize,
+                            SoLuong = item.SoLuong,
+                            DonViTinh = item.DonViTinh,
+                            GhiChu = item.GhiChu,
+                            DonGia = item.DonGia,
+                            ThanhTien = item.ThanhTien,
+                            TinhChatDongPhuc = item.TinhChatDongPhuc,
+                            NhaCungCap = item.NhaCungCap
+
+                        };
+                        db.NS_DP_XuatNhapKho_ChiTiet.Add(xnkct);
+                        db.SaveChanges();
+
+                    }
+                }
+                return Json(new { success = true , danhSachSanPhamNhapKho });
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, err = e.Message });
             }
         }
     }
