@@ -185,7 +185,24 @@
             }
             danhSachSanPhamNhapKho.push(data)
         })
+        //kiểm tra ngày
+        if (!ngayNhapXuat) {
+            Toast.fire({
+                icon: 'error',
+                title: 'Ngày nhập không được để trống'
+            })
+            return
+        }
         //console.log(danhSachSanPhamNhapKho)
+        //kiểm tra dữ liệu nhập
+        danhSachSanPhamNhapKho.forEach((item) => {
+            if (item.SoLuong + item.SoLuongDaNhap > item.SoLuongYeuCau) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Số lượng nhập vượt quá số lượng yêu cầu'
+                })
+            }
+        })
         $.ajax({
             url: "/NS_DP_XuatNhapKho/CapNhat_PhieuNhapKho",
             type: 'post',
@@ -304,5 +321,3 @@
     }
     
 </script>
-
-

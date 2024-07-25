@@ -390,11 +390,11 @@ left join DM_DP_TinhChatDongPhuc tcpd on sptcdp.TinhChatDongPhuc = tcpd.TinhChat
 join DM_DP_Size size on size.LoaiSanPham = sp.LoaiSanPham
 join DM_DP_NhaCungCap ncc on ncc.NhaCungCap = sptcdp.NhaCungCap
 join DM_DP_DonViTinh dvt on dvt.DonViTinh=sp.DonViTinh
-where ncc.NhaCungCap=@NhaCungCap
+where ncc.NhaCungCap=1
 order by sp.SanPham asc, MaSize asc
 end
 go
-
+Select * from DM_DP_Size
 exec getSanPhamByNhaCungCap 1
 
 
@@ -603,5 +603,6 @@ set SanPham = @sanPham
 select * from NS_DP_XuatNhapKho
 order by XuatNhapKho
 select * from NS_DP_XuatNhapKho_ChiTiet
-truncate table NS_DP_XuatNhapKho
 exec getSanPhamByNhaCungCap 2
+
+exec NhapKho_ChangeSelectPhieuNhap 4
