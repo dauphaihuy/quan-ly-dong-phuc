@@ -21,6 +21,8 @@ namespace QLDP_02.Models
         public string MaSize { get; set; }
         public int SoLuongYeuCau { get; set; }
         public int SoLuong { get; set; }
+        public Nullable<int> SoLuongDaNhap { get; set; }
+        public Nullable<int> TongSLDaNhap { get; set; }
         public Nullable<decimal> DonGia { get; set; }
         public Nullable<decimal> ThanhTien { get; set; }
         public int DonViTinh { get; set; }

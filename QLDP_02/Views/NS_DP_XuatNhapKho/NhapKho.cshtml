@@ -204,15 +204,19 @@
         }
         //console.log(danhSachSanPhamNhapKho)
         //kiểm tra dữ liệu nhập
+        let flag = false;
         danhSachSanPhamNhapKho.forEach((item) => {
             if (item.SoLuong + item.SoLuongDaNhap > item.SoLuongYeuCau) {
                 Toast.fire({
                     icon: 'error',
                     title: 'Số lượng nhập vượt quá số lượng yêu cầu'
                 })
-                return
+                flag=true
             }
         })
+        if (flag) {
+            return
+        }
         $.ajax({
             url: "/NS_DP_XuatNhapKho/CapNhat_PhieuNhapKho",
             type: 'post',
@@ -292,7 +296,7 @@
                         <td>${item.MaSize}</td>
                         <td>${item.SoLuongYeuCau}</td>
                         <td><input class="form-control" onfocusout="" type="number" id="SoLuong_${item.PhieuNhapHang}" placeholder="số lượng" value="${item.SoLuong}"/></td>
-                        <td>${item.SoLuong}</td>
+                        <td>${item.SoLuongDaNhap}</td>
                         <td>${item.DonGia}</td>
                         <td>${item.ThanhTien}</td>
                         <td>${item.TenDonViTinh}</td>

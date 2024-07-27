@@ -1433,6 +1433,8 @@
           <Property Type="String" Name="MaSize" Nullable="false" MaxLength="50" />
           <Property Type="Int32" Name="SoLuongYeuCau" Nullable="false" />
           <Property Type="Int32" Name="SoLuong" Nullable="false" />
+          <Property Type="Int32" Name="SoLuongDaNhap" Nullable="true" />
+          <Property Type="Int32" Name="TongSLDaNhap" Nullable="true" />
           <Property Type="Decimal" Name="DonGia" Nullable="true" Precision="18" Scale="0" />
           <Property Type="Decimal" Name="ThanhTien" Nullable="true" Precision="18" Scale="0" />
           <Property Type="Int32" Name="DonViTinh" Nullable="false" />
@@ -2320,6 +2322,8 @@
                 <ScalarProperty Name="MaSize" ColumnName="MaSize" />
                 <ScalarProperty Name="SoLuongYeuCau" ColumnName="SoLuongYeuCau" />
                 <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+                <ScalarProperty Name="SoLuongDaNhap" ColumnName="SoLuongDaNhap" />
+                <ScalarProperty Name="TongSLDaNhap" ColumnName="TongSLDaNhap" />
                 <ScalarProperty Name="DonGia" ColumnName="DonGia" />
                 <ScalarProperty Name="ThanhTien" ColumnName="ThanhTien" />
                 <ScalarProperty Name="DonViTinh" ColumnName="DonViTinh" />
