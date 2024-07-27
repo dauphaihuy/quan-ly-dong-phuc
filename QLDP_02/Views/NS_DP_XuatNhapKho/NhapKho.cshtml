@@ -140,7 +140,17 @@
 
 <script>
     $("#btnThemMoi").on('click', function () {
-        $("#id_NgayNhapXuat").val("")
+        const now = new Date();
+
+        // Format the current date and time as YYYY-MM-DDTHH:MM
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+
+        const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
+        $("#id_NgayNhapXuat").val(formattedDate)
         $("#MaPhieuNhapKho").val("")
         $("#xuatNhapKho").val(0)
         $("#SelectPhieuNhap").val("")
@@ -246,6 +256,7 @@
                     },
                     success: function (response) {
                         console.log(response)
+                        $("#modalThemMoiNhapKho").modal('hide');
                         renderDataTable()
                     }
                 })
@@ -369,27 +380,29 @@
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!",
             backdrop: `
-                rgba(0,0,123,0.4)
-                url("")
-                left top
-                no-repeat
+                rgba(0,0,123,0.2)
+                url("https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdHIzcmxwcnNhajRtZWJuazVha2IyZ2VyZHExcHJvdjN5eDVlOGdhZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/laEqixonsPbev4vSRc/giphy.webp")
               `,
-            timer: 5000,
-            timerProgressBar: true,
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
                     url: "/NS_DP_XuatNhapKho/NhapKho_XoaPhieuNhapKho",
                     type: "post",
                     data: {
-                        XuatNhapKho: +row.cells[0].textContent
+                        XuatNhapKho: +row.cells[7].textContent
                     },
                     success: function (response) {
                         console.log(response)
 
-                        Toast.fire({
+                        Swal.fire({
                             icon: 'success',
-                            title: 'Delete successful 😍'
+                            title: 'Delete successful 😍',
+                            backdrop: `
+                                rgba(0,0,123,0.2)
+                                url("https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzAydzFsNGtyaWRkeGVkZHBuNXA5N2NvdThmd2w1cmloYnowMWdlbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/RLEdq1A9PT0BZo27s3/giphy.webp")
+                              `,
+                            timer: 5000,
+                            timerProgressBar: true,
                         })
                         renderDataTable()
                     }
