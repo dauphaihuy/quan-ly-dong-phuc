@@ -68,6 +68,7 @@ namespace QLDP_02.Controllers
                 }
                 //db.NS_DP_PhieuNhapHang_ChiTiet.RemoveRange(phieuNhapHangChiTiet);
                 db.NS_DP_XuatNhapKho_ChiTiet.RemoveRange(xuatNhapKhoChiTiet);
+                db.NS_DP_XuatNhapKho.Remove(xuatNhapKho);
                 db.SaveChanges();
                 return Json(new { success = true , xuatNhapKhoChiTiet, xuatNhapKho, phieuNhapHangChiTiet });
             }catch(Exception e)
