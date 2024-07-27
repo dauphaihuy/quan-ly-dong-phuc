@@ -776,5 +776,15 @@ BEGIN
 END;
 GO
 
+SELECT* FROM dbo.NS_DP_XuatNhapKho
+ORDER BY XuatNhapKho
 
-delete dbo.NS_DP_XuatNhapKho WHERE XuatNhapKho =6 
+SELECT * FROM dbo.NS_DP_XuatNhapKho
+SELECT * FROM dbo.NS_DP_XuatNhapKho_ChiTiet
+SELECT * FROM dbo.NS_DP_PhieuNhapHang
+SELECT * FROM dbo.NS_DP_PhieuNhapHang_ChiTiet
+
+TRUNCATE TABLE NS_DP_PhieuNhapHang
+TRUNCATE TABLE NS_DP_PhieuNhapHang_ChiTiet
+TRUNCATE TABLE dbo.NS_DP_XuatNhapKho
+TRUNCATE TABLE dbo.NS_DP_XuatNhapKho_ChiTiet

@@ -48,7 +48,28 @@ namespace QLDP_02.Controllers
         {
             try
             {
-                return Json(new { success = true });
+                var xuatNhapKhoChiTiet = db.NS_DP_XuatNhapKho_ChiTiet.Where(x => x.XuatNhapKho == XuatNhapKho).ToList();
+                var xuatNhapKho = db.NS_DP_XuatNhapKho.Where(x => x.XuatNhapKho == XuatNhapKho).FirstOrDefault();
+                var PhieuNhapHang = db.NS_DP_PhieuNhapHang.Where(x => x.PhieuNhapHang == xuatNhapKho.IDPhieu).FirstOrDefault();
+                var phieuNhapHangChiTiet = db.NS_DP_PhieuNhapHang_ChiTiet.Where(x => x.PhieuNhapHang == xuatNhapKho.IDPhieu);
+                foreach(var itemxnkChiTiet in xuatNhapKhoChiTiet)
+                {
+                    foreach (var itemPhieuChiTiet in phieuNhapHangChiTiet)
+                    {
+                        if(itemxnkChiTiet.SanPham==itemPhieuChiTiet.SanPham 
+                            && itemxnkChiTiet.Size == itemPhieuChiTiet.Size 
+                            && itemxnkChiTiet.DonViTinh == itemPhieuChiTiet.DonViTinh)
+                        {
+                            itemPhieuChiTiet.SoLuongDaNhap = itemPhieuChiTiet.SoLuongDaNhap - itemxnkChiTiet.SoLuong;
+                            PhieuNhapHang.TongSLDaNhap = PhieuNhapHang.TongSLDaNhap - itemxnkChiTiet.SoLuong;
+                            PhieuNhapHang.IsHoanThanh = false;
+                        }
+                    }
+                }
+                //db.NS_DP_PhieuNhapHang_ChiTiet.RemoveRange(phieuNhapHangChiTiet);
+                db.NS_DP_XuatNhapKho_ChiTiet.RemoveRange(xuatNhapKhoChiTiet);
+                db.SaveChanges();
+                return Json(new { success = true , xuatNhapKhoChiTiet, xuatNhapKho, phieuNhapHangChiTiet });
             }catch(Exception e)
             {
                 return Json(new { success = false, err = e.Message });
