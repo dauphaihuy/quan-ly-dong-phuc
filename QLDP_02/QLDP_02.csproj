@@ -214,6 +214,12 @@
     <Compile Include="Models\NhapKho_GetSelectPhieuNhapHang_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\NhapKho_getSoLuongDeXoa_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NhapKho_HienThiSanPhamTheoPhieu_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\NhapKho_SelectPhieuNhapHang_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>

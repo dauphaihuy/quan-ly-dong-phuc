@@ -606,3 +606,163 @@ select * from NS_DP_XuatNhapKho_ChiTiet
 exec getSanPhamByNhaCungCap 2
 
 exec NhapKho_ChangeSelectPhieuNhap 4
+--26/7
+exec getSanPhamByNhaCungCap 2
+select * from NS_DP_PhieuNhapHang
+order by XuatNhapKho
+select * from NS_DP_XuatNhapKho_ChiTiet
+-- xóa phiếu
+select * from NS_DP_XuatNhapKho 
+	left join NS_DP_XuatNhapKho_ChiTiet on NS_DP_XuatNhapKho.XuatNhapKho = NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho
+create procedure NhapKho_getSoLuongDeXoa
+(
+	 @XuatNhapKho int =null
+)
+as 
+begin
+	select NS_DP_XuatNhapKho.XuatNhapKho,
+	NS_DP_XuatNhapKho.MaXuatNhapKho ,
+	NS_DP_XuatNhapKho.IDPhieu,
+	NS_DP_XuatNhapKho_ChiTiet.SanPham,
+	NS_DP_XuatNhapKho_ChiTiet.Size,
+	NS_DP_XuatNhapKho_ChiTiet.SoLuong
+	from NS_DP_XuatNhapKho 
+	left join NS_DP_XuatNhapKho_ChiTiet on NS_DP_XuatNhapKho.XuatNhapKho = NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho
+	where NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho = @XuatNhapKho
+end 
+go
+exec NhapKho_getAllDanhSachNhapHang
+select * from NS_DP_XuatNhapKho
+select
+select * from NS_DP_PhieuNhapHang_ChiTiet
+where PhieuNhapHang = 18
+
+select * from NS_DP_PhieuNhapHang
+where PhieuNhapHang = 18
+ 
+--cập nhật lại phiếu
+select * from NS_DP_PhieuNhapHang
+select * from NS_DP_PhieuNhapHang_ChiTiet
+--cập nhật lại theo phieu nhap hang- sản phẩm- size
+--
+select NS_DP_XuatNhapKho.*,
+	NS_DP_XuatNhapKho_ChiTiet.ID,
+	NS_DP_XuatNhapKho_ChiTiet.SanPham,
+	NS_DP_XuatNhapKho_ChiTiet.Size
+	from NS_DP_XuatNhapKho
+left join NS_DP_XuatNhapKho_ChiTiet on NS_DP_XuatNhapKho.XuatNhapKho = NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho
+order by NS_DP_XuatNhapKho.XuatNhapKho
+where 
+
+--
+delete from NS_DP_XuatNhapKho where XuatNhapKho between 10 and 76
+select * from NS_DP_XuatNhapKho_ChiTiet
+order by XuatNhapKho
+select * from NS_DP_PhieuNhapHang
+select * from NS_DP_XuatNhapKho
+order by XuatNhapKho
+
+select * 
+from NS_DP_XuatNhapKho_ChiTiet
+left join NS_DP_SanPham on NS_DP_SanPham.SanPham = NS_DP_XuatNhapKho_ChiTiet.SanPham
+where XuatNhapKho =99
+order by XuatNhapKho
+
+select * 
+from NS_DP_XuatNhapKho_ChiTiet
+where XuatNhapKho =99
+
+create proc NhapKho_HienThiSanPhamTheoPhieu (
+@PhieuNhap int =null)
+as
+begin
+select 
+	ROW_NUMBER() over (order by NS_DP_PhieuNhapHang.PhieuNhapHang) stt,
+	NS_DP_PhieuNhapHang.PhieuNhapHang,
+	MaPhieuNhapHang, 
+	TenPhieuNhapHang,
+	DM_DP_TinhChatDongPhuc.TenTinhChatDongPhuc,
+	NS_DP_PhieuNhapHang_ChiTiet.TinhChatDongPhuc,
+	NS_DP_PhieuNhapHang_ChiTiet.Size,
+	DM_DP_Size.MaSize,
+	SoLuong as SoLuongYeuCau,
+	SoLuongDaNhap,
+	DonGia,
+	ThanhTien,
+	DM_DP_DonViTinh.DonViTinh,
+	DM_DP_DonViTinh.TenDonViTinh,
+	NS_DP_PhieuNhapHang.NhaCungCap,
+	TenNhaCungCap,
+	TonKho.TonKho,
+	NS_DP_PhieuNhapHang_ChiTiet.GhiChu,
+	NS_DP_SanPham.SanPham,
+	NS_DP_SanPham.TenSanPham,
+	Kho,
+	DM_DP_Kho.TenKho
+from NS_DP_PhieuNhapHang join NS_DP_PhieuNhapHang_ChiTiet
+	on NS_DP_PhieuNhapHang.PhieuNhapHang = NS_DP_PhieuNhapHang_ChiTiet.PhieuNhapHang
+	left join DM_DP_TinhChatDongPhuc on NS_DP_PhieuNhapHang_ChiTiet.TinhChatDongPhuc = DM_DP_TinhChatDongPhuc.TinhChatDongPhuc
+	join DM_DP_Size on NS_DP_PhieuNhapHang_ChiTiet.Size = DM_DP_Size.Size
+	join DM_DP_DonViTinh on NS_DP_PhieuNhapHang_ChiTiet.DonViTinh = DM_DP_DonViTinh.DonViTinh
+	join DM_DP_NhaCungCap on NS_DP_PhieuNhapHang.NhaCungCap = DM_DP_NhaCungCap.NhaCungCap
+	join NS_DP_SanPham on NS_DP_PhieuNhapHang_ChiTiet.SanPham = NS_DP_SanPham.SanPham
+	join DM_DP_Kho on DM_DP_Kho.Kho = NS_DP_PhieuNhapHang.KhoNhan
+	left join (
+		select sum(NS_DP_XuatNhapKho_ChiTiet.SoLuong) TonKho,SanPham,Size 
+		from NS_DP_XuatNhapKho_ChiTiet 
+		group by SanPham, Size
+				) TonKho 
+	on NS_DP_PhieuNhapHang_ChiTiet.SanPham = TonKho.SanPham and TonKho.Size = NS_DP_PhieuNhapHang_ChiTiet.Size
+where NS_DP_PhieuNhapHang.PhieuNhapHang = 18
+end 
+go
+
+alter proc NhapKho_HienThiSanPhamTheoPhieu (
+@XuatNhapKho int =null)
+as
+begin
+select 
+	NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho,
+	DM_DP_TinhChatDongPhuc.TenTinhChatDongPhuc,
+	NS_DP_XuatNhapKho_ChiTiet.TinhChatDongPhuc,
+	NS_DP_XuatNhapKho_ChiTiet.Size,
+	DM_DP_Size.MaSize,
+	SoLuong as SoLuongYeuCau,
+	SoLuong,
+	DonGia,
+	ThanhTien,
+	DM_DP_DonViTinh.DonViTinh,
+	DM_DP_DonViTinh.TenDonViTinh,
+	NS_DP_XuatNhapKho_ChiTiet.NhaCungCap,
+	TenNhaCungCap,
+	TonKho.TonKho,
+	NS_DP_XuatNhapKho_ChiTiet.GhiChu,
+	NS_DP_SanPham.SanPham,
+	NS_DP_SanPham.TenSanPham,
+	NS_DP_XuatNhapKho.TyGia
+	from NS_DP_XuatNhapKho_ChiTiet
+	join NS_DP_XuatNhapKho on NS_DP_XuatNhapKho.XuatNhapKho = NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho
+	left join DM_DP_TinhChatDongPhuc on NS_DP_XuatNhapKho_ChiTiet.TinhChatDongPhuc = DM_DP_TinhChatDongPhuc.TinhChatDongPhuc
+	join DM_DP_Size on NS_DP_XuatNhapKho_ChiTiet.Size = DM_DP_Size.Size
+	join DM_DP_DonViTinh on NS_DP_XuatNhapKho_ChiTiet.DonViTinh = DM_DP_DonViTinh.DonViTinh
+	join DM_DP_NhaCungCap on NS_DP_XuatNhapKho_ChiTiet.NhaCungCap = DM_DP_NhaCungCap.NhaCungCap
+	join NS_DP_SanPham on NS_DP_XuatNhapKho_ChiTiet.SanPham = NS_DP_SanPham.SanPham
+	
+	left join (
+		select sum(NS_DP_XuatNhapKho_ChiTiet.SoLuong) TonKho,SanPham,Size 
+		from NS_DP_XuatNhapKho_ChiTiet 
+		group by SanPham, Size
+				) TonKho 
+	on NS_DP_XuatNhapKho_ChiTiet.SanPham = TonKho.SanPham and TonKho.Size = NS_DP_XuatNhapKho_ChiTiet.Size
+	where NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho = @XuatNhapKho
+end 
+go
+
+select * from NS_DP_XuatNhapKho_ChiTiet
+select * from NS_DP_XuatNhapKho
+NhapKho_HienThiSanPhamTheoPhieu 99
+select * from NS_DP_XuatNhapKho_ChiTiet
+join NS_DP_XuatNhapKho on NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho = NS_DP_XuatNhapKho.XuatNhapKho
+where NS_DP_XuatNhapKho.XuatNhapKho=98
+
+select * from NS_DP_XuatNhapKho_ChiTiet

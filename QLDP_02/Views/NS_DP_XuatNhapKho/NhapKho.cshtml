@@ -59,7 +59,7 @@
                     <div class="col-lg-2">
                         <label class="fw-500 required">Mã phiếu<span class="text-danger">(*)</span> :</label>
                         <input type="text" disabled class="form-control" required id="MaPhieuNhapKho" />
-                        <input id="xuatNhapKho"type="number" value="0" style = "display:none"/>
+                        <input id="xuatNhapKho"type="number" value="0"/>
                     </div>
                     <div class="col-lg-2">
                         <label class="fw-500 required">Phiếu nhập hàng <span class="text-danger">(*)</span> :</label>
@@ -140,6 +140,16 @@
 
 <script>
     $("#btnThemMoi").on('click', function () {
+        $("#id_NgayNhapXuat").val("")
+        $("#MaPhieuNhapKho").val("")
+        $("#xuatNhapKho").val(0)
+        $("#SelectPhieuNhap").val("")
+        $("#id_TyGia").val(0)
+        $("#SelectPhieuNhap").prop("disabled", false)
+        $("#tableDanhSachSanPham tbody").html('')
+        if ($('#tableDanhSachSanPham tbody tr').length == 0) {
+            $("#tableDanhSachSanPham tbody").html('<tr><td colspan="13" class="text-center">Không có dữ liệu</td></tr>')
+        }
         $("#modalThemMoiNhapKho").modal('show')
     })
     // cập nhật sản phẩm phiếu nhập kho
@@ -159,7 +169,6 @@
         console.log(maXuatNhapkho)
         console.log('xnk'+xuatNhapKho)
         console.log(ghiChu)
-
         const tableRows = document.querySelectorAll('#tableDanhSachSanPham tbody tr');
         const danhSachSanPhamNhapKho = []
         console.log(danhSachSanPhamNhapKho)
@@ -175,7 +184,7 @@
                 DonGia: +row.cells[9].textContent,
                 DonViTinh: +row.cells[15].textContent,
                 TenDonViTinh: row.cells[11].textContent,
-                ThanhTien: +row.cells[10].textContent,
+                ThanhTien: +row.querySelector('input[type="number"]').value * +row.cells[9].textContent,
                 GhiChu: row.cells[14].textContent,
                 MaSize: +row.cells[16].textContent,
                 TonKho: +row.cells[13].textContent,
@@ -201,6 +210,7 @@
                     icon: 'error',
                     title: 'Số lượng nhập vượt quá số lượng yêu cầu'
                 })
+                return
             }
         })
         $.ajax({
@@ -228,6 +238,7 @@
                     },
                     success: function (response) {
                         console.log(response)
+                        renderDataTable()
                     }
                 })
             }
@@ -239,6 +250,67 @@
         const formattedDate = dateObj.toLocaleDateString('default', { day: '2-digit', month: '2-digit', year: 'numeric' });
         return formattedDate;
     }
+    const selectChiTietPhieuNhap = (element) => {
+        console.log(element)
+        let cells = element.getElementsByTagName('td')
+        var data = [];
+        for (var i = 0; i < cells.length; i++) {
+            data.push(cells[i].textContent);
+        }
+        $.ajax({
+            url: "/NS_DP_XuatNhapKho/NhapKho_HienSanPhamTheoPhieu",
+            type: "post",
+            data: {
+                XuatNhapKho: data[7]
+            },
+            success: function (response) {
+                console.log(response)
+                const phieuXuatNhapKho = response.phieuXuatNhapKho
+                //console.log(phieuXuatNhapKho)
+                $("#MaPhieuNhapKho").prop("disabled", true)
+                $("#SelectPhieuNhap").prop("disabled", true)
+                $("#MaPhieuNhapKho").val(response.phieuXuatNhapKho.MaXuatNhapKho)
+                $("#xuatNhapKho").val(response.phieuXuatNhapKho.XuatNhapKho)
+                $("#SelectPhieuNhap").val(response.phieuXuatNhapKho.IDPhieu)
+                $("#id_TyGia").val(response.phieuXuatNhapKho.TyGia)
+                //ngày
+                var timestamp = parseInt(phieuXuatNhapKho.NgayTao.match(/\d+/)[0]);
+                var date = new Date(timestamp);
+                var formattedDate = date.toISOString().slice(0, 16);
+                $("#id_NgayNhapXuat").val(formattedDate)
+                // hiện danh sách sản phẩm
+                console.log(response.dssp)
+                let content = ``
+                response.dssp.forEach((item) => {
+                    content += `
+                    <tr>
+                        <td>${item.stt}</td> 
+                        <td style = "display:none">${item.PhieuNhapHang}</td>
+                        <td style = "display:none">${item.SanPham}</td>
+                        <td>${item.TenSanPham}</td>
+                        <td>${item.TenTinhChatDongPhuc == null ? "" : item.TenTinhChatDongPhuc}</td>
+                        <td>${item.MaSize}</td>
+                        <td>${item.SoLuongYeuCau}</td>
+                        <td><input class="form-control" onfocusout="" type="number" id="SoLuong_${item.PhieuNhapHang}" placeholder="số lượng" value="${item.SoLuong}"/></td>
+                        <td>${item.SoLuong}</td>
+                        <td>${item.DonGia}</td>
+                        <td>${item.ThanhTien}</td>
+                        <td>${item.TenDonViTinh}</td>
+                        <td>${item.TenNhaCungCap}</td>
+                        <td>${item.TonKho == null ? "0" : item.TonKho}</td>
+                        <td>${item.GhiChu}</td>
+                        <td style = "display:none">${item.DonViTinh}</td>
+                        <td style = "display:none">${item.Size}</td>
+                        <td style = "display:none">${item.NhaCungCap}</td>
+                    </tr>
+                    `
+                })
+                $("#tableDanhSachSanPham tbody").html('')
+                $("#tableDanhSachSanPham tbody").append(content)
+            }
+        })
+        $("#modalThemMoiNhapKho").modal('show')
+    }
     const renderDataTable = () => {
         $.ajax({
             url: "/NS_DP_XuatNhapKho/getAllDanhSachNhapHang",
@@ -247,7 +319,8 @@
                 console.log(response)
                 let content = ``
                 response.item.forEach((item) => {
-                    content += `<tr>
+                    content +=
+                    `<tr ondblclick="selectChiTietPhieuNhap(this)">
                         <td>${item.stt}</td>
                         <td>${convertDateTimestamp(item.NgayTao)}</td>
                         <td>${item.MaXuatNhapKho}</td>
@@ -255,6 +328,9 @@
                         <td>${item.TyGia}</td>
                         <td>${item.TenNhaCungCap}</td>
                         <td>${item.GhiChu == null ? "" : item.GhiChu}</td>
+                        <td style = "display:none">${item.XuatNhapKho}</td>
+                        <td style = "display:none">${item.IDPhieu}</td>
+                        <td style = "display:none">${item.Kho}</td>
                     </tr>`
                 })
                 $("#tableNhapKho tbody").html('')
@@ -288,10 +364,10 @@
                             <td>${item.TenTinhChatDongPhuc == null ? "" : item.TenTinhChatDongPhuc}</td>
                             <td>${item.MaSize}</td>
                             <td>${item.SoLuongYeuCau}</td>
-                            <td><input class="form-control" type="number" id="SoLuong_${item.PhieuNhapHang}" placeholder="số lượng" value="${item.SoLuongYeuCau - item.SoLuongDaNhap}"/></td>
+                            <td><input class="form-control" onfocusout="onChangeInput(this)" type="number" id="SoLuong_${item.PhieuNhapHang}" placeholder="số lượng" value="${item.SoLuongYeuCau - item.SoLuongDaNhap}"/></td>
                             <td>${item.SoLuongDaNhap}</td>
                             <td>${item.DonGia}</td>
-                            <td>${item.ThanhTien}</td>
+                            <td>${(item.SoLuongYeuCau - item.SoLuongDaNhap) * item.DonGia}</td>
                             <td>${item.TenDonViTinh}</td>
                             <td>${item.TenNhaCungCap}</td>
                             <td>${item.TonKho == null ? "0" : item.TonKho}</td>
@@ -308,6 +384,14 @@
                     }
                 }
             }
+        })
+    }
+    const onChangeInput = () => {
+        const tableRows = document.querySelectorAll('#tableDanhSachSanPham tbody tr');
+        tableRows.forEach((row, index) => {
+            const soLuong = +row.querySelector('input[type="number"]').value
+            const donGia = +row.cells[9].textContent
+            row.cells[10].textContent = soLuong * donGia
         })
     }
     const randomMaPhieu = (length) => {

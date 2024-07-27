@@ -44,7 +44,16 @@ namespace QLDP_02.Controllers
                 return Json(new{ success = false, err = e.Message });
             }
         }
-
+        public JsonResult NhapKho_XoaPhieuNhapKho(int XuatNhapKho)
+        {
+            try
+            {
+                return Json(new { success = true });
+            }catch(Exception e)
+            {
+                return Json(new { success = false, err = e.Message });
+            }   
+        }
         public JsonResult NhapKho_GetDanhSachSanPhamNhapHang(int phieuNhapHang)
         {
             return Json(new { success = true });
@@ -110,7 +119,8 @@ namespace QLDP_02.Controllers
                 if (xuatNhapKho != 0)
                 {
                     var phieu = db.NS_DP_XuatNhapKho.Where(x => x.MaXuatNhapKho == maXuatNhapKho).FirstOrDefault();
-                    return Json(new { success = true , phieuXuatNhapKho  = phieu});
+                    
+                    return Json(new { success = true , phieuXuatNhapKho  = phieu });
                 }
                 return Json(new { success = true });
             }
@@ -119,11 +129,25 @@ namespace QLDP_02.Controllers
                 return Json(new { success = false, err = ex.Message });
             }
         }
+        public JsonResult NhapKho_HienSanPhamTheoPhieu(int XuatNhapKho)
+        {
+            try
+            {
+                var phieuXuatNhapKho = db.NS_DP_XuatNhapKho.Where(x => x.XuatNhapKho==XuatNhapKho).FirstOrDefault();
+                var dssp = db.NhapKho_HienThiSanPhamTheoPhieu(XuatNhapKho);
+                return Json(new { success = true, phieuXuatNhapKho, dssp });
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, err = e.Message });
+            }
+        }
         public JsonResult NhapKho_ThemSanPham(int XuatNhapKho, List<XuatNhapKhoChiTiet> danhSachSanPhamNhapKho)
         {
             try
             {
-                foreach(var item in danhSachSanPhamNhapKho)
+                var ktraTonTai = db.NS_DP_XuatNhapKho_ChiTiet.Where(x => x.XuatNhapKho == XuatNhapKho).Count();
+                foreach (var item in danhSachSanPhamNhapKho)
                 {
                     var capnhatphieuNhapChiTiet = db.NS_DP_PhieuNhapHang_ChiTiet.Where(x => x.PhieuNhapHang == item.PhieuNhaphang && x.SanPham == item.SanPham && x.Size == item.MaSize).FirstOrDefault();
                     var phieuNhapHang =db.NS_DP_PhieuNhapHang.Where(x=>x.PhieuNhapHang == item.PhieuNhaphang).FirstOrDefault();
