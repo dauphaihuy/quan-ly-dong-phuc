@@ -230,6 +230,10 @@
                 maXuatNhapkho: maXuatNhapkho
             },
             success: function (response) {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Goods receipt successful 😍'
+                })
                 console.log(response)
                 $("#xuatNhapKho").val(response.phieuXuatNhapKho.XuatNhapKho)
                 $("#MaPhieuNhapKho").val(response.phieuXuatNhapKho.MaXuatNhapKho)
@@ -269,6 +273,7 @@
             },
             success: function (response) {
                 console.log(response)
+                
                 const phieuXuatNhapKho = response.phieuXuatNhapKho
                 //console.log(phieuXuatNhapKho)
                 $("#MaPhieuNhapKho").prop("disabled", true)
@@ -277,6 +282,7 @@
                 $("#xuatNhapKho").val(response.phieuXuatNhapKho.XuatNhapKho)
                 $("#SelectPhieuNhap").val(response.phieuXuatNhapKho.IDPhieu)
                 $("#id_TyGia").val(response.phieuXuatNhapKho.TyGia)
+                $("#id_GhiChu").val(response.phieuXuatNhapKho.GhiChu)
                 //ngày
                 var timestamp = parseInt(phieuXuatNhapKho.NgayTao.match(/\d+/)[0]);
                 var date = new Date(timestamp);
@@ -335,6 +341,11 @@
                         <td style = "display:none">${item.XuatNhapKho}</td>
                         <td style = "display:none">${item.IDPhieu}</td>
                         <td style = "display:none">${item.Kho}</td>
+                        <td>
+                            <button type="button" class="btn btn-outline-danger">
+                               <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
                     </tr>`
                 })
                 $("#tableNhapKho tbody").html('')
