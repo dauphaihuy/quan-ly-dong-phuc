@@ -34,8 +34,7 @@ namespace QLDP_02.Controllers
               .Select(s => s[random.Next(s.Length)]).ToArray());
             return randomString;
         }
-		[HttpPost]
-		public ActionResult ChonSanPham(List<SelectedProduct> selectedRows,string idNguoiDeNghi,string lyDoCapPhat,string maPhieu,int PhieuDeNghi)
+		public JsonResult ChonSanPham(List<SelectedProduct> selectedRows,string idNguoiDeNghi,string lyDoCapPhat,string maPhieu,int PhieuDeNghi)
 		{
 			foreach(var item in selectedRows){
 				if (item.SoLuong <= 0)
@@ -65,16 +64,18 @@ namespace QLDP_02.Controllers
 					db.SaveChanges();
 					foreach (var item in selectedRows)
 					{
-                        
+                        var sanPham = db.NS_DP_SanPham.FirstOrDefault(s => s.SanPham == item.SanPham);
                         NS_DP_PhieuDeNghi_CaNhan_ChiTiet nS_DP_PhieuDeNghi_CaNhan_ChiTiet = new NS_DP_PhieuDeNghi_CaNhan_ChiTiet
 						{
-                        
-                        PhieuDeNghi_CaNhan = nS_DP_PhieuDeNghi_CaNhan.PhieuDeNghi_CaNhan,
+							PhieuDeNghi_CaNhan = nS_DP_PhieuDeNghi_CaNhan.PhieuDeNghi_CaNhan,
 							SanPham = item.SanPham,
 							Size = int.Parse(item.Size),
 							SoLuong = item.SoLuong,
-							TinhChatDongPhuc = item.TinhChat
-
+							TinhChatDongPhuc = item.TinhChat,
+							NhanSu = int.Parse(idNguoiDeNghi),
+							DonViTinh = sanPham.DonViTinh,
+							SoLuongDaNhan =0
+							
                         };
 						db.NS_DP_PhieuDeNghi_CaNhan_ChiTiet.Add(nS_DP_PhieuDeNghi_CaNhan_ChiTiet);
 						db.SaveChanges();

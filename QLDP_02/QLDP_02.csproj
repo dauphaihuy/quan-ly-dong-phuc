@@ -122,6 +122,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DM_DP_SizeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NS_DP_PhieuDeNghiBoPhanController.cs" />
     <Compile Include="Controllers\NS_DP_PhieuDeNghi_CaNhanController.cs" />
     <Compile Include="Controllers\NS_DP_PhieuNhapHangController.cs" />
     <Compile Include="Controllers\NS_DP_PhieuNhapHang_ChiTietController.cs" />
@@ -169,6 +170,15 @@
     <Compile Include="Models\DM_DP_TrangThaiDuyet.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DPBP_GetAllPhieuDeNghi_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DPBP_GetSanPhamByPhieu_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DPBP_HienThiSanPham_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\getDanhSachSanPhamTheoGioiTinhNhanSu_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
@@ -176,6 +186,9 @@
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\getPhieuDeNghiCaNhan_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\getPhieuDeNghi_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\getPhieuNhapHang_Result.cs">
@@ -434,6 +447,7 @@
     <Content Include="Views\NS_DP_PhieuDeNghi_CaNhan\Index.cshtml" />
     <Content Include="Scripts\moment.min.js.map" />
     <Content Include="Scripts\moment-with-locales.min.js.map" />
+    <Content Include="Views\NS_DP_PhieuDeNghiBoPhan\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

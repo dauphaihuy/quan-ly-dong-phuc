@@ -1,0 +1,446 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+    <div class="container-fluid px-4">
+        <div class="page-header-content">
+            <div class="row align-items-center justify-content-between pt-3">
+                <div class="col-auto mb-3">
+                    <h1 class="page-header-title">
+                        <i class="fa-solid fa-right-to-bracket fa-lg"></i>&nbsp;Đề nghị ĐP bộ phận
+                    </h1>
+                </div>
+                <div class="col-12 col-xl-auto mb-3">
+                    <button onclick="" class="btn btn-sm btn-light text-primary" id="btnThemMoi">
+                        <i class="me-1 fa-regular fa-square-plus"></i>
+                        Thêm mới
+                    </button>
+                </div>
+            </div>
+            <table id="tablePhieuDeNghi" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Hoàn thành</th>
+                        <th>STT</th>
+                        <th>Mã phiếu</th>
+                        <th>Người đề nghị</th>
+                        <th>Ngày đề nghị</th>
+                        <th>Ghi chú</th>
+                        <th>Tổng SL yêu cầu</th>
+                        <th>Tổng SL đã nhận</th>
+                        <th>Admin duyệt</th>
+                        <th>Ngày duyệt </th>
+                        <th>Lý do từ chối</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</header>
+
+<div class="modal fade" id="modalThemMoiPhieuDeNghiBoPhan" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticThemMoiPhieuDeNghiBoPhan" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert alert-success">
+                <h5 class="modal-title" id="staticThemMoiPhieuDeNghiBoPhan">Thêm mới Đề nghị bộ phận</h5>
+                <div>
+                    <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-circle-arrow-left me-2"></i>Quay lại</button>
+                    
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row mb-2">
+                    <div class="col-lg-3">
+                        <label class="fw-500 required">Mã phiếu<span class="text-danger">(*)</span> :</label>
+                        <input type="text" disabled class="form-control" required id="MaPhieuDeNghi" />
+                        <input id="PhieuDeNghi" type="number" value="0" />
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="fw-500 required">Ngày đề nghị<span class="text-danger">(*)</span> :</label>
+                        <input type="datetime-local" class="form-control" required id="NgayDeNghi" disabled/>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="fw-500">Người đề nghị<span class="text-danger">(*)</span>:</label>
+                        <input type="text" class="form-control" required id="NguoiDeNghi" disabled />
+                    </div>
+                </div>
+                <div class="form-group row mb-2">
+                    <div class="col-lg-3">
+                        <label class="fw-500">Tổng số lượng yêu cầu<span class="text-danger">(*)</span> :</label>
+                        <input type="number" placeholder="0" class="form-control" required id="TongSoLuongYeuCau" value="0" disabled/>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="fw-500">Tổng số lượng đã nhận<span class="text-danger">(*)</span> :</label>
+                        <input type="number" placeholder="0" class="form-control" required id="TongSoLuongDaNhan" value="0" disabled/>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="fw-500">Ghi Chú</label>
+                        <input type="text" placeholder="Ghi chú" class="form-control" id="GhiChu" value="" />
+                    </div>
+                </div>
+                <div>
+                    <div class="row">
+                        <h5 class="col-sm">Danh sách sản phẩm </h5>
+                        <button class="btn btn-outline-success col-1" onclick="ChonSanPham()" type="button">Thêm mới</button>
+                    </div>
+                    <table id="tableDanhSachSanPham" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Nhân sự</th>
+                                <th>Sản phẩm</th>
+                                <th>Tính chất</th>
+                                <th>Size</th>
+                                <th>Số Lượng</th>
+                                <th>Lý do</th>
+                                <th>Duyệt</th>
+                                <th>Lý do từ chối</th>
+                                <th>Ghi chú</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+    
+<div class="modal fade modal-fullscreen-xl" tabindex="-1" role="dialog" id="modalChonSanPham" aria-labelledby="modalChonSanPham" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Chọn Sản Phẩm</h5>
+                <div>
+                    <button type="button" class="btn btn-success" onclick="quayLai()" data-dismiss="modal"><i class="fa-solid fa-arrow-left"></i>Quay lại</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal"onclick="XacNhanChonSP()">Chọn</button>
+                    <button type="button" class="btn btn-danger" id="btnSaveChanges">Từ chối</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <table id="tableSanPham" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" class="select-all" /></th>
+                            <th>Nhân sự</th>
+                            <th>Sản phẩm</th>
+                            <th>Tính chất</th>
+                            <th>Size</th>
+                            <th>Số lượng</th>
+                            <th>Lý do cấp phát</th>
+                            <th>Mã Phiếu</th>
+                        </tr>
+                    </thead>
+                   <tbody id="content">
+                       
+                   </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function quayLai() {
+        $("#modalChonSanPham").modal("hide")
+
+    }
+    $("#btnThemMoi").on("click", function () {
+        $('#MaPhieuDeNghi').val("")
+        $('#PhieuDeNghi').val(0)
+        $('#NguoiDeNghi').val("")
+        $('#TongSoLuongYeuCau').val("")
+        $('#TongSoLuongDaNhan').val("")
+        $('#GhiChu').val("")
+        $("#tableDanhSachSanPham tbody tr").remove()
+        const now = new Date();
+        const year = now.getFullYear()
+        const month = String(now.getMonth() + 1).padStart(2, '0') // Months are zero-indexed
+        const day = String(now.getDate()).padStart(2, '0')
+        const hours = String(now.getHours()).padStart(2, '0')
+        const minutes = String(now.getMinutes()).padStart(2, '0')
+        const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`
+        $("#NgayDeNghi").val(formattedDate)
+        $.ajax({
+            url: "/NS_DP_PhieuDeNghiBoPhan/DeNghiBP_GetDanhSachSanPhamDaChon",
+            type: "post",
+            data: {
+                PhieuDeNghi: +$("#PhieuDeNghi").val()
+            },
+            success: function (response) {
+                console.log(response)
+            }
+        })
+        $("#modalThemMoiPhieuDeNghiBoPhan").modal("show")
+    })
+    const ChonSanPham = () => {
+        $.ajax({
+            url: "/NS_DP_PhieuDeNghiBoPhan/DeNghiBP_GetDanhSachSanPhamChuaChon",
+            type: "post",
+            data: {
+                PhieuDeNghi: +$("#PhieuDeNghi").val()
+            },
+            success: function (response) {
+                console.log(response)
+                let content = ``
+                response.DanhSachSanPham.forEach((item) => {
+                    //console.log(item)
+                    content +=
+                    `<tr>
+                           <td><input type="checkbox" class="checkbox" data-ma-phieu="${item.MaPhieuDeNghi_CaNhan}"/></td>
+                           <td>${item.TenNhanSu}</td>
+                           <td>${item.TenSanPham}</td>
+                           <td>${item.TenTinhChatDongPhuc || '' }</td>
+                           <td>${item.MaSize}</td>
+                           <td>${item.SoLuong}</td>
+                           <td>${item.TenLyDoCapPhat}</td>
+                           <td>${item.MaPhieuDeNghi_CaNhan}</td>
+                           <td>${item.NhanSu}</td>
+                           <td>${item.PhieuDeNghi_CaNhan}</td>
+                    </tr>`
+                })
+               
+                $("#tableSanPham tbody tr").remove()
+                $("#tableSanPham tbody").append(content)
+                const checkboxes = document.querySelectorAll('#tableSanPham tbody .checkbox');
+                console.log(checkboxes)
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', () => {
+                        const phieuDeNghiId = checkbox.dataset.maPhieu;
+                        const relatedCheckboxes = document.querySelectorAll(`.checkbox[data-ma-phieu="${phieuDeNghiId}"]`);
+                        relatedCheckboxes.forEach(relatedCheckbox => {
+                            relatedCheckbox.checked = checkbox.checked;
+                        });
+                    });
+                });
+            }
+        })
+        
+        $("#modalChonSanPham").modal("show")
+    }
+    
+    document.querySelector('.select-all').addEventListener('change', (event) => {
+        const checkboxes = document.querySelectorAll('#content input[type="checkbox"]');
+        checkboxes.forEach((checkbox) => {
+            checkbox.checked = event.target.checked
+        })
+    })
+    function formatJsonDate(jsonDate) {
+        // Trích xuất timestamp từ chuỗi ngày tháng
+        const timestamp = parseInt(jsonDate.replace(/\/Date\((\d+)\)\//, '$1'), 10);
+
+        // Tạo đối tượng Date từ timestamp
+        const date = new Date(timestamp);
+
+        // Định dạng ngày tháng
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2); // Thêm số 0 nếu cần
+        const day = ('0' + date.getDate()).slice(-2);
+
+        // Trả về chuỗi định dạng ngày tháng
+        return `${day}-${month}-${year}`;
+    }
+    const HienThiPhieuDeNghi = () => {
+        $.ajax({
+            url: "/NS_DP_PhieuDeNghiBoPhan/getAllPhieu",
+            type: "post",
+            data: {
+            },
+            success: function (response) {
+                console.log(response)
+                let content=''
+                response.listPhieu.forEach((item) => {
+                    console.log(item)
+                    content +=
+                    `<tr ondblclick="doubleClickPhieu(${item.PhieuDeNghi})")>
+                        <td><input type="checkbox" ${item.IsHoanThanh == true ? "checked" : ""} /></td>
+                        <td>${item.stt}</td>
+                        <td>${item.MaPhieuDeNghi}</td>
+                        <td>${item.TenNhanSu}</td>
+                        <td>${formatJsonDate(item.NgayDeNghi)}</td>
+                        <td>${item.GhiChu}</td>
+                        <td>${item.TongSLYeuCau}</td>
+                        <td>${item.TongSLNhan}</td>
+                        <td>${item.NguoiDuyet1}</td>
+                        <td>${item.NgayDuyet1||""}</td>
+                        <td>${item.LyDoTuChoi||""}</td>
+                        <td style="background-color: ${item.TrangThaiDuyet == 2 ?"#007bff":""}; color: white;">${item.TenTrangThaiDuyet}</td>
+                    </tr>`
+                })
+                $("#tablePhieuDeNghi tbody tr").remove()
+                $("#tablePhieuDeNghi tbody").append(content)
+            }
+        })
+    }
+    function formatJsonDate2(jsonDate) {
+        const timestamp = parseInt(jsonDate.replace(/\/Date\((\d+)\)\//, '$1'), 10);
+        const date = new Date(timestamp);
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2); // Thêm số 0 nếu cần
+        const day = ('0' + date.getDate()).slice(-2);
+        const hours = ('0' + date.getHours()).slice(-2);
+        const minutes = ('0' + date.getMinutes()).slice(-2);
+        const seconds = ('0' + date.getSeconds()).slice(-2);
+
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
+    const doubleClickPhieu = (phieuDeNghi) => {
+        console.log(phieuDeNghi )
+        $.ajax({
+            url: "/NS_DP_PhieuDeNghiBoPhan/DeNghiBP_GetDanhSachSanPhamDaChon",
+            type: "post",
+            data: {
+                PhieuDeNghi: phieuDeNghi
+            },
+            success: function (response) {
+                console.log(response)
+                $('#MaPhieuDeNghi').val(response.phieuDeNghi.MaPhieuDeNghi)
+                $('#PhieuDeNghi').val(response.phieuDeNghi.PhieuDeNghi)
+                $('#NgayDeNghi').val(formatJsonDate2(response.phieuDeNghi.NgayDeNghi))
+                $('#NguoiDeNghi').val(response.phieuDeNghi.TenNguoiDeNghi)
+                $('#TongSoLuongYeuCau').val(response.phieuDeNghi.TongSLYeuCau)
+                $('#TongSoLuongDaNhan').val(response.phieuDeNghi.TongSLNhan)
+                $('#GhiChu').val(response.phieuDeNghi.GhiChu)
+                let content = ``
+                response.DanhSachSanPham.forEach((item) => {
+                    //console.log(item)
+                    content +=
+                    `<tr>
+                           <td><input type="checkbox" data-ma-phieu="${item.ID}"/></td>
+                           <td>${item.TenNs}</td>
+                           <td>${item.TenSanPham}</td>
+                           <td>${item.TenTinhChatDongPhuc || '' }</td>
+                           <td>${item.MaSize}</td>
+                           <td>${item.SoLuong}</td>
+                           <td>${item.TenLyDoCapPhat}</td>
+                           <td  style="background-color: ${item.TrangThaiDuyet == 2 ? "#FFD35A" : ""};">${item.TenTrangThaiDuyet}</td>
+                           <td>${item.LyDoTuChoi||""}</td>
+                           <td>${item.GhiChu || ""}</td>
+                           <td>
+                            <button class="btn btn-outline-danger" onclick="xoaSanpham(${item.ID})" type="button">Xóa</button>
+                           </td>
+                       </tr>`
+                })
+                $("#tableDanhSachSanPham tbody tr").remove()
+                $("#tableDanhSachSanPham tbody").append(content)
+                $("#modalThemMoiPhieuDeNghiBoPhan").modal("show")
+
+            }
+        })
+    }
+    const xoaSanpham = (id) => {
+        console.log(id)
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/NS_DP_PhieuDeNghiBoPhan/DeNghiBP_XoaSanPham",
+                    type: "post",
+                    data: {
+                        ID: +id
+                    },
+                    success: function (response) {
+                        console.log(response)
+                        if (response.success) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your file has been deleted.",
+                                icon: "success"
+                            });
+                        }
+                    }
+                })
+            }
+        });
+    }
+    HienThiPhieuDeNghi()
+    const XacNhanChonSP = () => {
+        let MaPhieu = $("#PhieuDeNghi").val()
+        let MaPhieuDeNghi = $("#MaPhieuDeNghi").val()
+        let TenNguoiDeNghi = $("#NguoiDeNghi").val()
+        let TongSLYeuCau = $("#TongSoLuongYeuCau").val()
+        let TongSLNhan = $("#TongSoLuongDaNhan").val()
+        let ghiChu = $("#GhiChu").val()
+        let PhieuDeNghi = $("#PhieuDeNghi").val()
+        console.log("let MaPhieu = " + $("#PhieuDeNghi").val());
+        console.log("let MaPhieuDeNghi = " + $("#MaPhieuDeNghi").val());
+        console.log("let TenNguoiDeNghi = " + $("#NguoiDeNghi").val());
+        console.log("let TongSLYeuCau = " + $("#TongSoLuongYeuCau").val());
+        console.log("let TongSLNhan = " + $("#TongSoLuongDaNhan").val());
+        console.log("let ghiChu = " + $("#GhiChu").val());
+        console.log("let PhieuDeNghi = " + $("#PhieuDeNghi").val());
+        const DanhSachSanPham = []
+        const tableRows = document.querySelectorAll('#tableSanPham tbody tr');
+        tableRows.forEach((row, index) => {
+            const checkbox = $(row).find('input[type="checkbox"]');
+            if (checkbox.prop('checked')) {
+                const data = {
+                    NhanSu: +row.cells[8].textContent,
+                    PhieuDeNghi_CaNhan: +row.cells[9].textContent
+                };
+                const existingProduct = DanhSachSanPham.find(
+                    (item) => item.PhieuDeNghi_CaNhan === data.PhieuDeNghi_CaNhan && item.NhanSu === data.NhanSu
+                );
+                if (!existingProduct) {
+                    DanhSachSanPham.push(data);
+                }
+            }
+        })
+        console.log(DanhSachSanPham)
+        if (DanhSachSanPham.length<1) return
+        $.ajax({
+            url: "/NS_DP_PhieuDeNghiBoPhan/CapNhat_PhieuDeNghiBoPhan",
+            type: "post",
+            data: {
+                MaPhieuDeNghi: MaPhieu,
+                TenNguoiDeNghi: TenNguoiDeNghi,
+                TongSLYeuCau: TongSLYeuCau,
+                TongSLNhan: TongSLNhan,
+                ghiChu: ghiChu,
+                PhieuDeNghi: PhieuDeNghi,
+            },
+            success: function (response) {
+                console.log(response)
+                $.ajax({
+                    url: "/NS_DP_PhieuDeNghiBoPhan/DeNghiBP_ChonSanPham",
+                    type: "post",
+                    data: {
+                        PhieuDeNghi: response.item.PhieuDeNghi,
+                        SanPhamChon: DanhSachSanPham
+                    },
+                    success: function (response) {
+                        console.log(response)
+                        if (response.success) {
+                            Swal.fire({
+                                title: "Success",
+                                text: "Added successfully",
+                                icon: "success"
+                            });
+                            HienThiPhieuDeNghi()
+                            $("#modalChonSanPham").modal("hide")
+                            $("#modalThemMoiPhieuDeNghiBoPhan").modal("hide")
+                        }
+                    }
+                })
+            }
+        })
+    }
+    
+</script>

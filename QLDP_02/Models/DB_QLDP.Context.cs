@@ -336,5 +336,33 @@ namespace QLDP_02.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NhapKho_HienThiSanPhamTheoPhieu_Result>("NhapKho_HienThiSanPhamTheoPhieu", xuatNhapKhoParameter);
         }
+    
+        public virtual ObjectResult<DPBP_HienThiSanPham_Result> DPBP_HienThiSanPham()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<DPBP_HienThiSanPham_Result>("DPBP_HienThiSanPham");
+        }
+    
+        public virtual ObjectResult<DPBP_GetAllPhieuDeNghi_Result> DPBP_GetAllPhieuDeNghi()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<DPBP_GetAllPhieuDeNghi_Result>("DPBP_GetAllPhieuDeNghi");
+        }
+    
+        public virtual ObjectResult<DPBP_GetSanPhamByPhieu_Result> DPBP_GetSanPhamByPhieu(Nullable<int> phieu)
+        {
+            var phieuParameter = phieu.HasValue ?
+                new ObjectParameter("Phieu", phieu) :
+                new ObjectParameter("Phieu", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<DPBP_GetSanPhamByPhieu_Result>("DPBP_GetSanPhamByPhieu", phieuParameter);
+        }
+    
+        public virtual ObjectResult<getPhieuDeNghi_Result> getPhieuDeNghi(Nullable<int> phieuDeNghi)
+        {
+            var phieuDeNghiParameter = phieuDeNghi.HasValue ?
+                new ObjectParameter("PhieuDeNghi", phieuDeNghi) :
+                new ObjectParameter("PhieuDeNghi", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getPhieuDeNghi_Result>("getPhieuDeNghi", phieuDeNghiParameter);
+        }
     }
 }

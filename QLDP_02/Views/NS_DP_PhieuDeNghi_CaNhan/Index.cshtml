@@ -82,9 +82,9 @@
                         <label class="fw-500 required">Mã phiếu:</label>
                         <input type="text" disabled placeholder="mã phiếu đề nghị" class="form-control" required id="maPhieuDeNghi" />
                     </div>
-                    <div class="col-3" hidden>
+                    <div class="col-3">
                         <label class="fw-500 required">Số phiếu:</label>
-                        <input type="text" disabled placeholder="Số phiếu đề nghị" class="form-control" required id="PhieuDeNghi" />
+                        <input type="number" disabled placeholder="Số phiếu đề nghị" class="form-control" required id="PhieuDeNghi" />
                     </div>
                     <div class="col-lg-3">
                         <label class="fw-500 required">Ngày đề nghị: </label>
@@ -551,7 +551,7 @@
                 PhieuDeNghi: +PhieuDeNghi
             },
             success: function (response) {
-                //console.log(response)
+                console.log(response)
                 if (response.success === true) {
                     Swal.fire({
                         title: 'Successful!',
@@ -572,7 +572,7 @@
                 }
             },
             error: function (error) {
-                console.error('Lỗi khi gửi dữ liệu: ', error);
+                console.log(error);
             }
         });
 

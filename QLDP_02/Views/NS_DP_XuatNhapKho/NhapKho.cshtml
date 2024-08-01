@@ -37,8 +37,8 @@
                 <th>Ghi chú</th>
             </tr>
         </thead>
-       <tbody></tbody>
-    </table>           
+        <tbody></tbody>
+    </table>
 </div>
 
 
@@ -51,7 +51,7 @@
                 <h5 class="modal-title" id="staticThemMoiNhapKho">Thêm mới Nhập kho</h5>
                 <div>
                     <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-circle-arrow-left me-2"></i>Quay lại</button>
-                    <button class="btn btn-outline-success"onclick="capNhatPhieuNhapKho()" type="button">Cập nhật <i class="fa-regular fa-paper-plane ms-2"></i></button>
+                    <button class="btn btn-outline-success" onclick="capNhatPhieuNhapKho()" type="button">Cập nhật <i class="fa-regular fa-paper-plane ms-2"></i></button>
                 </div>
             </div>
             <div class="modal-body">
@@ -59,7 +59,7 @@
                     <div class="col-lg-2">
                         <label class="fw-500 required">Mã phiếu<span class="text-danger">(*)</span> :</label>
                         <input type="text" disabled class="form-control" required id="MaPhieuNhapKho" />
-                        <input style="display:none" id="xuatNhapKho"type="number" value="0"/>
+                        <input style="display:none" id="xuatNhapKho" type="number" value="0" />
                     </div>
                     <div class="col-lg-2">
                         <label class="fw-500 required">Phiếu nhập hàng <span class="text-danger">(*)</span> :</label>
@@ -108,7 +108,7 @@
                         </tbody>
                     </table>
                 </div>
-               
+
             </div>
         </div>
     </div>
@@ -177,7 +177,7 @@
         console.log(phieuNhap)
         console.log(tyGia)
         console.log(maXuatNhapkho)
-        console.log('xnk'+xuatNhapKho)
+        console.log('xnk' + xuatNhapKho)
         console.log(ghiChu)
         const tableRows = document.querySelectorAll('#tableDanhSachSanPham tbody tr');
         const danhSachSanPhamNhapKho = []
@@ -221,7 +221,7 @@
                     icon: 'error',
                     title: 'Số lượng nhập vượt quá số lượng yêu cầu'
                 })
-                flag=true
+                flag = true
             }
         })
         if (flag) {
@@ -284,7 +284,7 @@
             },
             success: function (response) {
                 console.log(response)
-                
+
                 const phieuXuatNhapKho = response.phieuXuatNhapKho
                 //console.log(phieuXuatNhapKho)
                 $("#MaPhieuNhapKho").prop("disabled", true)
@@ -305,7 +305,7 @@
                 response.dssp.forEach((item) => {
                     content += `
                     <tr>
-                        <td>${item.stt}</td> 
+                        <td>${item.stt}</td>
                         <td style = "display:none">${item.PhieuNhapHang}</td>
                         <td style = "display:none">${item.SanPham}</td>
                         <td>${item.TenSanPham}</td>
@@ -341,7 +341,7 @@
                 let content = ``
                 response.item.forEach((item) => {
                     content +=
-                    `<tr ondblclick="selectChiTietPhieuNhap(this)">
+                        `<tr ondblclick="selectChiTietPhieuNhap(this)">
                         <td>${item.stt}</td>
                         <td>${convertDateTimestamp(item.NgayTao)}</td>
                         <td>${item.MaXuatNhapKho}</td>
@@ -355,6 +355,9 @@
                         <td>
                             <button onclick="handleXoaPhieuNhap(this)" type="button" class="btn btn-outline-danger">
                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                            <button onclick="handleSuaPhieuNhap(this)" type="button" class="btn btn-outline-secondary">
+                               <i class="fa-solid fa-pen-to-square"></i>
                             </button>
                         </td>
                     </tr>`
@@ -394,14 +397,10 @@
                     success: function (response) {
                         console.log(response)
 
-                        Swal.fire({
+                        Toast.fire({
                             icon: 'success',
                             title: 'Delete successful 😍',
-                            backdrop: `
-                                rgba(0,0,123,0.2)
-                                url("https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzAydzFsNGtyaWRkeGVkZHBuNXA5N2NvdThmd2w1cmloYnowMWdlbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/RLEdq1A9PT0BZo27s3/giphy.webp")
-                              `,
-                            timer: 5000,
+                            timer: 10000,
                             timerProgressBar: true,
                         })
                         renderDataTable()
@@ -409,7 +408,11 @@
                 })
             }
         });
-        
+
+    }
+    const handleSuaPhieuNhap = (element) => {
+        console.log(element)
+
     }
     const handleSelectPhieuNhap = () => {
         //console.log($("#SelectPhieuNhap").val())
@@ -422,10 +425,10 @@
             success: function (response) {
                 console.log(response)
                 if (response.success) {
-                    let content =``
+                    let content = ``
                     response.item.forEach((item) => {
-                        content +=`<tr class="productRow">
-                            <td>${item.stt}</td> 
+                        content += `<tr class="productRow">
+                            <td>${item.stt}</td>
                             <td style = "display:none">${item.PhieuNhapHang}</td>
                             <td style = "display:none">${item.SanPham}</td>
                             <td>${item.TenSanPham}</td>
@@ -469,7 +472,7 @@
         for (let i = 0; i < length; i++) {
             result += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
-        return 'NK_'+result;
+        return 'NK_' + result;
     }
-    
+
 </script>
