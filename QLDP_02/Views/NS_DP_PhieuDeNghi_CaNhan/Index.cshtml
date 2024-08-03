@@ -33,11 +33,11 @@
             <thead>
                 <tr>
                     <th>Hoàn thành</th>
-                    <th>Stt</th>
+                    <th>STT</th>
                     <th>Mã phiếu</th>
                     <th>Người đề nghị</th>
                     <th>Ngày đề nghị</th>
-                    <th>Nhân viên mới</th>
+                    <th>Trạng thái duyệt</th>
                     <th>lý do cấp phát</th>
                     <th></th>
                 </tr>
@@ -51,7 +51,20 @@
                         <td>@item.MaPhieuDeNghi_CaNhan</td>
                         <td>@item.NguoiDeNghi</td>
                         <td>@item.NgayDeNghi.ToString("dd/MM/yyyy")</td>
-                        <td>@item.TrangThaiDuyet</td>
+                        <td style="background-color: @(item.TrangThaiDuyet == 1 ? "#333" : item.TrangThaiDuyet == 2 ? "#333" : "#333");">
+                            @if (item.TrangThaiDuyet == 1)
+                            {
+                                <span>Chưa duyệt</span>
+                            }
+                            else if (item.TrangThaiDuyet == 2)
+                            {
+                                <span>Chờ duyệt</span>
+                            }
+                            else if (item.TrangThaiDuyet == 3)
+                            {
+                                <span>Từ chối</span>
+                            }
+                        </td>
                         <td>@item.lydo</td>
                         <td class="row">
                             <button class="btn btn-datatable btn-icon btn-transparent-dark" onclick="chonPhieuDeNghiCaNhan(@item.PhieuDeNghi_CaNhan)">
@@ -118,7 +131,7 @@
                         <thead>
                             <tr>
                                 <td></td>
-                                <td>Stt</td>
+                                <td>STT</td>
                                 <td>Tên sản phẩm</td>
                                 <td>Tính chất</td>
                                 <td>Size</td>

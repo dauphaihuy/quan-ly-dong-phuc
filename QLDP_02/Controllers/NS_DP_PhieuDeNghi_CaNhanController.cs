@@ -58,7 +58,9 @@ namespace QLDP_02.Controllers
 						NgayTao=DateTime.Now,
 						LyDoCapPhat=int.Parse(lyDoCapPhat),
 						IsHoanThanh=false,
-						IsDel=false
+						IsDel=false,
+						NgayDuyet=DateTime.Now,
+						TrangThaiDuyet =2
 					};
 					db.NS_DP_PhieuDeNghi_CaNhan.Add(nS_DP_PhieuDeNghi_CaNhan);
 					db.SaveChanges();
@@ -74,7 +76,8 @@ namespace QLDP_02.Controllers
 							TinhChatDongPhuc = item.TinhChat,
 							NhanSu = int.Parse(idNguoiDeNghi),
 							DonViTinh = sanPham.DonViTinh,
-							SoLuongDaNhan =0
+							SoLuongDaNhan =0,
+							IsDaChon=false
 							
                         };
 						db.NS_DP_PhieuDeNghi_CaNhan_ChiTiet.Add(nS_DP_PhieuDeNghi_CaNhan_ChiTiet);

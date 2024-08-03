@@ -63,8 +63,8 @@ namespace QLDP_02.Controllers
                     db.SaveChanges();
                     return Json(new { success = true, item = pdn });
                 }
-
-                return Json(new { success = true });
+                var item = db.NS_DP_PhieuDeNghi.Where(x => x.PhieuDeNghi == PhieuDeNghi).SingleOrDefault();
+                return Json(new { success = true, item });
             }
             catch (Exception ex)
             {
@@ -148,6 +148,7 @@ namespace QLDP_02.Controllers
                             
                             
                         };
+                        p.IsDaChon= true;
                         db.NS_DP_PhieuDeNghi_ChiTiet.Add(pdnct);
                     }
                 }
@@ -160,23 +161,50 @@ namespace QLDP_02.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
-        //xóa
-        public JsonResult DeNghiBP_XoaSanPham(int ID)
+        public JsonResult DeNghiBP_TuChoiPhieuDeNghi(List<TuChoiPhieu> DanhSachSanPham,string LyDoTuChoi)
         {
             try
             {
-                var item = db.NS_DP_PhieuDeNghi_ChiTiet.Where(x => x.ID == ID).SingleOrDefault();
-                var phieuDeNghi = db.NS_DP_PhieuDeNghi.Where(x => x.PhieuDeNghi == item.PhieuDeNghi).SingleOrDefault();
-                phieuDeNghi.TongSLYeuCau -= item.SoLuong;
-                db.NS_DP_PhieuDeNghi_ChiTiet.Remove(item);
-                db.SaveChanges();
-                return Json(new { success = true ,item});
+                foreach(var item in DanhSachSanPham)
+                {
+                    var phieuCaNhan = db.NS_DP_PhieuDeNghi_CaNhan.Where(x => x.PhieuDeNghi_CaNhan == item.PhieuDeNghi_CaNhan).SingleOrDefault();
+                    phieuCaNhan.TrangThaiDuyet = 3;
+                    phieuCaNhan.LyDoTuChoi = LyDoTuChoi;
+                    phieuCaNhan.NgayDuyet = DateTime.Now;
+                    phieuCaNhan.NguoiDuyet = 1;
+                    db.SaveChanges();
+                }
+                return Json(new { success = true });
             }
             catch (Exception e)
             {
                 return Json(new { success = false, message = e.Message });
             }
         }
+        
+        //xóa
+        public JsonResult DeNghiBP_XoaSanPham(int PhieuDeNghi, int ID)
+        {
+            try
+            {
+                var item = db.NS_DP_PhieuDeNghi_ChiTiet.Where(x => x.ID == ID && x.PhieuDeNghi== PhieuDeNghi).SingleOrDefault();
+                var phieuDeNghi = db.NS_DP_PhieuDeNghi.Where(x => x.PhieuDeNghi == item.PhieuDeNghi).SingleOrDefault();
+                phieuDeNghi.TongSLYeuCau -= item.SoLuong;
+                db.NS_DP_PhieuDeNghi_ChiTiet.Remove(item);
+                var phieuCaNhan = db.NS_DP_PhieuDeNghi_CaNhan_ChiTiet.Where(x => x.PhieuDeNghi_CaNhan == item.PhieuDeNghi_CaNhan_ChiTiet && x.ID == ID).SingleOrDefault();
+                phieuCaNhan.IsDaChon = false;
+                db.SaveChanges();
+                return Json(new { success = true ,item, phieuDeNghi });
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, message = e.Message });
+            }
+        }
+    }
+    public class TuChoiPhieu
+    {
+        public int PhieuDeNghi_CaNhan { get; set; }
     }
     public class SanPhamChon
     {
