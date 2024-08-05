@@ -57,6 +57,7 @@ namespace QLDP_02.Controllers
                         TongSLNhan=0,
                         IsXuatKho=false,
                         IsHoanThanh=false,
+                        TongSLYeuCau=0
                         
                     };
                     db.NS_DP_PhieuDeNghi.Add(pdn);
@@ -130,6 +131,7 @@ namespace QLDP_02.Controllers
                     foreach (var p in phieuCaNhanct)
                     {
                         var phieuCaNhan = db.NS_DP_PhieuDeNghi_CaNhan.Where(x => x.PhieuDeNghi_CaNhan == p.PhieuDeNghi_CaNhan).FirstOrDefault();
+                        phieuCaNhan.TrangThaiDuyet = 4;
                         soLuong+= p.SoLuong;
                         NS_DP_PhieuDeNghi_ChiTiet pdnct = new NS_DP_PhieuDeNghi_ChiTiet
                         {
@@ -145,14 +147,12 @@ namespace QLDP_02.Controllers
                             PhieuDeNghi_CaNhan_ChiTiet = p.PhieuDeNghi_CaNhan,
                             TinhChatDongPhuc = p.TinhChatDongPhuc,
                             TrangThaiDuyet = 2,
-                            
-                            
                         };
                         p.IsDaChon= true;
                         db.NS_DP_PhieuDeNghi_ChiTiet.Add(pdnct);
                     }
                 }
-                phieu.TongSLYeuCau= soLuong;
+                phieu.TongSLYeuCau= soLuong+ phieu.TongSLYeuCau;
                 db.SaveChanges();
                 return Json(new { success = true  });
             }
@@ -183,24 +183,58 @@ namespace QLDP_02.Controllers
         }
         
         //xóa
-        public JsonResult DeNghiBP_XoaSanPham(int PhieuDeNghi, int ID)
+        public JsonResult DeNghiBP_XoaSanPham(List<XoaSanPham> DanhSachSanPham)
         {
             try
             {
-                var item = db.NS_DP_PhieuDeNghi_ChiTiet.Where(x => x.ID == ID && x.PhieuDeNghi== PhieuDeNghi).SingleOrDefault();
-                var phieuDeNghi = db.NS_DP_PhieuDeNghi.Where(x => x.PhieuDeNghi == item.PhieuDeNghi).SingleOrDefault();
-                phieuDeNghi.TongSLYeuCau -= item.SoLuong;
-                db.NS_DP_PhieuDeNghi_ChiTiet.Remove(item);
-                var phieuCaNhan = db.NS_DP_PhieuDeNghi_CaNhan_ChiTiet.Where(x => x.PhieuDeNghi_CaNhan == item.PhieuDeNghi_CaNhan_ChiTiet && x.ID == ID).SingleOrDefault();
-                phieuCaNhan.IsDaChon = false;
+                foreach(var item in DanhSachSanPham)
+                {
+                    var phieuDeNghiCaNhanChiTiet = db.NS_DP_PhieuDeNghi_CaNhan_ChiTiet.Where(x => x.PhieuDeNghi_CaNhan == item.PhieuDeNghi_CaNhan_ChiTiet);
+                    foreach (var p in phieuDeNghiCaNhanChiTiet)
+                    {
+                            p.IsDaChon = false;
+                    }
+                    var PhieuDeNghiChiTiet = db.NS_DP_PhieuDeNghi_ChiTiet.Where(x => x.PhieuDeNghi_CaNhan_ChiTiet == item.PhieuDeNghi_CaNhan_ChiTiet);
+                    foreach (var p in PhieuDeNghiChiTiet)
+                    {
+                        var phieuDeNghi = db.NS_DP_PhieuDeNghi.Where(x => x.PhieuDeNghi == p.PhieuDeNghi).SingleOrDefault();
+                        phieuDeNghi.TongSLYeuCau = phieuDeNghi.TongSLYeuCau - p.SoLuong;
+                    }
+                    db.NS_DP_PhieuDeNghi_ChiTiet.RemoveRange(PhieuDeNghiChiTiet);
+                }
                 db.SaveChanges();
-                return Json(new { success = true ,item, phieuDeNghi });
+                return Json(new { success = true , DanhSachSanPham });
             }
             catch (Exception e)
             {
                 return Json(new { success = false, message = e.Message });
             }
         }
+        public JsonResult DeNghiBP_XoaPhieuPham(List<XoaPhieu> DanhSachPhieu)
+        {
+            try
+            {
+                foreach (var item in DanhSachPhieu)
+                {
+                    var phieu = db.NS_DP_PhieuDeNghi.Where(x => x.PhieuDeNghi == item.PhieuDeNghi).SingleOrDefault();
+                    phieu.IsDel = true;
+                    db.SaveChanges();
+                }
+                return Json(new { success = true, DanhSachPhieu });
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, message = e.Message });
+            }
+        }
+    }
+    public class XoaSanPham
+    {
+        public int PhieuDeNghi_CaNhan_ChiTiet { get; set; }
+    }
+    public class XoaPhieu
+    {
+        public int PhieuDeNghi { get; set; }
     }
     public class TuChoiPhieu
     {

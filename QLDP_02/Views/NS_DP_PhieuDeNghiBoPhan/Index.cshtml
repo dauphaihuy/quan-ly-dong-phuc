@@ -14,15 +14,20 @@
                     </h1>
                 </div>
                 <div class="col-12 col-xl-auto mb-3">
-                    <button onclick="" class="btn btn-sm btn-light text-primary" id="btnThemMoi">
+                    <button onclick="" class="btn btn-outline-success" id="btnThemMoi">
                         <i class="me-1 fa-regular fa-square-plus"></i>
                         Thêm mới
+                    </button>
+                    <button onclick="xoaPhieuDeNghiBoPhan()" class="btn btn-outline-danger" >
+                        <i class="me-1 fa-solid fa-trash"></i>
+                        Xóa
                     </button>
                 </div>
             </div>
             <table id="tablePhieuDeNghi" class="table table-striped">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Hoàn thành</th>
                         <th>STT</th>
                         <th>Mã phiếu</th>
@@ -88,6 +93,7 @@
                     <div class="row">
                         <h5 class="col-sm">Danh sách sản phẩm </h5>
                         <button class="btn btn-outline-success col-1" onclick="ChonSanPham()" type="button">Thêm mới</button>
+                        <button class="ms-1 btn btn-outline-danger col-1" onclick="XoaSanPham()" type="button">Xóa</button>
                     </div>
                     <table id="tableDanhSachSanPham" class="table table-striped">
                         <thead>
@@ -266,7 +272,8 @@
                     console.log(item)
                     content +=
                     `<tr ondblclick="doubleClickPhieu(${item.PhieuDeNghi})")>
-                        <td><input type="checkbox" ${item.IsHoanThanh == true ? "checked" : ""} /></td>
+                        <td><input type="checkbox" id="delete" value=${item.PhieuDeNghi}></td>
+                        <td><input type="checkbox" ${item.IsHoanThanh == true ? "checked" : ""} ></td>
                         <td>${item.stt}</td>
                         <td>${item.MaPhieuDeNghi}</td>
                         <td>${item.TenNhanSu}</td>
@@ -282,6 +289,9 @@
                 })
                 $("#tablePhieuDeNghi tbody tr").remove()
                 $("#tablePhieuDeNghi tbody").append(content)
+                if ($("#tablePhieuDeNghi tbody tr").length == 0) {
+                    $("#tablePhieuDeNghi tbody").append('<tr class="empty-row"><td colspan="13">Không có dữ liệu</td></tr>');
+                }
             }
         })
     }
@@ -319,7 +329,7 @@
                     console.log(phieuDeNghi,item.ID)
                     content +=
                     `<tr>
-                           <td><input type="checkbox" data-ma-phieu="${item.ID}"/></td>
+                           <td><input type="checkbox" class="checkbox" data-ma-phieu="${item.PhieuDeNghi_CaNhan_ChiTiet}"/></td>
                            <td>${item.TenNs}</td>
                            <td>${item.TenSanPham}</td>
                            <td>${item.TenTinhChatDongPhuc || '' }</td>
@@ -329,19 +339,28 @@
                            <td style="background-color: ${item.TrangThaiDuyet == 2 ? "#FFD35A" : ""};">${item.TenTrangThaiDuyet}</td>
                            <td>${item.LyDoTuChoi||""}</td>
                            <td>${item.GhiChu || ""}</td>
-                           <td>
-                            <button class="btn btn-outline-danger" onclick="xoaSanpham(${phieuDeNghi},${item.ID})" type="button">Xóa</button>
-                           </td>
+                           <td style="display:none">${item.PhieuDeNghi_CaNhan_ChiTiet}</td>
                        </tr>`
                 })
                 $("#tableDanhSachSanPham tbody tr").remove()
                 $("#tableDanhSachSanPham tbody").append(content)
                 $("#modalThemMoiPhieuDeNghiBoPhan").modal("show")
+                const checkboxes = document.querySelectorAll('#tableDanhSachSanPham tbody .checkbox');
+                console.log(checkboxes)
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', () => {
+                        const phieuDeNghiId = checkbox.dataset.maPhieu;
+                        const relatedCheckboxes = document.querySelectorAll(`.checkbox[data-ma-phieu="${phieuDeNghiId}"]`);
+                        relatedCheckboxes.forEach(relatedCheckbox => {
+                            relatedCheckbox.checked = checkbox.checked;
+                        });
+                    });
+                });
 
             }
         })
     }
-    const tuChoiSanPham =async () => {
+    const tuChoiSanPham = async () => {
         const DanhSachSanPham = []
         const tableRows = document.querySelectorAll('#tableSanPham tbody tr');
         tableRows.forEach((row, index) => {
@@ -370,8 +389,8 @@
         $("#modalChonSanPham").modal("hide")
         const { value: text } = await Swal.fire({
             input: 'textarea',
-            inputLabel: 'Message',
-            inputPlaceholder: 'Type your message here...',
+            inputLabel: 'Reason',
+            inputPlaceholder: 'Reason for rejection',
             inputAttributes: {
                 'aria-label': 'Type your message here'
             },
@@ -398,41 +417,87 @@
         }
         
     }
-    const xoaSanpham = (Phieu,id) => {
-        console.log(Phieu,id)
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: "/NS_DP_PhieuDeNghiBoPhan/DeNghiBP_XoaSanPham",
-                    type: "post",
-                    data: {
-                        PhieuDeNghi: +Phieu,
-                        ID: +id
-                    },
-                    success: function (response) {
-                        console.log(response)
-                        if (response.success) {
-                            Swal.fire({
-                                title: "Deleted!",
-                                text: "Your file has been deleted.",
-                                icon: "success"
-                            });
-                        }
-                        $('tr > td > input[type="checkbox"][data-ma-phieu="' + response.item.ID + '"]').closest('tr').remove();
-                    }
-                })
+    const XoaSanPham = () => {
+        const DanhSachSanPham = []
+        const tableRows = document.querySelectorAll('#tableDanhSachSanPham tbody tr');
+        tableRows.forEach((row, index) => {
+            console.log(row)
+            const checkbox = $(row).find('input[type="checkbox"]');
+            if (checkbox.prop('checked')) {
+                const data = {
+                    PhieuDeNghi_CaNhan_ChiTiet: +row.cells[10].textContent
+                };
+                const existingProduct = DanhSachSanPham.find(
+                    (item) => item.PhieuDeNghi_CaNhan_ChiTiet === data.PhieuDeNghi_CaNhan_ChiTiet
+                );
+                if (!existingProduct) {
+                    DanhSachSanPham.push(data);
+                }
             }
-        });
+        })
+        console.log(DanhSachSanPham)
+        if (DanhSachSanPham.length < 1) {
+            Swal.fire({
+                title: "You haven't choose?",
+                text: "That thing is still around?",
+                icon: "question"
+            });
+            return
+        }
+        $.ajax({
+            url: "/NS_DP_PhieuDeNghiBoPhan/DeNghiBP_XoaSanPham",
+            type: 'post',
+            data: {
+                DanhSachSanPham: DanhSachSanPham
+            },
+            success: function (response) {
+                console.log(response)
+                if (response.success) {
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Deleted Successfull!",
+                        icon: "success"
+                    });
+                }
+                doubleClickPhieu($("#PhieuDeNghi").val())
+                HienThiPhieuDeNghi()
+            }
+        })
     }
     HienThiPhieuDeNghi()
+    const xoaPhieuDeNghiBoPhan = () => {
+        let checkboxes = document.querySelectorAll('#tablePhieuDeNghi tbody tr input[type="checkbox"]');
+        let selectedRows = [];
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                //let row = checkbox.closest('tr');
+                //selectedRows.push(row);
+                const data = {
+                    PhieuDeNghi: +checkbox.value
+                }
+                selectedRows.push(data)
+            }
+        });
+        console.log(selectedRows)
+        $.ajax({
+            url: "/NS_DP_PhieuDeNghiBoPhan/DeNghiBP_XoaPhieuPham",
+            type: "post",
+            data: {
+                DanhSachPhieu: selectedRows
+            },
+            success: function (response) {
+                if (response.success) {
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "You deleted the item!",
+                        icon: "success"
+                    });
+                    HienThiPhieuDeNghi()
+                }
+            }
+        })
+        
+    }
     const XacNhanChonSP = () => {
         let MaPhieu = $("#PhieuDeNghi").val()
         let MaPhieuDeNghi = $("#MaPhieuDeNghi").val()
@@ -466,7 +531,13 @@
             }
         })
         console.log(DanhSachSanPham)
-        if (DanhSachSanPham.length<1) return
+        if (DanhSachSanPham.length < 1) {
+            Toast.fire({
+                icon: "question",
+                title: "Chưa chọn sản phẩm",
+            });
+            return
+        }
         $.ajax({
             url: "/NS_DP_PhieuDeNghiBoPhan/CapNhat_PhieuDeNghiBoPhan",
             type: "post",

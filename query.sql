@@ -850,60 +850,11 @@ WHERE 1=1
 ORDER BY NS_DP_PhieuDeNghi_CaNhan_ChiTiet.NhanSu, NS_DP_PhieuDeNghi_CaNhan_ChiTiet.SanPham
 END
 GO 
-SELECT * FROM dbo.DM_DP_TrangThaiDuyet
-SELECT * FROM NS_DP_PhieuDeNghi_CaNhan
-SELECT * FROM  NS_DP_PhieuDeNghi_CaNhan_ChiTiet
-EXEC DPBP_HienThiSanPham
-WHERE PhieuDeNghi_CaNhan =2
-
-SELECT * FROM dbo.NS_DP_PhieuDeNghi_ChiTiet
-SELECT * FROM dbo.NS_DP_PhieuDeNghi_CaNhan_ChiTiet
-SELECT * FROM dbo.NS_DP_PhieuDeNghi_CaNhan
 
 TRUNCATE TABLE dbo.NS_DP_PhieuDeNghi_CaNhan
 TRUNCATE TABLE dbo.NS_DP_PhieuDeNghi_CaNhan_ChiTiet
 TRUNCATE TABLE dbo.NS_DP_PhieuDeNghi_ChiTiet
 TRUNCATE TABLE dbo.NS_DP_PhieuDeNghi
-SELECT * FROM dbo.DM_DP_TrangThaiDuyet
-SELECT * FROM dbo.NS_DP_PhieuDeNghi_ChiTiet
 
-EXEC DPBP_GetAllPhieuDeNghi
-SELECT * FROM NS_DP_PhieuDeNghi_CaNhan_ChiTiet WHERE IsDaChon !=1
-SELECT * FROM dbo.NS_DP_PhieuDeNghi_CaNhan_ChiTiet
-SELECT * FROM dbo.NS_DP_PhieuDeNghi_ChiTiet
-SELECT * FROM dbo.DM_DP_TrangThaiDuyet
-INSERT INTO dbo.DM_DP_TrangThaiDuyet
-(
-    TenTrangThaiDuyet,
-    IsDel,
-    NguoiNhap,
-    IPNhap,
-    NgayNhap,
-    MayNhap,
-    NguoiSua,
-    IPSua,
-    NgaySua,
-    MaySua,
-    NguoiXoa,
-    IPXoa,
-    NgayXoa,
-    MayXoa
-)
-VALUES
-(   N'',  -- TenTrangThaiDuyet - nvarchar(100)
-    NULL, -- IsDel - bit
-    NULL, -- NguoiNhap - int
-    NULL, -- IPNhap - nvarchar(50)
-    NULL, -- NgayNhap - datetime
-    NULL, -- MayNhap - nvarchar(50)
-    NULL, -- NguoiSua - int
-    NULL, -- IPSua - nvarchar(50)
-    NULL, -- NgaySua - datetime
-    NULL, -- MaySua - nvarchar(50)
-    NULL, -- NguoiXoa - int
-    NULL, -- IPXoa - nvarchar(50)
-    NULL, -- NgayXoa - datetime
-    NULL  -- MayXoa - nvarchar(50)
-    )
-
-	TRUNCATE TABLEih
+SELECT * FROM NS_DP_PhieuDeNghi_CaNhan
+SELECT * FROM NS_DP_PhieuDeNghi_CaNhan WHERE PhieuDeNghi_CaNhan=3

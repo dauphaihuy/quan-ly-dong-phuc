@@ -189,10 +189,15 @@ namespace QLDP_02.Controllers
 		{
 			try
 			{
-				var item = db.NS_DP_PhieuDeNghi_CaNhan.FirstOrDefault(s => s.PhieuDeNghi_CaNhan == PhieuDeNghiCaNhan);
-				item.IsDel = true;
-				db.SaveChanges();
-				return Json(new { success = true, item = item });
+				var success = false;
+				var item = db.NS_DP_PhieuDeNghi_CaNhan.Where(s => s.PhieuDeNghi_CaNhan == PhieuDeNghiCaNhan).SingleOrDefault();
+				if (item.TrangThaiDuyet == 2)
+				{
+                    item.IsDel = true;
+					success = true;
+                }	
+                db.SaveChanges();
+				return Json(new { success = success, item = item });
 			}
             catch (Exception ex)
             {

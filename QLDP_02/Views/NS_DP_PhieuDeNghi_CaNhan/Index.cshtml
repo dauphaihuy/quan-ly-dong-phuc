@@ -51,7 +51,7 @@
                         <td>@item.MaPhieuDeNghi_CaNhan</td>
                         <td>@item.NguoiDeNghi</td>
                         <td>@item.NgayDeNghi.ToString("dd/MM/yyyy")</td>
-                        <td style="background-color: @(item.TrangThaiDuyet == 1 ? "#333" : item.TrangThaiDuyet == 2 ? "#333" : "#333");">
+                        <td>
                             @if (item.TrangThaiDuyet == 1)
                             {
                                 <span>Chưa duyệt</span>
@@ -63,6 +63,10 @@
                             else if (item.TrangThaiDuyet == 3)
                             {
                                 <span>Từ chối</span>
+                            }
+                            else if (item.TrangThaiDuyet == 4)
+                            {
+                                <span>Đã duyệt</span>
                             }
                         </td>
                         <td>@item.lydo</td>
@@ -198,26 +202,27 @@
 <script>
     const toggleHoanThanh = id => {
         console.log(id)
-        $.ajax({
-            url: '/NS_DP_PhieuDeNghi_CaNhan/toggleHoanThanhPhieuDeNghi',
-            type: 'POST',
-            data: {
-                idPhieuDeNghi: +id
-            },
-            success: function (response) {
-                console.log(response)
-                if (response.success === true) {
-                    Swal.fire({
-                        title: "Updated!",
-                        text: "Update status successful.",
-                        icon: "success"
-                    })
-                }
-            },
-            error: function (error) {
-                console.error('Lỗi khi gửi dữ liệu: ', error);
-            }
-        })
+        return
+        //$.ajax({
+        //    url: '/NS_DP_PhieuDeNghi_CaNhan/toggleHoanThanhPhieuDeNghi',
+        //    type: 'POST',
+        //    data: {
+        //        idPhieuDeNghi: +id
+        //    },
+        //    success: function (response) {
+        //        console.log(response)
+        //        if (response.success === true) {
+        //            Swal.fire({
+        //                title: "Updated!",
+        //                text: "Update status successful.",
+        //                icon: "success"
+        //            })
+        //        }
+        //    },
+        //    error: function (error) {
+        //        console.error('Lỗi khi gửi dữ liệu: ', error);
+        //    }
+        //})
     }
     function handleLyDoCapPhatChange() {
         let idLyDoCapPhat = $("#LyDoCapPhat").val();
@@ -260,8 +265,6 @@
         }
         //console.log("Lý do cấp phát được chọn:", idLyDoCapPhat, maPhieu, nguoiDeNghi);
     }
-</script>
-<script>
     $("#themMoiPhieuDeNghi").click(function () {
         $(".themMoiPhieuDeNghi").html("Thêm mới phiếu đề nghị cá nhân")
         $("#maPhieuDeNghi").val("")
@@ -427,13 +430,11 @@
 <script>
     @* cập nhật phiếu đề nghị cá nhân
         hàm này cập nhật lý do cấp phát
-        *@
+    *@
     function capNhatPhieuDeNghi(nguoiDeNghi, lyDoCapPhat, phieuDeNghiCaNhan) {
         console.log(nguoiDeNghi, lyDoCapPhat, phieuDeNghiCaNhan)
 
     }
-</script>
-<script>
     function convertDate(dateString) {
         var milliseconds = parseInt(dateString.substring(6, dateString.length - 2))
         var date = new Date(milliseconds)
@@ -652,7 +653,7 @@
             confirmButtonText: "Yes, delete it!",
             backdrop: `
             rgba(0,0,123,0.1)
-            url("https://media.tenor.com/Mwzug9zxYh0AAAAi/nyan-cat-every-nyan.gif")
+            url("")
             center top
             repeat
           `
@@ -665,22 +666,31 @@
                         PhieuDeNghiCaNhan: +id
                     },
                     success: function (response) {
-                        //console.log(response)
-                        Swal.fire({
-                            title: "Deleted!",
-                            text: "Delete proposal Successful.",
-                            icon: "success",
-                            backdrop: `
+                        console.log(response)
+                        if (response.success) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Delete proposal Successful.",
+                                icon: "success",
+                                backdrop: `
                               rgba(0,0,123,0.1)
-                              url("https://media.tenor.com/mf4K_Vbg7hoAAAAi/soft-meme.gif")
+                              url("")
                               center top
                               repeat
                             `
-                        }).then(() => {
-                            setTimeout(() => {
-                                location.reload();
-                            }, 500);
-                        })
+                            }).then(() => {
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 500);
+                            })
+                        }
+                        else if (response.success == false) {
+                            Swal.fire({
+                                title: "Error!",
+                                text: `Phiếu đề nghị: ${response.item.MaPhieuDeNghi_CaNhan} đã Duyệt, không thể Xóa!`,
+                                icon: "error"
+                            });
+                        }
 
                     },
                     error: function (error) {
