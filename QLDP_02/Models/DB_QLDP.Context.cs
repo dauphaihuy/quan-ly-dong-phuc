@@ -364,5 +364,33 @@ namespace QLDP_02.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getPhieuDeNghi_Result>("getPhieuDeNghi", phieuDeNghiParameter);
         }
+    
+        public virtual ObjectResult<getAllDonMuaHang_Result> getAllDonMuaHang()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getAllDonMuaHang_Result>("getAllDonMuaHang");
+        }
+    
+        public virtual ObjectResult<NhapHang_getAllDonMuaHang_Result> NhapHang_getAllDonMuaHang()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NhapHang_getAllDonMuaHang_Result>("NhapHang_getAllDonMuaHang");
+        }
+    
+        public virtual ObjectResult<NhapHang_getDonHangByMaPhieu_Result> NhapHang_getDonHangByMaPhieu(Nullable<int> phieu)
+        {
+            var phieuParameter = phieu.HasValue ?
+                new ObjectParameter("phieu", phieu) :
+                new ObjectParameter("phieu", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NhapHang_getDonHangByMaPhieu_Result>("NhapHang_getDonHangByMaPhieu", phieuParameter);
+        }
+    
+        public virtual ObjectResult<NhapHang_SanPhamByMaPhieu_Result> NhapHang_SanPhamByMaPhieu(Nullable<int> phieu)
+        {
+            var phieuParameter = phieu.HasValue ?
+                new ObjectParameter("phieu", phieu) :
+                new ObjectParameter("phieu", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NhapHang_SanPhamByMaPhieu_Result>("NhapHang_SanPhamByMaPhieu", phieuParameter);
+        }
     }
 }

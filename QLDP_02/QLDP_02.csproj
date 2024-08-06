@@ -179,6 +179,9 @@
     <Compile Include="Models\DPBP_HienThiSanPham_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\getAllDonMuaHang_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\getDanhSachSanPhamTheoGioiTinhNhanSu_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
@@ -216,6 +219,15 @@
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\getXuatNhapKho_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NhapHang_getAllDonMuaHang_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NhapHang_getDonHangByMaPhieu_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NhapHang_SanPhamByMaPhieu_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\NhapKho_ChangeSelectPhieuNhap_Result.cs">
@@ -440,7 +452,6 @@
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\NS_DP_SanPham\Index.cshtml" />
     <Content Include="Views\NS_DP_PhieuNhapHang\Index.cshtml" />
-    <Content Include="Views\NS_DP_PhieuNhapHang_ChiTiet\Create.cshtml" />
     <Content Include="Views\NS_DP_XuatNhapKho\NhapKho.cshtml" />
     <Content Include="Views\NS_DP_XuatNhapKho\XuatKho.cshtml" />
     <Content Include="Views\DM_DP_Size\Index.cshtml" />
@@ -451,8 +462,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Default\" />
-    <Folder Include="Views\NS_DP_SanPham_TinhChatDongPhuc\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

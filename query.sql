@@ -44,18 +44,6 @@ FROM            NS_DP_PhieuDeNghi_CaNhan CROSS JOIN
                          NS_NhanSu CROSS JOIN
                          DM_DP_LyDoCapPhat
 
-select * from [dbo].[DM_DP_LyDoCapPhat]
-
-drop procedure getPhieuDeNghiCaNhan
-drop procedure getSanPhamYeuCau
-
-
-
-select * from DM_DP_TinhChatDongPhuc
-select * from NS_DP_SanPham_TinhChatDongPhuc
-select * from NS_DP_PhieuDeNghi_CaNhan
-select * from NS_DP_PhieuDeNghi_CaNhan_ChiTiet
-
 delete from NS_DP_PhieuDeNghi_CaNhan
 where NguoiDeNghi in (1)
 select * from NS_NhanSu
@@ -141,15 +129,7 @@ INSERT INTO DM_DP_Size
 --VALUES
 --('44-NC', 10, 1, 0),
 --('45-NC', 10, 1, 0)
-select * from DM_DP_Size
-select * from [dbo].[DM_DP_LoaiSanPham]
-select * from NS_DP_SanPham
 
-select * from NS_DP_SanPham_TinhChatDongPhuc
-
-select * from NS_DP_SanPham
-select * from NS_DP_SanPham_TinhChatDongPhuc
-select * from DM_DP_TinhChatDongPhuc
 --get tính chất theo mã sp
 select * from 
 NS_DP_SanPham sp 
@@ -267,13 +247,6 @@ as begin
 select distinct MaSize from [dbo].[DM_DP_Size]
 end go
 
-select * from DM_DP_Size
-select * from DM_DP_LoaiSanPham
-select * from DM_DP_TinhChatDongPhuc
-select * from DM_DP_Size
-select * from NS_DP_SanPham
-select * from DM_DP_TinhChatDongPhuc
-select * from NS_DP_SanPham
 
 select GioiTinh from NS_NhanSu
 select * from NS_NhanSu
@@ -336,17 +309,6 @@ join NS_DP_SanPham sp on sp.SanPham = sptcdp.SanPham
 where sp.SanPham =@sanPham
 end
 go
-
-exec getTinhChatTuSanPham 3
-select * from NS_DP_SanPham_TinhChatDongPhuc
-select * from NS_NhanSu
-select * from NS_DP_XuatNhapKho
-select * from [dbo].[NS_DP_XuatNhapKho_ChiTiet]
-select * from[dbo].[NS_DP_PhieuNhapHang]
-select * from NS_DP_PhieuNhapHang_ChiTiet
-exec [dbo].[getXuatNhapKho]
-select * from NS_DP_PhieuNhapHang pnh join NS_DP_PhieuNhapHang_ChiTiet pnhct on pnh.PhieuNhapHang = pnhct.PhieuNhapHang
-
 alter procedure selectOptionGetPhieuNhap
 as
 begin
@@ -429,35 +391,6 @@ where IsHoanThanh !=1
 end 
 go
 exec  PhieuNhap_GetSanhSachSanPham
-
-TRUNCATE TABLE NS_DP_PhieuNhapHang
-select * from NS_DP_PhieuNhapHang
---23/07/2024
-select * from NS_DP_PhieuNhapHang
-create procedure NhapKho_SelectPhieuNhapHang
-as
-begin
-select PhieuNhapHang, TenVaMaPhieu= MaPhieuNhapHang +' - '+TenPhieuNhapHang,IsDel,IsHoanThanh from NS_DP_PhieuNhapHang
-where IsDel !=1 and IsHoanThanh !=1
-end 
-go
-create procedure NhapKho_SelectKhoNhan
-as
-begin
-select * from DM_DP_Kho
-where IsDel !=1 
-end 
-go
---
-drop proc NhapKho_ChonPhieuNhapHan
-create procedure NhapKho_ChonPhieuNhapHan
-as
-begin
-select * from NS_DP_PhieuNhapHang pnh 
-join DM_DP_Kho kho
-on pnh.KhoNhan = kho.Kho
-end
-go
 
 --
 SELECT ROW_NUMBER() OVER(ORDER BY NS_DP_XuatNhapKho_ChiTiet.TinhChatDongPhuc, MaSize, GioiTinh, NS_DP_SanPham.SanPham) AS STT,
@@ -615,63 +548,6 @@ select * from NS_DP_XuatNhapKho_ChiTiet
 -- xóa phiếu
 select * from NS_DP_XuatNhapKho 
 	left join NS_DP_XuatNhapKho_ChiTiet on NS_DP_XuatNhapKho.XuatNhapKho = NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho
-create procedure NhapKho_getSoLuongDeXoa
-(
-	 @XuatNhapKho int =null
-)
-as 
-begin
-	select NS_DP_XuatNhapKho.XuatNhapKho,
-	NS_DP_XuatNhapKho.MaXuatNhapKho ,
-	NS_DP_XuatNhapKho.IDPhieu,
-	NS_DP_XuatNhapKho_ChiTiet.SanPham,
-	NS_DP_XuatNhapKho_ChiTiet.Size,
-	NS_DP_XuatNhapKho_ChiTiet.SoLuong
-	from NS_DP_XuatNhapKho 
-	left join NS_DP_XuatNhapKho_ChiTiet on NS_DP_XuatNhapKho.XuatNhapKho = NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho
-	where NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho = @XuatNhapKho
-end 
-go
-exec NhapKho_getAllDanhSachNhapHang
-select * from NS_DP_XuatNhapKho
-select
-select * from NS_DP_PhieuNhapHang_ChiTiet
-where PhieuNhapHang = 18
-
-select * from NS_DP_PhieuNhapHang
-where PhieuNhapHang = 18
- 
---cập nhật lại phiếu
-select * from NS_DP_PhieuNhapHang
-select * from NS_DP_PhieuNhapHang_ChiTiet
---cập nhật lại theo phieu nhap hang- sản phẩm- size
---
-select NS_DP_XuatNhapKho.*,
-	NS_DP_XuatNhapKho_ChiTiet.ID,
-	NS_DP_XuatNhapKho_ChiTiet.SanPham,
-	NS_DP_XuatNhapKho_ChiTiet.Size
-	from NS_DP_XuatNhapKho
-left join NS_DP_XuatNhapKho_ChiTiet on NS_DP_XuatNhapKho.XuatNhapKho = NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho
-order by NS_DP_XuatNhapKho.XuatNhapKho
-where 
-
---
-delete from NS_DP_XuatNhapKho where XuatNhapKho between 10 and 76
-select * from NS_DP_XuatNhapKho_ChiTiet
-order by XuatNhapKho
-select * from NS_DP_PhieuNhapHang
-select * from NS_DP_XuatNhapKho
-order by XuatNhapKho
-
-select * 
-from NS_DP_XuatNhapKho_ChiTiet
-left join NS_DP_SanPham on NS_DP_SanPham.SanPham = NS_DP_XuatNhapKho_ChiTiet.SanPham
-where XuatNhapKho =99
-order by XuatNhapKho
-
-select * 
-from NS_DP_XuatNhapKho_ChiTiet
-where XuatNhapKho =99
 
 create proc NhapKho_HienThiSanPhamTheoPhieu (
 @PhieuNhap int =null)
@@ -784,11 +660,6 @@ EXEC NhapKho_HienThiSanPhamTheoPhieu 5
 SELECT* FROM dbo.NS_DP_XuatNhapKho
 ORDER BY XuatNhapKho
 
-SELECT * FROM dbo.NS_DP_XuatNhapKho
-SELECT * FROM dbo.NS_DP_XuatNhapKho_ChiTiet
-SELECT * FROM dbo.NS_DP_PhieuNhapHang
-SELECT * FROM dbo.NS_DP_PhieuNhapHang_ChiTiet
-
 TRUNCATE TABLE NS_DP_PhieuNhapHang
 TRUNCATE TABLE NS_DP_PhieuNhapHang_ChiTiet
 TRUNCATE TABLE dbo.NS_DP_XuatNhapKho
@@ -858,3 +729,102 @@ TRUNCATE TABLE dbo.NS_DP_PhieuDeNghi
 
 SELECT * FROM NS_DP_PhieuDeNghi_CaNhan
 SELECT * FROM NS_DP_PhieuDeNghi_CaNhan WHERE PhieuDeNghi_CaNhan=3
+
+USE 
+
+create PROC NhapHang_getAllDonMuaHang
+AS
+begin
+SELECT 
+	ROW_NUMBER() OVER (ORDER BY PhieuNhapHang) stt,
+	PhieuNhapHang,
+	TenPhieuNhapHang,
+	MaPhieuNhapHang,
+	NgayDatHang,
+	Hoten = NS_NhanSu.HoDem+' '+NS_NhanSu.Ten,
+	NS_DP_PhieuNhapHang.NhaCungCap,
+	TenNhaCungCap,
+	TongSLMua,
+	TongSLDaNhap,
+	TongThanhToan,
+	IsHoanThanh,
+	NS_DP_PhieuNhapHang.GhiChu
+FROM 
+dbo.NS_DP_PhieuNhapHang 
+LEFT JOIN dbo.NS_NhanSu ON dbo.NS_DP_PhieuNhapHang.NguoiDatHang = dbo.NS_NhanSu.NhanSu
+LEFT JOIN dbo.DM_DP_NhaCungCap ON DM_DP_NhaCungCap.NhaCungCap = NS_DP_PhieuNhapHang.NhaCungCap
+WHERE DM_DP_NhaCungCap.IsDel !=1
+END 
+GO
+
+CREATE PROC NhapHang_getDonHangByMaPhieu
+(
+	@phieu INT = NULL
+)
+AS
+begin
+SELECT 
+	ROW_NUMBER() OVER (ORDER BY PhieuNhapHang) stt,
+	PhieuNhapHang,
+	KhoNhan,
+	TenPhieuNhapHang,
+	MaPhieuNhapHang,
+	NgayDatHang,
+	Hoten = NS_NhanSu.HoDem+' '+NS_NhanSu.Ten,
+	NS_DP_PhieuNhapHang.NhaCungCap,
+	TenNhaCungCap,
+	TongSLMua,
+	TongSLDaNhap,
+	TongThanhToan,
+	IsHoanThanh,
+	NS_DP_PhieuNhapHang.GhiChu
+FROM 
+dbo.NS_DP_PhieuNhapHang 
+LEFT JOIN dbo.NS_NhanSu ON dbo.NS_DP_PhieuNhapHang.NguoiDatHang = dbo.NS_NhanSu.NhanSu
+LEFT JOIN dbo.DM_DP_NhaCungCap ON DM_DP_NhaCungCap.NhaCungCap = NS_DP_PhieuNhapHang.NhaCungCap
+WHERE 1=1 
+AND DM_DP_NhaCungCap.IsDel !=1
+AND PhieuNhapHang = @phieu
+END 
+GO
+
+SELECT * FROM  dbo.NS_DP_PhieuNhapHang_ChiTiet
+
+alter PROC NhapHang_SanPhamByMaPhieu
+(
+	@phieu INT = NULL
+)
+AS
+begin
+SELECT 
+	ROW_NUMBER() OVER (ORDER BY PhieuNhapHang) stt,
+	NS_DP_PhieuNhapHang_ChiTiet.ID,
+	PhieuNhapHang,
+	NS_DP_PhieuNhapHang_ChiTiet.SanPham,
+	TenSanPham,
+	DM_DP_TinhChatDongPhuc.TinhChatDongPhuc,
+	TenTinhChatDongPhuc,
+	NS_DP_PhieuNhapHang_ChiTiet.Size,
+	MaSize,
+	SoLuong,
+	NS_DP_PhieuNhapHang_ChiTiet.DonGia,
+	ThanhTien,
+	SoLuongDaNhap,
+	SLConLai = SoLuong- SoLuongDaNhap,
+	NS_DP_PhieuNhapHang_ChiTiet.DonViTinh,
+	TenDonViTinh,
+	GhiChu
+FROM dbo.NS_DP_PhieuNhapHang_ChiTiet
+JOIN dbo.NS_DP_SanPham ON NS_DP_PhieuNhapHang_ChiTiet.SanPham = NS_DP_SanPham.SanPham
+JOIN dbo.DM_DP_Size ON DM_DP_Size.Size = NS_DP_PhieuNhapHang_ChiTiet.Size
+LEFT JOIN dbo.NS_DP_SanPham_TinhChatDongPhuc ON NS_DP_PhieuNhapHang_ChiTiet.SanPham = NS_DP_SanPham_TinhChatDongPhuc.SanPham AND NS_DP_SanPham_TinhChatDongPhuc.TinhChatDongPhuc = NS_DP_PhieuNhapHang_ChiTiet.TinhChatDongPhuc
+LEFT JOIN dbo.DM_DP_TinhChatDongPhuc ON NS_DP_SanPham_TinhChatDongPhuc.TinhChatDongPhuc = DM_DP_TinhChatDongPhuc.TinhChatDongPhuc
+JOIN dbo.DM_DP_DonViTinh ON NS_DP_PhieuNhapHang_ChiTiet.DonViTinh = DM_DP_DonViTinh.DonViTinh
+WHERE PhieuNhapHang = @phieu 
+END
+GO 
+
+SELECT * FROM dbo.NS_DP_PhieuNhapHang_ChiTiet WHERE PhieuNhapHang =4
+EXEC PhieuNhap_GetSanhSachSanPham
+TRUNCATE TABLE NS_DP_PhieuNhapHang_ChiTiet
+TRUNCATE TABLE NS_DP_PhieuNhapHang
