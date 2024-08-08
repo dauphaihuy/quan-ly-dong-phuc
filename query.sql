@@ -826,5 +826,17 @@ GO
 
 SELECT * FROM dbo.NS_DP_PhieuNhapHang_ChiTiet WHERE PhieuNhapHang =4
 EXEC PhieuNhap_GetSanhSachSanPham
-TRUNCATE TABLE NS_DP_PhieuNhapHang_ChiTiet
-TRUNCATE TABLE NS_DP_PhieuNhapHang
+TRUNCATE TABLE dbo.NS_DP_XuatNhapKho
+TRUNCATE TABLE dbo.NS_DP_XuatNhapKho_ChiTiet
+TRUNCATE TABLE dbo.NS_DP_PhieuNhapHang
+TRUNCATE TABLE dbo.NS_DP_PhieuNhapHang_ChiTiet
+SELECT * FROM dbo.NS_DP_XuatNhapKho
+
+select NhapKho_getAllDanhSachNhapHang
+SELECT * FROM dbo.NS_DP_XuatNhapKho_ChiTiet WHERE XuatNhapKho=5
+SELECT * FROM dbo.NS_DP_PhieuNhapHang
+EXEC [dbo].[NhapKho_HienThiSanPhamTheoPhieu] 1
+SELECT * FROM  dbo.NS_DP_XuatNhapKho_ChiTiet
+SELECT * FROM dbo.NS_DP_PhieuNhapHang_ChiTiet
+--sửa sau
+SELECT * FROM dbo.NS_DP_PhieuDeNghi

@@ -131,6 +131,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CaNhan_RenderTable_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DB_QLDP.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

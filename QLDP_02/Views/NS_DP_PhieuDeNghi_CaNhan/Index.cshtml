@@ -2,10 +2,8 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    int stt = 1;
 
 }
-@model IEnumerable<QLDP_02.Models.getPhieuDeNghiCaNhan_Result>
 
 <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
     <div class="container-fluid px-4">
@@ -18,9 +16,13 @@
                 </div>
 
                 <div class="col-12 col-xl-auto mb-3">
-                    <button class="btn btn-sm btn-light text-primary" href="#" id="themMoiPhieuDeNghi">
+                    <button class="btn btn-outline-success" id="themMoiPhieuDeNghi">
                         <i class="me-1 fa-regular fa-square-plus"></i>
                         Thêm mới phiếu đề nghị cá nhân
+                    </button>
+                    <button class="btn btn-outline-danger" onclick="xoaPhieuDeNghiCaNhan()" id="xoaPhieuDeNghiCaNhan">
+                        <i class="me-1 fa-regular fa-trash-can"></i>
+                        Xóa
                     </button>
                 </div>
             </div>
@@ -29,9 +31,10 @@
 </header>
 <div class="container-fluid px-4 p-4">
     <div class="card p-4">
-        <table id="datatablesSimple">
+        <table id="tablePhieuDeNghiCaNhan" class="table table-striped">
             <thead>
                 <tr>
+                    <th><input type="checkbox"/></th>
                     <th>Hoàn thành</th>
                     <th>STT</th>
                     <th>Mã phiếu</th>
@@ -39,48 +42,10 @@
                     <th>Ngày đề nghị</th>
                     <th>Trạng thái duyệt</th>
                     <th>lý do cấp phát</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr ondblclick="chonPhieuDeNghiCaNhan(@item.PhieuDeNghi_CaNhan)">
-                        <td><input class="form-check-input" @(item.IsHoanThanh == true ? "checked" : "") onchange="toggleHoanThanh(@item.PhieuDeNghi_CaNhan)" type="checkbox" @(item.IsHoanThanh == false ? "" : "checked") /></td>
-                        <td>@stt</td>
-                        <td>@item.MaPhieuDeNghi_CaNhan</td>
-                        <td>@item.NguoiDeNghi</td>
-                        <td>@item.NgayDeNghi.ToString("dd/MM/yyyy")</td>
-                        <td>
-                            @if (item.TrangThaiDuyet == 1)
-                            {
-                                <span>Chưa duyệt</span>
-                            }
-                            else if (item.TrangThaiDuyet == 2)
-                            {
-                                <span>Chờ duyệt</span>
-                            }
-                            else if (item.TrangThaiDuyet == 3)
-                            {
-                                <span>Từ chối</span>
-                            }
-                            else if (item.TrangThaiDuyet == 4)
-                            {
-                                <span>Đã duyệt</span>
-                            }
-                        </td>
-                        <td>@item.lydo</td>
-                        <td class="row">
-                            <button class="btn btn-datatable btn-icon btn-transparent-dark" onclick="chonPhieuDeNghiCaNhan(@item.PhieuDeNghi_CaNhan)">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </button>
-                            <button class="btn btn-datatable btn-icon btn-transparent-dark" onclick="XoaPhieuDeNghiCaNhan(@item.PhieuDeNghi_CaNhan)">
-                                <i class="fa-regular fa-trash-can"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    stt++;
-                }
+                
             </tbody>
         </table>
     </div>
@@ -91,7 +56,7 @@
         <div class="modal-content">
             <div class="modal-header alert alert-success">
                 <h5 class="modal-title themMoiPhieuDeNghi" id="staticThemMoiSanPham">Thêm mới Phiếu đề nghị đồng phục cá nhân</h5>
-                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button class="btn btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="form-group row mb-3">
@@ -99,10 +64,7 @@
                         <label class="fw-500 required">Mã phiếu:</label>
                         <input type="text" disabled placeholder="mã phiếu đề nghị" class="form-control" required id="maPhieuDeNghi" />
                     </div>
-                    <div class="col-3">
-                        <label class="fw-500 required">Số phiếu:</label>
-                        <input type="number" disabled placeholder="Số phiếu đề nghị" class="form-control" required id="PhieuDeNghi" />
-                    </div>
+                    <input type="number" style="display:none" class="form-control" required id="PhieuDeNghi" />
                     <div class="col-lg-3">
                         <label class="fw-500 required">Ngày đề nghị: </label>
                         <input class="form-control" disabled value="" id="ngayDeNghi" />
@@ -123,10 +85,14 @@
                         <div class="col-auto">
                             <h5>Danh sách sản phẩm</h5>
                         </div>
-                        <div class="col-auto">
-                            <button id="themMoiSanPham" class="btn btn-sm btn-light text-primary" href="" type="button">
+                        <div class="col-auto ms-auto">
+                            <button id="themMoiSanPham" class="btn btn-outline-success" type="button">
                                 <i id="them" class="me-1 fa-regular fa-square-plus"></i>
                                 Thêm mới sản phẩm
+                            </button>
+                            <button id="xoaSanPham" class="btn btn-outline-danger" type="button">
+                                <i class="me-1 fa-regular fa-trash-can"></i>
+                                Xóa
                             </button>
                         </div>
                     </div>
@@ -160,7 +126,10 @@
         <div class="modal-content">
             <div class="modal-header alert alert-success">
                 <h5 class="modal-title" onclick="" id="staticThemMoiSanPham">Thêm mới sản phẩm</h5>
-                
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-outline-primary me-1" id="iBack_ChonSP"><i class="fa-solid fa-arrow-left-long me-1"></i>Back</button>
+                    <button class="btn btn-outline-success me-1" onclick="XacNhanChonSP()"><i class="fa-regular fa-floppy-disk me-1"></i>Save</button>
+                </div>
             </div>
             <div class="modal-body">
                 <table class="table table-striped table-hover">
@@ -175,24 +144,13 @@
                         </tr>
                     </thead>
                     <tbody id="bodyThemMoiSanPham">
-                        @*<tr>
-                                <td><input type="checkbox" id="horns" name="horns" /></td>
-                                <td>stt</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>*@
                     </tbody>
                 </table>
             </div>
             <div class="modal-footer">
                 <div class="row">
                     <div class="col-md-5">
-                        <div class="d-flex justify-content-between">
-                            <button class="btn btn-outline-danger btn-lg me-5" id="iBack_ChonSP">Back</button>
-                            <button class="btn btn-outline-success btn-lg" onclick="XacNhanChonSP()">Save</button>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -200,30 +158,96 @@
     </div>
 </div>
 <script>
-    const toggleHoanThanh = id => {
-        console.log(id)
-        return
-        //$.ajax({
-        //    url: '/NS_DP_PhieuDeNghi_CaNhan/toggleHoanThanhPhieuDeNghi',
-        //    type: 'POST',
-        //    data: {
-        //        idPhieuDeNghi: +id
-        //    },
-        //    success: function (response) {
-        //        console.log(response)
-        //        if (response.success === true) {
-        //            Swal.fire({
-        //                title: "Updated!",
-        //                text: "Update status successful.",
-        //                icon: "success"
-        //            })
-        //        }
-        //    },
-        //    error: function (error) {
-        //        console.error('Lỗi khi gửi dữ liệu: ', error);
-        //    }
-        //})
+    const xoaPhieuDeNghiCaNhan = () => {
+        let checkboxes = document.querySelectorAll('#tablePhieuDeNghiCaNhan tbody tr input[type="checkbox"]');
+        let selectedRows = [];
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                //let row = checkbox.closest('tr');
+                //selectedRows.push(row);
+                const data = {
+                    PhieuCaNhan: +checkbox.value
+                }
+                selectedRows.push(data)
+            }
+        })
+        console.log(selectedRows)
+        if (selectedRows.length == 0) {
+            Swal.fire({
+                title: "The Internet?",
+                text: "That thing is still around?",
+                icon: "question"
+            })
+            return
+        }
+        $.ajax({
+            url: "/NS_DP_PhieuDeNghi_CaNhan/XoaPhieuDeNghiCaNhan",
+            type: "post",
+            data: {
+                DanhSachXoa: selectedRows
+            },
+            success: function (response) {
+                if (response.success) {
+                    Toast.fire({
+                        icon: "success",
+                        title: "Signed in successfully"
+                    })
+                    renderDataTable()
+                }
+                if (response.success === false) {
+                    Swal.fire({
+                        title: "Cảnh báo",
+                        text: "Phiếu đề nghị đã Duyệt, không thể Xóa!",
+                        icon: "error"
+                    })
+                }
+            }
+        })
+        console.log(selectedRows)
     }
+    function formatDateString(dateString) {
+        if (typeof dateString !== 'string' || !dateString.startsWith('/Date(') || !dateString.endsWith(')/')) {
+            return 'Invalid date string format';
+        }
+        const unixTimestamp = parseInt(dateString.slice(6, -2));
+        const dateObj = new Date(unixTimestamp);
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const year = dateObj.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+
+    const renderDataTable = () => {
+        $.ajax({
+            url: "/NS_DP_PhieuDeNghi_CaNhan/RenderDataTable",
+            type: "post",
+            success: function (response) {
+                let content = ''
+                response.phieuCaNhan.forEach((item) => {
+                    content +=
+                    `
+                      <tr class="xoa" ondblclick="chonPhieuDeNghiCaNhan(${item.PhieuDeNghi_CaNhan})">
+                         <td><input type="checkbox" value="${item.PhieuDeNghi_CaNhan}"/></td>
+                         <td style="text-align:center"><input type="checkbox"/></td>
+                         <td>${item.stt}</td>
+                         <td>${item.MaPhieuDeNghi_CaNhan}</td>
+                         <td>${item.HoTenNguoiDeNghi}</td>
+                         <td>${formatDateString(item.NgayDeNghi)}</td>
+                         <td style="background-color: ${item.TrangThaiDuyet == 3 ? "#FF6969" :
+                        item.TrangThaiDuyet == 4 ? "#4793AF" : "#E9C874"}";">${item.TenTrangThaiDuyet}</td>
+                         <td>${item.TenLyDoCapPhat}</td>
+                     </tr>  
+                    `
+                })
+                $('#tablePhieuDeNghiCaNhan tbody').empty()
+                $('#tablePhieuDeNghiCaNhan tbody').html(content)
+                if ($('#tablePhieuDeNghiCaNhan tbody tr').length == 0) {
+                    $("#tablePhieuDeNghiCaNhan tbody").html('<tr><td colspan="13" class="text-center">Không có dữ liệu</td></tr>')
+                }
+            }
+        })
+    }
+    renderDataTable()
     function handleLyDoCapPhatChange() {
         let idLyDoCapPhat = $("#LyDoCapPhat").val();
         let maPhieu = $("#maPhieuDeNghi").val();
@@ -266,6 +290,8 @@
         //console.log("Lý do cấp phát được chọn:", idLyDoCapPhat, maPhieu, nguoiDeNghi);
     }
     $("#themMoiPhieuDeNghi").click(function () {
+        $("#themMoiSanPham").show()
+        $("#xoaSanPham").show()
         $(".themMoiPhieuDeNghi").html("Thêm mới phiếu đề nghị cá nhân")
         $("#maPhieuDeNghi").val("")
         $("#ngayDeNghi").val(getCurrentDay())
@@ -456,8 +482,16 @@
                 id: id
             },
             success: function (response) {
-                //console.log(response)
+                console.log(response)
                 if (response.success === true) {
+                    if (response.phieu.TrangThaiDuyet !== 2) {
+                        $("#themMoiSanPham").hide()
+                        $("#xoaSanPham").hide()
+                    } else
+                    {
+                        $("#themMoiSanPham").show()
+                        $("#xoaSanPham").show()
+                    }
                     let content = '';
                     let i = 0
                     response.data.forEach(function (item) {
@@ -470,7 +504,6 @@
                             <td>${item.TenTinhChatDongPhuc == null ? "" : item.TenTinhChatDongPhuc}</td>
                             <td>${item.MaSize}</td>
                             <td><input class="form-control" value="${item.SoLuong}"/></td>
-                            <td><button onclick="xoaSanPhamDaChon(${item.PhieuDeNghi_CaNhan}, ${item.SanPham},'${item.TenSanPham}')" class="btn btn-danger">xóa</button></td>
                         </tr>`
 
                     });
@@ -566,27 +599,16 @@
             },
             success: function (response) {
                 console.log(response)
-                if (response.success === true) {
-                    Swal.fire({
-                        title: 'Successful!',
-                        text: 'Add form successful',
-                        icon: 'success',
-                        confirmButtonText: 'Cool',
-                        backdrop: `
-                          rgba(0,0,123,0.1)
-                          url("https://media.tenor.com/v35v-zbtwnUAAAAi/confetti.gif")
-                          center top
-                          repeat
-                    ` 
-                    }).then(() => {
-                        setTimeout(() => {
-                            location.reload();
-                        }, 500);
-                    })
-                }
+                Toast.fire({
+                    icon: "success",
+                    title: "Add successfully"
+                })
+                $("#modalThemMoiSanPham").modal('hide')
+                chonPhieuDeNghiCaNhan(response.nS_DP_PhieuDeNghi_CaNhan.PhieuDeNghi_CaNhan)
+                renderDataTable()
             },
             error: function (error) {
-                console.log(error);
+                console.log(error)
             }
         });
 

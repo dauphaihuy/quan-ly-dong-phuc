@@ -15,15 +15,26 @@ namespace QLDP_02.Controllers
     public class NS_DP_PhieuDeNghi_CaNhanController : Controller
     {
 		private DB_QLDPEntities db = new DB_QLDPEntities();
+		public JsonResult RenderDataTable()
+		{
+			try
+			{
+				var phieuCaNhan = db.CaNhan_RenderTable();
+                return Json(new { success = true, phieuCaNhan });
+            }
+            catch(Exception e)
+			{
+                return Json(new { success = false, message = e});
+            }
+		}
 		// GET: NS_DP_PhieuDeNghi_CaNhan
 		public ActionResult Index()
         {
-			
 			ViewBag.LyDoCapPhat = new SelectList(db.DM_DP_LyDoCapPhat, "LyDoCapPhat", "TenLyDoCapPhat");
 			ViewBag.NguoiDeNghi = new SelectList(db.NS_NhanSu,"NhanSu", "Ten");
 			ViewBag.SanPham = new SelectList(db.NS_DP_SanPham, "SanPham", "TenSanPham");
             ViewBag.TinhChat = new SelectList(db.DM_DP_TinhChatDongPhuc, "TinhChatDongPhuc", "TenTinhChatDongPhuc");
-			return View(db.getPhieuDeNghiCaNhan().Where(phieu => phieu.IsDel == false).OrderByDescending(phieu => phieu.PhieuDeNghi_CaNhan));
+			return View();
         }
         //random tạo mã phiếu
         public string GenerateRandomMaPhieuDeNghi_CaNhan(int length)
@@ -83,7 +94,7 @@ namespace QLDP_02.Controllers
 						db.NS_DP_PhieuDeNghi_CaNhan_ChiTiet.Add(nS_DP_PhieuDeNghi_CaNhan_ChiTiet);
 						db.SaveChanges();
 					}
-					return Json(new {success=true});
+					return Json(new {success=true, nS_DP_PhieuDeNghi_CaNhan });
 				}
 				else
 				{
@@ -254,9 +265,42 @@ namespace QLDP_02.Controllers
                 return Json(new { success = false, error = ex.Message });
             }
         }
+		public JsonResult XoaPhieuDeNghiCaNhan(List<XoaPhieuDeNghiCaNhan> DanhSachXoa)
+		{
+			try
+			{
+				var coTheXoa = true;
+				foreach(var item in DanhSachXoa)
+				{
+					var PhieuDeNghiCaNhan = db.NS_DP_PhieuDeNghi_CaNhan.Where(x => x.PhieuDeNghi_CaNhan == item.PhieuCaNhan).SingleOrDefault();
+					if (PhieuDeNghiCaNhan.TrangThaiDuyet !=2) {
+						coTheXoa = false;
+						return Json(new { success = false});
+                    }
+				}
+				if (coTheXoa)
+				{
+                    foreach (var item in DanhSachXoa)
+                    {
+                        var PhieuDeNghiCaNhan = db.NS_DP_PhieuDeNghi_CaNhan.Where(x => x.PhieuDeNghi_CaNhan == item.PhieuCaNhan).SingleOrDefault();
+						PhieuDeNghiCaNhan.IsDel = true;
+                    }
+                }
+				db.SaveChanges();
+                return Json(new { success = true, data = DanhSachXoa });
+            }
+            catch(Exception e)
+			{
+                return Json(new { success = false, error = e.Message });
+            }
+		}
 	}
     }
-	
+	public class XoaPhieuDeNghiCaNhan
+	{
+		public int PhieuCaNhan { get; set; }
+	}
+
 	public class SelectedProduct
 	{
 		public int SanPham { get; set; }

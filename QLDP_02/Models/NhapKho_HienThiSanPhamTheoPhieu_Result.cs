@@ -14,6 +14,7 @@ namespace QLDP_02.Models
     public partial class NhapKho_HienThiSanPhamTheoPhieu_Result
     {
         public Nullable<long> stt { get; set; }
+        public int ID { get; set; }
         public int XuatNhapKho { get; set; }
         public string TenTinhChatDongPhuc { get; set; }
         public Nullable<int> TinhChatDongPhuc { get; set; }

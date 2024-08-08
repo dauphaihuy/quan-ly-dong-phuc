@@ -28,6 +28,11 @@ namespace QLDP_02.Controllers
         public int SoLuongYeuCau { get; set; }
         public int TinhChatDongPhuc { get; set; }
         public int NhaCungCap { get; set; }
+        public int ID { get; set; }
+    }
+    public class XoaPhieuNhapKho
+    {
+        public int XuatNhapKho { get; set; }
     }
     public class NS_DP_XuatNhapKhoController : Controller
     {
@@ -44,38 +49,39 @@ namespace QLDP_02.Controllers
                 return Json(new{ success = false, err = e.Message });
             }
         }
-        public JsonResult NhapKho_XoaPhieuNhapKho(int XuatNhapKho)
-        {
-            try
-            {
-                var xuatNhapKhoChiTiet = db.NS_DP_XuatNhapKho_ChiTiet.Where(x => x.XuatNhapKho == XuatNhapKho).ToList();
-                var xuatNhapKho = db.NS_DP_XuatNhapKho.Where(x => x.XuatNhapKho == XuatNhapKho).FirstOrDefault();
-                var PhieuNhapHang = db.NS_DP_PhieuNhapHang.Where(x => x.PhieuNhapHang == xuatNhapKho.IDPhieu).FirstOrDefault();
-                var phieuNhapHangChiTiet = db.NS_DP_PhieuNhapHang_ChiTiet.Where(x => x.PhieuNhapHang == xuatNhapKho.IDPhieu);
-                foreach(var itemxnkChiTiet in xuatNhapKhoChiTiet)
-                {
-                    foreach (var itemPhieuChiTiet in phieuNhapHangChiTiet)
-                    {
-                        if(itemxnkChiTiet.SanPham==itemPhieuChiTiet.SanPham 
-                            && itemxnkChiTiet.Size == itemPhieuChiTiet.Size 
-                            && itemxnkChiTiet.DonViTinh == itemPhieuChiTiet.DonViTinh)
-                        {
-                            itemPhieuChiTiet.SoLuongDaNhap = itemPhieuChiTiet.SoLuongDaNhap - itemxnkChiTiet.SoLuong;
-                            PhieuNhapHang.TongSLDaNhap = PhieuNhapHang.TongSLDaNhap - itemxnkChiTiet.SoLuong;
-                            PhieuNhapHang.IsHoanThanh = false;
-                        }
-                    }
-                }
-                //db.NS_DP_XuatNhapKho_ChiTiet.RemoveRange(xuatNhapKhoChiTiet);
-                xuatNhapKho.IsDel = true;
-                xuatNhapKho.NgayXoa = DateTime.Now;
-                db.SaveChanges();
-                return Json(new { success = true , xuatNhapKhoChiTiet, xuatNhapKho, phieuNhapHangChiTiet });
-            }catch(Exception e)
-            {
-                return Json(new { success = false, err = e.Message });
-            }   
-        }
+        //xóa từng cái
+        //public JsonResult NhapKho_XoaPhieuNhapKho(int XuatNhapKho)
+        //{
+        //    try
+        //    {
+        //        var xuatNhapKhoChiTiet = db.NS_DP_XuatNhapKho_ChiTiet.Where(x => x.XuatNhapKho == XuatNhapKho).ToList();
+        //        var xuatNhapKho = db.NS_DP_XuatNhapKho.Where(x => x.XuatNhapKho == XuatNhapKho).FirstOrDefault();
+        //        var PhieuNhapHang = db.NS_DP_PhieuNhapHang.Where(x => x.PhieuNhapHang == xuatNhapKho.IDPhieu).FirstOrDefault();
+        //        var phieuNhapHangChiTiet = db.NS_DP_PhieuNhapHang_ChiTiet.Where(x => x.PhieuNhapHang == xuatNhapKho.IDPhieu);
+        //        foreach(var itemxnkChiTiet in xuatNhapKhoChiTiet)
+        //        {
+        //            foreach (var itemPhieuChiTiet in phieuNhapHangChiTiet)
+        //            {
+        //                if(itemxnkChiTiet.SanPham==itemPhieuChiTiet.SanPham 
+        //                    && itemxnkChiTiet.Size == itemPhieuChiTiet.Size 
+        //                    && itemxnkChiTiet.DonViTinh == itemPhieuChiTiet.DonViTinh)
+        //                {
+        //                    itemPhieuChiTiet.SoLuongDaNhap = itemPhieuChiTiet.SoLuongDaNhap - itemxnkChiTiet.SoLuong;
+        //                    PhieuNhapHang.TongSLDaNhap = PhieuNhapHang.TongSLDaNhap - itemxnkChiTiet.SoLuong;
+        //                    PhieuNhapHang.IsHoanThanh = false;
+        //                }
+        //            }
+        //        }
+        //        //db.NS_DP_XuatNhapKho_ChiTiet.RemoveRange(xuatNhapKhoChiTiet);
+        //        xuatNhapKho.IsDel = true;
+        //        xuatNhapKho.NgayXoa = DateTime.Now;
+        //        db.SaveChanges();
+        //        return Json(new { success = true , xuatNhapKhoChiTiet, xuatNhapKho, phieuNhapHangChiTiet });
+        //    }catch(Exception e)
+        //    {
+        //        return Json(new { success = false, err = e.Message });
+        //    }   
+        //}
         public JsonResult NhapKho_GetDanhSachSanPhamNhapHang(int phieuNhapHang)
         {
             return Json(new { success = true });
@@ -83,11 +89,27 @@ namespace QLDP_02.Controllers
         // GET: NS_DP_XuatNhapKho/NhapKho
         public ActionResult NhapKho()
         {
-            var SelectPhieuNhap = db.NhapKho_SelectPhieuNhapHang().Where(phieu => phieu.IsDel != true && phieu.IsHoanThanh != true);
+            var SelectPhieuNhap = db.NhapKho_SelectPhieuNhapHang();
             var SelectKhoNhan = db.DM_DP_Kho;
             ViewBag.SelectPhieuNhap = new SelectList(SelectPhieuNhap, "PhieuNhapHang", "TenVaMaPhieu");
             ViewBag.SelectKhoNhan = new SelectList(SelectKhoNhan, "Kho", "TenKho");
             return View();
+        }
+        public ActionResult XuatKho()
+        {
+            return View();
+        }
+        public JsonResult getPhieuNhapHang()
+        {
+            try
+            {
+                var SelectPhieuNhap = db.NhapKho_SelectPhieuNhapHang();
+                return Json(new { success = true, SelectPhieuNhap });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, err = ex.Message });
+            }
         }
         public JsonResult NhapKho_ChonPhieuNhapHan(int? maPhieuNhap)
         {
@@ -164,6 +186,42 @@ namespace QLDP_02.Controllers
                 return Json(new { success = false, err = e.Message });
             }
         }
+        public JsonResult NhapKho_XoaPhieuNhapKho(List<XoaPhieuNhapKho> ListPhieuCanXoa)
+        {
+            try
+            {
+                foreach (var item in ListPhieuCanXoa)
+                {
+                    var xuatNhapKhoChiTiet = db.NS_DP_XuatNhapKho_ChiTiet.Where(x => x.XuatNhapKho == item.XuatNhapKho).ToList();
+                    var xuatNhapKho = db.NS_DP_XuatNhapKho.Where(x => x.XuatNhapKho == item.XuatNhapKho).FirstOrDefault();
+                    var PhieuNhapHang = db.NS_DP_PhieuNhapHang.Where(x => x.PhieuNhapHang == xuatNhapKho.IDPhieu).FirstOrDefault();
+                    var phieuNhapHangChiTiet = db.NS_DP_PhieuNhapHang_ChiTiet.Where(x => x.PhieuNhapHang == xuatNhapKho.IDPhieu);
+                    foreach (var itemxnkChiTiet in xuatNhapKhoChiTiet)
+                    {
+                        foreach (var itemPhieuChiTiet in phieuNhapHangChiTiet)
+                        {
+                            if (itemxnkChiTiet.SanPham == itemPhieuChiTiet.SanPham
+                                && itemxnkChiTiet.Size == itemPhieuChiTiet.Size
+                                && itemxnkChiTiet.DonViTinh == itemPhieuChiTiet.DonViTinh)
+                            {
+                                itemPhieuChiTiet.SoLuongDaNhap = itemPhieuChiTiet.SoLuongDaNhap - itemxnkChiTiet.SoLuong;
+                                PhieuNhapHang.TongSLDaNhap = PhieuNhapHang.TongSLDaNhap - itemxnkChiTiet.SoLuong;
+                                PhieuNhapHang.IsHoanThanh = false;
+                            }
+                        }
+                    }
+                    //db.NS_DP_XuatNhapKho_ChiTiet.RemoveRange(xuatNhapKhoChiTiet);
+                    xuatNhapKho.IsDel = true;
+                    xuatNhapKho.NgayXoa = DateTime.Now;
+                    db.SaveChanges();
+                }
+                return Json(new { success = true });
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, err = e.Message });
+            }
+        }
         public JsonResult NhapKho_ThemSanPham(int XuatNhapKho, List<XuatNhapKhoChiTiet> danhSachSanPhamNhapKho)
         {
             try
@@ -213,6 +271,7 @@ namespace QLDP_02.Controllers
                 }
                 else
                 {
+                    db.SaveChanges();
                     return Json(new { success = true, message="cập nhật" });
                 }
             }

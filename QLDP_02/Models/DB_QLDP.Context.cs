@@ -310,15 +310,6 @@ namespace QLDP_02.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NhapKho_getAllDanhSachNhapHang_Result>("NhapKho_getAllDanhSachNhapHang");
         }
     
-        public virtual ObjectResult<NhapKho_ChangeSelectPhieuNhap_Result> NhapKho_ChangeSelectPhieuNhap(Nullable<int> maPhieu)
-        {
-            var maPhieuParameter = maPhieu.HasValue ?
-                new ObjectParameter("maPhieu", maPhieu) :
-                new ObjectParameter("maPhieu", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NhapKho_ChangeSelectPhieuNhap_Result>("NhapKho_ChangeSelectPhieuNhap", maPhieuParameter);
-        }
-    
         public virtual ObjectResult<NhapKho_getSoLuongDeXoa_Result> NhapKho_getSoLuongDeXoa(Nullable<int> xuatNhapKho)
         {
             var xuatNhapKhoParameter = xuatNhapKho.HasValue ?
@@ -326,15 +317,6 @@ namespace QLDP_02.Models
                 new ObjectParameter("XuatNhapKho", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NhapKho_getSoLuongDeXoa_Result>("NhapKho_getSoLuongDeXoa", xuatNhapKhoParameter);
-        }
-    
-        public virtual ObjectResult<NhapKho_HienThiSanPhamTheoPhieu_Result> NhapKho_HienThiSanPhamTheoPhieu(Nullable<int> xuatNhapKho)
-        {
-            var xuatNhapKhoParameter = xuatNhapKho.HasValue ?
-                new ObjectParameter("XuatNhapKho", xuatNhapKho) :
-                new ObjectParameter("XuatNhapKho", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NhapKho_HienThiSanPhamTheoPhieu_Result>("NhapKho_HienThiSanPhamTheoPhieu", xuatNhapKhoParameter);
         }
     
         public virtual ObjectResult<DPBP_HienThiSanPham_Result> DPBP_HienThiSanPham()
@@ -391,6 +373,29 @@ namespace QLDP_02.Models
                 new ObjectParameter("phieu", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NhapHang_SanPhamByMaPhieu_Result>("NhapHang_SanPhamByMaPhieu", phieuParameter);
+        }
+    
+        public virtual ObjectResult<NhapKho_HienThiSanPhamTheoPhieu_Result> NhapKho_HienThiSanPhamTheoPhieu(Nullable<int> xuatNhapKho)
+        {
+            var xuatNhapKhoParameter = xuatNhapKho.HasValue ?
+                new ObjectParameter("XuatNhapKho", xuatNhapKho) :
+                new ObjectParameter("XuatNhapKho", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NhapKho_HienThiSanPhamTheoPhieu_Result>("NhapKho_HienThiSanPhamTheoPhieu", xuatNhapKhoParameter);
+        }
+    
+        public virtual ObjectResult<NhapKho_ChangeSelectPhieuNhap_Result> NhapKho_ChangeSelectPhieuNhap(Nullable<int> maPhieu)
+        {
+            var maPhieuParameter = maPhieu.HasValue ?
+                new ObjectParameter("maPhieu", maPhieu) :
+                new ObjectParameter("maPhieu", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NhapKho_ChangeSelectPhieuNhap_Result>("NhapKho_ChangeSelectPhieuNhap", maPhieuParameter);
+        }
+    
+        public virtual ObjectResult<CaNhan_RenderTable_Result> CaNhan_RenderTable()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CaNhan_RenderTable_Result>("CaNhan_RenderTable");
         }
     }
 }

@@ -14,6 +14,7 @@ namespace QLDP_02.Models
     public partial class NhapKho_ChangeSelectPhieuNhap_Result
     {
         public Nullable<long> stt { get; set; }
+        public int ID { get; set; }
         public int PhieuNhapHang { get; set; }
         public string MaPhieuNhapHang { get; set; }
         public string TenPhieuNhapHang { get; set; }
