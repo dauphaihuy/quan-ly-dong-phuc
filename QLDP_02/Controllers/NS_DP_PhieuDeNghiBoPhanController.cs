@@ -154,7 +154,7 @@ namespace QLDP_02.Controllers
                 }
                 phieu.TongSLYeuCau= soLuong+ phieu.TongSLYeuCau;
                 db.SaveChanges();
-                return Json(new { success = true  });
+                return Json(new { success = true, PhieuDeNghi });
             }
             catch (Exception ex)
             {

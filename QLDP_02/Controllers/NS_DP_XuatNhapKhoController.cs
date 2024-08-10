@@ -280,6 +280,54 @@ namespace QLDP_02.Controllers
                 return Json(new { success = false, err = e.Message });
             }
         }
-
+        //xuất kho
+        public JsonResult XuatKho_RenderSelectPhieuDeNghiBoPhan()
+        {
+            try
+            {
+                var result = db.NS_DP_PhieuDeNghi.Where(x => x.IsDel == false);
+                return Json(new { success = true, result });
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, err = e });
+            }
+        }
+        public JsonResult XuatKho_RenderSelectKho()
+        {
+            try
+            {
+                var result = db.DM_DP_Kho;
+                return Json(new { success = true, result });
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, err = e });
+            }
+        }
+        public JsonResult XuatKho_RenderNhaCungCap()
+        {
+            try
+            {
+                var result = db.DM_DP_NhaCungCap.Where(x => x.IsDel!=true);
+                return Json(new { success = true, result });
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, err = e });
+            }
+        }
+        public JsonResult XuatKho_GetDanhSachSanPhamDeNghi(int phieuDeNghi, int nhaCungCap)
+        {
+            try
+            {
+                var item = db.XuatKho_GetSanPham(phieuDeNghi, nhaCungCap);
+                return Json(new { success = true , item });
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, err = e });
+            }
+        }
     }
 }

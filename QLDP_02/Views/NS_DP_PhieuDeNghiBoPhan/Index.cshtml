@@ -219,10 +219,10 @@
                 $("#tableSanPham tbody tr").remove()
                 $("#tableSanPham tbody").append(content)
                 if ($("#tableSanPham tbody tr").length === 0) {
-                    $("#tableSanPham tbody").append('<tr class="empty-row"><td colspan="10">Không có dữ liệu</td></tr>');
+                    $("#tableSanPham tbody").append('<tr class="empty-row"><td colspan="10" class="text-center">Không có dữ liệu</td></tr>');
                 }
                 const checkboxes = document.querySelectorAll('#tableSanPham tbody .checkbox');
-                console.log(checkboxes)
+                //console.log(checkboxes)
                 checkboxes.forEach(checkbox => {
                     checkbox.addEventListener('change', () => {
                         const phieuDeNghiId = checkbox.dataset.maPhieu;
@@ -266,10 +266,10 @@
             data: {
             },
             success: function (response) {
-                console.log(response)
+                //console.log(response)
                 let content=''
                 response.listPhieu.forEach((item) => {
-                    console.log(item)
+                    //console.log(item)
                     content +=
                     `<tr ondblclick="doubleClickPhieu(${item.PhieuDeNghi})")>
                         <td><input type="checkbox" id="delete" value=${item.PhieuDeNghi}></td>
@@ -290,7 +290,7 @@
                 $("#tablePhieuDeNghi tbody tr").remove()
                 $("#tablePhieuDeNghi tbody").append(content)
                 if ($("#tablePhieuDeNghi tbody tr").length == 0) {
-                    $("#tablePhieuDeNghi tbody").append('<tr class="empty-row"><td colspan="13">Không có dữ liệu</td></tr>');
+                    $("#tablePhieuDeNghi tbody").append('<tr class="empty-row"><td class="text-center" colspan="13">Không có dữ liệu</td></tr>');
                 }
             }
         })
@@ -308,7 +308,7 @@
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
     const doubleClickPhieu = (phieuDeNghi) => {
-        console.log(phieuDeNghi )
+        //console.log(phieuDeNghi )
         $.ajax({
             url: "/NS_DP_PhieuDeNghiBoPhan/DeNghiBP_GetDanhSachSanPhamDaChon",
             type: "post",
@@ -316,7 +316,7 @@
                 PhieuDeNghi: phieuDeNghi
             },
             success: function (response) {
-                console.log(response)
+                //console.log(response)
                 $('#MaPhieuDeNghi').val(response.phieuDeNghi.MaPhieuDeNghi)
                 $('#PhieuDeNghi').val(response.phieuDeNghi.PhieuDeNghi)
                 $('#NgayDeNghi').val(formatJsonDate2(response.phieuDeNghi.NgayDeNghi))
@@ -326,7 +326,7 @@
                 $('#GhiChu').val(response.phieuDeNghi.GhiChu)
                 let content = ``
                 response.DanhSachSanPham.forEach((item) => {
-                    console.log(phieuDeNghi,item.ID)
+                    //console.log(phieuDeNghi,item.ID)
                     content +=
                     `<tr>
                            <td><input type="checkbox" class="checkbox" data-ma-phieu="${item.PhieuDeNghi_CaNhan_ChiTiet}"/></td>
@@ -346,7 +346,7 @@
                 $("#tableDanhSachSanPham tbody").append(content)
                 $("#modalThemMoiPhieuDeNghiBoPhan").modal("show")
                 const checkboxes = document.querySelectorAll('#tableDanhSachSanPham tbody .checkbox');
-                console.log(checkboxes)
+                //console.log(checkboxes)
                 checkboxes.forEach(checkbox => {
                     checkbox.addEventListener('change', () => {
                         const phieuDeNghiId = checkbox.dataset.maPhieu;
@@ -377,7 +377,7 @@
                 }
             }
         })
-        console.log(DanhSachSanPham)
+        //console.log(DanhSachSanPham)
         if (DanhSachSanPham.length < 1) {
             Swal.fire({
                 title: "The Internet?",
@@ -405,7 +405,7 @@
                     LyDoTuChoi: text
                 },
                 success: function (response) {
-                    console.log(response)
+                    //console.log(response)
                     Swal.fire({
                         title: "Good job!",
                         text: "You clicked the button!",
@@ -421,7 +421,7 @@
         const DanhSachSanPham = []
         const tableRows = document.querySelectorAll('#tableDanhSachSanPham tbody tr');
         tableRows.forEach((row, index) => {
-            console.log(row)
+            //console.log(row)
             const checkbox = $(row).find('input[type="checkbox"]');
             if (checkbox.prop('checked')) {
                 const data = {
@@ -435,7 +435,7 @@
                 }
             }
         })
-        console.log(DanhSachSanPham)
+        //console.log(DanhSachSanPham)
         if (DanhSachSanPham.length < 1) {
             Swal.fire({
                 title: "You haven't choose?",
@@ -451,7 +451,7 @@
                 DanhSachSanPham: DanhSachSanPham
             },
             success: function (response) {
-                console.log(response)
+                //console.log(response)
                 if (response.success) {
                     Swal.fire({
                         title: "Good job!",
@@ -478,7 +478,7 @@
                 selectedRows.push(data)
             }
         });
-        console.log(selectedRows)
+        //console.log(selectedRows)
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -543,7 +543,7 @@
                 }
             }
         })
-        console.log(DanhSachSanPham)
+        //console.log(DanhSachSanPham)
         if (DanhSachSanPham.length < 1) {
             Toast.fire({
                 icon: "question",
@@ -563,7 +563,7 @@
                 PhieuDeNghi: PhieuDeNghi,
             },
             success: function (response) {
-                console.log(response)
+                //console.log(response)
                 $.ajax({
                     url: "/NS_DP_PhieuDeNghiBoPhan/DeNghiBP_ChonSanPham",
                     type: "post",
@@ -574,17 +574,20 @@
                     success: function (response) {
                         console.log(response)
                         if (response.success) {
-                            Swal.fire({
-                                title: "Success",
-                                text: "Added successfully",
-                                icon: "success"
-                            });
-                            HienThiPhieuDeNghi()
-                            $("#modalChonSanPham").modal("hide")
-                            $("#modalThemMoiPhieuDeNghiBoPhan").modal("hide")
+                            Toast.fire({
+                                icon: "success",
+                                title: "Signed in successfully"
+                            })
                         }
+
+                        doubleClickPhieu(response.PhieuDeNghi)
+                        $("#modalChonSanPham").modal("hide")
+                        HienThiPhieuDeNghi()
+                        //$("#modalThemMoiPhieuDeNghiBoPhan").modal("hide")
+                        
                     }
                 })
+                
             }
         })
     }
