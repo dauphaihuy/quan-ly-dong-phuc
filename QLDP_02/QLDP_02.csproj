@@ -308,6 +308,12 @@
     <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\XuatKho_getAllPhieuXuatKho_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\XuatKho_GetSanPhamByPhieu_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\XuatKho_GetSanPham_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>

@@ -410,5 +410,23 @@ namespace QLDP_02.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<XuatKho_GetSanPham_Result>("XuatKho_GetSanPham", phieuDeNghiParameter, nhaCungCapParameter);
         }
+    
+        public virtual ObjectResult<XuatKho_getAllPhieuXuatKho_Result> XuatKho_getAllPhieuXuatKho()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<XuatKho_getAllPhieuXuatKho_Result>("XuatKho_getAllPhieuXuatKho");
+        }
+    
+        public virtual ObjectResult<XuatKho_GetSanPhamByPhieu_Result> XuatKho_GetSanPhamByPhieu(Nullable<int> xuatnhapkho, Nullable<int> idPhieu)
+        {
+            var xuatnhapkhoParameter = xuatnhapkho.HasValue ?
+                new ObjectParameter("xuatnhapkho", xuatnhapkho) :
+                new ObjectParameter("xuatnhapkho", typeof(int));
+    
+            var idPhieuParameter = idPhieu.HasValue ?
+                new ObjectParameter("idPhieu", idPhieu) :
+                new ObjectParameter("idPhieu", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<XuatKho_GetSanPhamByPhieu_Result>("XuatKho_GetSanPhamByPhieu", xuatnhapkhoParameter, idPhieuParameter);
+        }
     }
 }

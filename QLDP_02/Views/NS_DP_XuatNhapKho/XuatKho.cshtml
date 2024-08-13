@@ -13,7 +13,7 @@
                     <h1 class="page-header-title">Xuất kho</h1>
                 </div>
                 <div class="col-12 col-xl-auto mb-3">
-                    <a class="btn btn-outline-success"onclick="ThemXuatKho()">
+                    <a class="btn btn-outline-success" onclick="ThemXuatKho()">
                         <i class="me-1 fa-regular fa-square-plus"></i>
                         Thêm mới
                     </a>
@@ -35,13 +35,13 @@
             <table id="tableXuatKho" class="table table-striped">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th>STT</th>
-                        <th>Ngày Xuất Kho</th>
-                        <th>Mã phiếu</th>
-                        <th>Kho xuất</th>
-                        <th>Họ tên người xuất kho</th>
-                        <th>Ghi chú</th>
+                        <th style="text-align: center;"></th>
+                        <th style="text-align: center;">STT</th>
+                        <th style="text-align: center;">Ngày Xuất Kho</th>
+                        <th style="text-align: center;">Mã phiếu</th>
+                        <th style="text-align: center;">Kho xuất</th>
+                        <th style="text-align: center;">Họ tên người xuất kho</th>
+                        <th style="text-align: center;">Ghi chú</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,15 +58,18 @@
     <div class="modal-dialog modal-fullscreen p-1" >
         <div class="modal-content">
             <div class="modal-header alert alert-success">
-                <h5 class="modal-title" id="staticThemMoiSanPham">Thêm mới Xuất kho</h5>                   
-                <button class="btn btn-outline-primary" type="button" onclick="quayLai()"><i class="me-1 fa-solid fa-arrow-left"></i>Quay lại</button>
-            </div>
+                <h5 class="modal-title" id="staticThemMoiSanPham">Thêm mới Xuất kho</h5>
+                <div>
+                    <button class="btn btn-primary" id="CapNhatBtn" onclick="capNhat()"><i class="fa-solid fa-floppy-disk me-1"></i>Cập nhật</button>
+                    <button class="btn btn-outline-primary" type="button" onclick="quayLai()"><i class="me-1 fa-solid fa-arrow-left"></i>Quay lại</button>
+                </div>
+                </div>
             <div class="modal-body">
                 <div class="form-group row mb-3">
                     <div class="col-lg-3">
                         <label class="fw-500 required">Mã phiếu:</label>
                         <input type="text" class="form-control" disabled required id="MaXuatNhapKho" />
-                        <input type="text" class="" required id="XuatNhapKho" />
+                        <input type="text" class="" required id="XuatNhapKho" value="0" />
                     </div>
                     <div class="col-lg-3">
                         <label class="fw-500 required">Phiếu đề nghị đồng phục:</label>
@@ -127,13 +130,13 @@
             <div class="modal-header">
                 <div>
                     <h5 class="modal-title" id="staticSuaSanPham">Nhà cung cấp</h5>
-                    <select class="form-control" id="nhaCungCap" onchange="changeSelectNhaCungCap()">
+                    <select class="form-control" id="nhaCungCap" onchange="themMoiSanPham()">
                     </select>
 
                 </div>
                 <div>
                     <button class="btn btn-outline-secondary" onclick="QLSanPham()"><i class="fa-solid fa-arrow-left me-1"></i>Quay lại</button>
-                    <button class="btn btn-outline-success"><i class="fa-regular fa-floppy-disk me-1"></i>Chọn</button>
+                    <button class="btn btn-outline-success" onclick="handleThemSanPham()"><i class="fa-regular fa-floppy-disk me-1"></i>Chọn</button>
                 </div>
             </div>
             
@@ -182,17 +185,23 @@
                 response.item.forEach((item) => {
                     content += `
                     <tr>
-                      <td><input type="checkbox"/></td>
-                      <td>${item.stt}</td>
-                      <td>${item.TenSanPham}</td>
-                      <td>${item.TenTinhChatDongPhuc}</td>
-                      <td>${item.MaSize}</td>
-                      <td>${item.SoLuongYeuCau}</td>
-                      <td>${item.SoLuong}</td>
-                      <td>${item.soLuongDaXuat}</td>
-                      <td>${item.TenNhaCungCap}</td>
-                      <td>${item.TenDonViTinh}</td>
-                      <td>${item.tonKho}</td>
+                          <td><input type="checkbox"/></td>
+                          <td>${item.stt}</td>
+                          <td>${item.TenSanPham}</td>
+                          <td>${item.TenTinhChatDongPhuc}</td>
+                          <td>${item.MaSize}</td>
+                          <td>${item.SoLuong}</td>
+                          <td style="background-color: #E2BFD9" onfocusout="checkSoLuong(this)" contenteditable>${item.SoLuong - item.SoLuongDaNhan}</td>
+                          <td>${item.SoLuongDaNhan}</td>
+                          <td>${item.TenNhaCungCap}</td>
+                          <td>${item.TenDonViTinh}</td>
+                          <td>${item.tonKho}</td>
+                          <td style = "display:none">${item.SanPham}</td>
+                          <td style = "display:none">${item.DonGia}</td>
+                          <td style = "display:none">${item.TinhChatDongPhuc}</td>
+                          <td style = "display:none">${item.NhaCungCap}</td>
+                          <td style = "display:none">${item.Size}</td>
+                          <td style = "display:none">${item.NhaCungCap}</td>
                      </tr>
                     `
                 })
@@ -253,10 +262,198 @@
     const ThemXuatKho = () => {
         var today = new Date().toISOString().slice(0, 10);
         document.getElementById("NgayXuat").value = today;
+        $("#MaXuatNhapKho").val("");
+        $("#GhiChu").val("");
+        $("#phieuDeNghi").val("");
+        $("#khoXuat").val(1);
+        $("#XuatNhapKho").val(0);
         $('#modalThemMoiSanPham').modal('show')
+        $("#CapNhatBtn").hide();
+
+        $("#tableDanhSachSanPham tbody tr").remove()
     }
     function QLSanPham() {
         $('#chonSanPham').modal('hide')
+    }
+    const getAllPhieuXuat = () => {
+        $.ajax({
+            url: "/NS_DP_XuatNhapKho/XuatKho_getAllPhieuXuatKho",
+            type: "post",
+            success: function (response) {
+                console.log(response)
+                let content=``
+                response.allPhieuXuatKho.forEach((item) => {
+                    content += `
+                    <tr ondblclick="handleSelectPhieuXuat(${item.XuatNhapKho},${item.IDPhieu})">
+                        <td style="text-align: center;"><input type="checkbox"></td>
+                        <td style="text-align: center;">${item.stt}</td>
+                        <td style="text-align: center;">${convertDateString(item.NgayNhapXuat)}</td>
+                        <td style="text-align: center;">${item.MaXuatNhapKho}</td>
+                        <td style="text-align: center;">${item.Kho == 1 ? "	Kho chính Lixil":""}</td>
+                        <td style="text-align: center;">${item.HoTenNguoiXuat}</td>
+                        <td style="text-align: center;">${item.GhiChu}</td>
+                    </tr>
+                    `
+                })
+                $("#tableXuatKho tbody tr").remove()
+                $("#tableXuatKho tbody").append(content)
+            }
+        })
+    }
+    function formatDate(dateString) {
+        // Kiểm tra nếu chuỗi ngày tháng có định dạng "/Date()"
+        if (dateString.startsWith("/Date(") && dateString.endsWith(")/")) {
+            // Trích xuất giá trị timestamp từ chuỗi
+            const timestamp = parseInt(dateString.replace("/Date(", "").replace(")/", ""));
+
+            // Tạo đối tượng Date từ timestamp
+            const dateObj = new Date(timestamp);
+
+            // Định dạng lại thành chuỗi "yyyy-MM-dd"
+            return dateObj.toISOString().slice(0, 10);
+        } else {
+            // Trả về chuỗi ngày tháng gốc nếu không đúng định dạng
+            return dateString;
+        }
+    }
+    const handleSelectPhieuXuat = (id, idphieu) => {
+        console.log(id, idphieu)
+        $("#CapNhatBtn").show();
+
+        $.ajax({
+            url: "/NS_DP_XuatNhapKho/XuatKho_GetDanhSachSanPhamDaChon",
+            type:"post",
+            data: {
+                XuatNhapKho: +id,
+                IDPhieu: +idphieu
+            },
+            success: function (response) {
+                console.log(response)
+                const xk = response.xuatKho
+                $("#MaXuatNhapKho").val(xk.MaXuatNhapKho)
+                $("#GhiChu").val(xk.GhiChu)
+                $("#phieuDeNghi").val(xk.IDPhieu)
+                $("#khoXuat").val(xk.IDPhieu)
+                $("#NgayXuat").val(formatDate(xk.NgayTao))
+                $("#XuatNhapKho").val(xk.XuatNhapKho)
+                let content = ''
+                response.dssp.forEach((item) => {
+                    content += `
+                    <tr>
+                        <td></td>
+                        <td>${item.stt}</td>
+                        <td>${item.TenSanPham}</td>
+                        <td>${item.TenTinhChatDongPhuc}</td>
+                        <td>${item.MaSize}</td>
+                        <td>${item.Slyc}</td>
+                        <td>${-item.SoLuong}</td>
+                        <td>${item.slDaXuat}</td>
+                        <td>${item.TenNhaCungCap}</td>
+                        <td>${item.TenDonViTinh}</td>
+                        <td>${item.TonKho}</td>
+                        <td>${item.GhiChu}</td>
+
+                    </tr>
+                    `
+                })
+                $("#tableDanhSachSanPham tbody tr").remove()
+                $("#tableDanhSachSanPham tbody").append(content)
+
+            }
+        })
+        $("#modalThemMoiSanPham").modal('show')
+
+    }
+    function convertDateString(dateString) {
+        if (!dateString || dateString.trim() === '') {
+            return 'Invalid date string';
+        }
+
+        const dateValue = parseInt(dateString.match(/\d+/)?.[0]);
+        if (isNaN(dateValue)) {
+            return 'Invalid date string';
+        }
+
+        const date = new Date(dateValue);
+
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+
+        return `${day}/${month}/${year}`;
+    }
+    getAllPhieuXuat()
+    const handleThemSanPham = () => {
+        let MaXuatNhapKho = $("#MaXuatNhapKho").val()
+        let GhiChu = $("#GhiChu").val()
+        let IDPhieu = $("#phieuDeNghi").val()
+        let Kho = $("#khoXuat").val()
+        let NgayNhapXuat = $("#NgayXuat").val()
+        let XuatNhapKho = $("#XuatNhapKho").val()
+
+        console.log("MaXuatNhapKho:", MaXuatNhapKho);
+        console.log("GhiChu:", GhiChu);
+        console.log("IDPhieu:", IDPhieu);
+        console.log("Kho:", Kho);
+        console.log("NgayNhapXuat:", NgayNhapXuat);
+        console.log("XuatNhapKho:", XuatNhapKho);
+
+        const DanhSachSanPham = []
+        const tableRows = document.querySelectorAll('#tableChonSanPham tbody tr');
+        tableRows.forEach((row, index) => {
+            const checkbox = $(row).find('input[type="checkbox"]');
+            if (checkbox.prop('checked')) {
+                console.log(row)
+                const data = {
+                    SanPham: +row.cells[11].textContent,
+                    SoLuong: +row.cells[6].textContent,
+                    Size: +row.cells[15].textContent,
+                    DonGia: row.cells[12].textContent,
+                    TinhChat: +row.cells[13].textContent,
+                    NhaCungCap: +row.cells[16].textContent,
+                };
+                DanhSachSanPham.push(data);
+            }
+        })
+        if(DanhSachSanPham.length == 0) {
+            Toast.fire({
+                icon: "error",
+                title: "Chưa chọn sản phẩm"
+            })
+            return
+        }
+
+        console.log(DanhSachSanPham)
+        $.ajax({
+            url: "/NS_DP_XuatNhapKho/CapNhat_PhieuXuatKho",
+            type: "post",
+            data: {
+                MaXuatNhapKho,
+                GhiChu,
+                IDPhieu,
+                Kho,
+                NgayNhapXuat,
+                XuatNhapKho
+            },
+            success: function (response) {
+                console.log(response)
+                $.ajax({
+                    url: "/NS_DP_XuatNhapKho/XuatKho_ChonSanPham",
+                    type: "post",
+                    data: {
+                        XuatNhapKho: response.phieuXuatNhapKho.XuatNhapKho,
+                        IDPhieu: response.phieuXuatNhapKho.IDPhieu,
+                        listChonSp: DanhSachSanPham
+                    },
+                    success: function (response) {
+                        console.log(response)
+                        QLSanPham()
+                        handleSelectPhieuXuat(response.XuatNhapKho, response.IDPhieu)
+                    }
+                })
+                getAllPhieuXuat()
+            }
+        })
     }
     const quayLai = () => {
         $('body').removeClass('modal-open')
@@ -267,8 +464,6 @@
         let PhieuDeNghi = +$("#phieuDeNghi").val()
         let Ncc = +$("#nhaCungCap").val()
         console.log(PhieuDeNghi,+Ncc)
-        $('#chonSanPham').modal('show')
-
         if (PhieuDeNghi == 0) {
             Toast.fire({
                 icon: "error",
@@ -276,6 +471,7 @@
             })
             return  
         }
+        $('#chonSanPham').modal('show')
         $.ajax({
             url: "/NS_DP_XuatNhapKho/XuatKho_GetDanhSachSanPhamDeNghi",
             type:"post",
@@ -284,22 +480,40 @@
                 nhaCungCap: +Ncc
             },
             success: function (response) {
+                console.log('XuatKho_GetDanhSachSanPhamDeNghi')
                 console.log(response)
                 let content = ''
                 response.item.forEach((item) => {
+                    console.log(item)
+                    
+                    let sledit = item.SoLuong - item.SoLuongDaNhan
+                    console.log(sledit)
+                    if (sledit > item.tonKho) {
+                        sledit = item.tonKho
+                    }
+                    let ischeck = ''
+                    if (sledit <= 0) {
+                        ischeck ='disabled'
+                    }
                     content += `
                     <tr>
-                      <td><input type="checkbox"/></td>
-                      <td>${item.stt}</td>
-                      <td>${item.TenSanPham}</td>
-                      <td>${item.TenTinhChatDongPhuc}</td>
-                      <td>${item.MaSize}</td>
-                      <td>${item.SoLuongYeuCau}</td>
-                      <td>${item.SoLuong}</td>
-                      <td>${item.soLuongDaXuat}</td>
-                      <td>${item.TenNhaCungCap}</td>
-                      <td>${item.TenDonViTinh}</td>
-                      <td>${item.tonKho}</td>
+                        <td><input type="checkbox" ${ischeck}></td>
+                        <td>${item.stt}</td>
+                        <td>${item.TenSanPham}</td>
+                        <td>${item.TenTinhChatDongPhuc}</td>
+                        <td>${item.MaSize}</td>
+                        <td>${item.SoLuong}</td>
+                        <td style="background-color: #E2BFD9" onfocusout="checkSoLuong(this)" contenteditable>${sledit}</td>
+                        <td>${item.SoLuongDaNhan}</td>
+                        <td>${item.TenNhaCungCap}</td>
+                        <td>${item.TenDonViTinh}</td>
+                        <td>${item.tonKho}</td>
+                        <td style = "display:none">${item.SanPham}</td>
+                        <td style = "display:none">${item.DonGia}</td>
+                        <td style = "display:none">${item.TinhChatDongPhuc}</td>
+                        <td style = "display:none">${item.NhaCungCap}</td>
+                        <td style = "display:none">${item.Size}</td>
+                        <td style = "display:none">${item.NhaCungCap}</td>    
                      </tr>
                     `
                 })
@@ -307,6 +521,26 @@
                 $("#tableChonSanPham tbody").append(content)
             }
         })
+        
+    }
+    function checkSoLuong(el) {
+        const trElement = el.closest('tr');
+        let slYc = +trElement.cells[5].textContent
+        let sl = +trElement.cells[6].textContent
+        let slDaXuat = +trElement.cells[7].textContent
+        let tonKho = + trElement.cells[10].textContent
 
+        if (sl > tonKho || sl + slDaXuat > slYc) {
+            Toast.fire({
+                icon: "error",
+                title: "Số lượng nhập vượt yêu cầu!"
+            })
+            trElement.cells[6].textContent = 0
+            console.log(trElement.cells[0].querySelector('input[type="checkbox"]').disabled = true)
+            trElement.cells[0].querySelector('input[type="checkbox"]').disabled = true
+            trElement.cells[0].querySelector('input[type="checkbox"]').checked = false
+        } else {
+            trElement.cells[0].querySelector('input[type="checkbox"]').disabled = false
+        }
     }
 </script>
