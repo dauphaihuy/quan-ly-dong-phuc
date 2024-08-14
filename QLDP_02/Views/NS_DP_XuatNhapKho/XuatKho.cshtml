@@ -404,6 +404,7 @@
 
         const DanhSachSanPham = []
         const tableRows = document.querySelectorAll('#tableChonSanPham tbody tr');
+        
         tableRows.forEach((row, index) => {
             const checkbox = $(row).find('input[type="checkbox"]');
             if (checkbox.prop('checked')) {
@@ -426,7 +427,24 @@
             })
             return
         }
-
+        let checkSl = false
+        DanhSachSanPham.forEach((item) => {
+            if (+item.SoLuong <= 0) {
+                checkSl = true;
+            } else if (!isNumeric(item.SoLuong)) {
+                checkSl = true;
+            } else {
+                checkSl = false;
+            }
+        })
+        console.log(checkSl)
+        if (checkSl == true) {
+            Toast.fire({
+                icon: "error",
+                title: "Số lượng không hợp lệ"
+            })
+            return
+        }
         console.log(DanhSachSanPham)
         $.ajax({
             url: "/NS_DP_XuatNhapKho/CapNhat_PhieuXuatKho",
@@ -550,7 +568,7 @@
                         <td>${item.TenTinhChatDongPhuc}</td>
                         <td>${item.MaSize}</td>
                         <td>${item.SoLuong}</td>
-                        <td style="background-color: #E2BFD9" onmouseout="checkSoLuong(this)" contenteditable>${sledit}</td>
+                        <td style="background-color: #E2BFD9" onkeyup="checkSoLuong(this)" contenteditable>${sledit}</td>
                         <td>${item.SoLuongDaNhan}</td>
                         <td>${item.TenNhaCungCap}</td>
                         <td>${item.TenDonViTinh}</td>
@@ -589,16 +607,11 @@
         if (isNumeric(sl) == false) {
             err = true
         }
-        if (sl > tonKho || sl + slDaXuat > slYc || sl < 0 || err ) {
+        if (sl > tonKho || sl + slDaXuat > slYc || sl <= 0 || err ) {
             Toast.fire({
                 icon: "error",
-                title: "lỗi nhập liệu!"
+                title: "Số lượng không hợp lệ!"
             })
-            if (slYc + slDaXuat > tonKho) {
-              trElement.cells[6].textContent = tonKho - slDaXuat
-            } else {
-                trElement.cells[6].textContent = slYc - slDaXuat
-            }
             console.log(trElement.cells[0].querySelector('input[type="checkbox"]').disabled = true)
             trElement.cells[0].querySelector('input[type="checkbox"]').disabled = true
             trElement.cells[0].querySelector('input[type="checkbox"]').checked = false
