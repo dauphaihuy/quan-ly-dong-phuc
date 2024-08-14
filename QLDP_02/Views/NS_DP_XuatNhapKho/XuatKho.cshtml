@@ -334,7 +334,7 @@
                 $("#MaXuatNhapKho").val(xk.MaXuatNhapKho)
                 $("#GhiChu").val(xk.GhiChu)
                 $("#phieuDeNghi").val(xk.IDPhieu)
-                $("#khoXuat").val(xk.IDPhieu)
+                $("#khoXuat").val(1)
                 $("#NgayXuat").val(formatDate(xk.NgayTao))
                 $("#XuatNhapKho").val(xk.XuatNhapKho)
                 let content = ''
@@ -352,7 +352,7 @@
                         <td>${item.TenDonViTinh}</td>
                         <td>${item.TonKho}</td>
                         <td style="background-color: #E2BFD9" contenteditable >${item.GhiChu == null ? "" : item.GhiChu}</td>
-                        <td>${item.ID}</td>
+                        <td style = "display:none">${item.ID}</td>
                     </tr>
                     `
                 })
@@ -462,8 +462,10 @@
     }
     const capNhat = () => {
         let XuatNhapKho = $("#XuatNhapKho").val()
+        let ghiChu = $("#GhiChu").val()
         const DanhSachSanPham = []
         const tableRows = document.querySelectorAll('#tableDanhSachSanPham tbody tr');
+
         tableRows.forEach((row, index) => {
             const data = {
                 stt: +row.cells[0].textContent,
@@ -487,10 +489,12 @@
             type: "post",
             data: {
                 XuatNhapKho: +XuatNhapKho,
+                ghiChu,
                 listsp:DanhSachSanPham
             },
             success: function (response) {
                 handleSelectPhieuXuat(response.XuatNhapKho, response.IDPhieu)
+                getAllPhieuXuat()
                 Toast.fire({
                     icon: "success",
                     title: "update successfully"

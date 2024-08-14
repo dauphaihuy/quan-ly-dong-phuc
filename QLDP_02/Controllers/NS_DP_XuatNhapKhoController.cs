@@ -456,18 +456,19 @@ namespace QLDP_02.Controllers
                 return Json(new { success = false, err = e });
             }
         }
-        public JsonResult XuatKho_CapNhatSanPham(int XuatNhapKho, List<XuatKho_GetSanPhamByPhieu_Result> listsp)
+        public JsonResult XuatKho_CapNhatSanPham(int XuatNhapKho,String GhiChu, List<XuatKho_GetSanPhamByPhieu_Result> listsp)
         {
             try
             {
                 var phieu = db.NS_DP_XuatNhapKho.Where(x => x.XuatNhapKho == XuatNhapKho).SingleOrDefault();
+                phieu.GhiChu = GhiChu;
                 foreach(var item in listsp)
                 {
                     var NS_DP_XuatNhapKho_ChiTiet_item = db.NS_DP_XuatNhapKho_ChiTiet.Where(x => x.XuatNhapKho == XuatNhapKho && x.ID == item.ID).SingleOrDefault();
                     NS_DP_XuatNhapKho_ChiTiet_item.GhiChu=item.GhiChu;
                 }
                 db.SaveChanges();
-                return Json(new { success = true, XuatNhapKho, IDPhieu=phieu.IDPhieu });
+                return Json(new { success = true, XuatNhapKho, phieu.IDPhieu });
             }
             catch(Exception e)
             {
