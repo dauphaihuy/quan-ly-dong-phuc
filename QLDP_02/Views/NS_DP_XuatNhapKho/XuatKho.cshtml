@@ -1,7 +1,7 @@
 ﻿
 
 @{
-    ViewBag.Title = "Nhập kho";
+    ViewBag.Title = "Xuất kho";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -101,7 +101,6 @@
                     <table id="tableDanhSachSanPham" class="table">
                         <thead>
                             <tr>
-                                <th></th>
                                 <th>STT</th>
                                 <th>Sản phẩm</th>
                                 <th>Tính chất</th>
@@ -260,6 +259,8 @@
     renderSelectPhieuDeNghiBoPhan()
     renderSelectNCC()
     const ThemXuatKho = () => {
+        $('#phieuDeNghi').prop('disabled', false);
+        renderSelectPhieuDeNghiBoPhan()
         var today = new Date().toISOString().slice(0, 10);
         document.getElementById("NgayXuat").value = today;
         $("#MaXuatNhapKho").val("");
@@ -340,7 +341,6 @@
                 response.dssp.forEach((item) => {
                     content += `
                     <tr>
-                        <td></td>
                         <td>${item.stt}</td>
                         <td>${item.TenSanPham}</td>
                         <td>${item.TenTinhChatDongPhuc}</td>
@@ -351,11 +351,15 @@
                         <td>${item.TenNhaCungCap}</td>
                         <td>${item.TenDonViTinh}</td>
                         <td>${item.TonKho}</td>
-                        <td>${item.GhiChu}</td>
-
+                        <td style="background-color: #E2BFD9" contenteditable >${item.GhiChu == null ? "" : item.GhiChu}</td>
+                        <td>${item.ID}</td>
                     </tr>
                     `
                 })
+                let tent = `<option value="${response.phieuBP.PhieuDeNghi}" selected>${response.phieuBP.MaPhieuDeNghi}</option>`
+                $("#phieuDeNghi").empty()
+                $("#phieuDeNghi").append(tent)
+                $('#phieuDeNghi').prop('disabled', true);
                 $("#tableDanhSachSanPham tbody tr").remove()
                 $("#tableDanhSachSanPham tbody").append(content)
 
@@ -452,6 +456,45 @@
                     }
                 })
                 getAllPhieuXuat()
+                renderSelectPhieuDeNghiBoPhan()
+            }
+        })
+    }
+    const capNhat = () => {
+        let XuatNhapKho = $("#XuatNhapKho").val()
+        const DanhSachSanPham = []
+        const tableRows = document.querySelectorAll('#tableDanhSachSanPham tbody tr');
+        tableRows.forEach((row, index) => {
+            const data = {
+                stt: +row.cells[0].textContent,
+                TenSanPham: row.cells[1].textContent,
+                TenTinhChatDongPhuc: row.cells[2].textContent,
+                MaSize: row.cells[3].textContent,
+                Slyc: +row.cells[4].textContent,
+                SoLuong: +row.cells[5].textContent,
+                slDaXuat: +row.cells[6].textContent,
+                TenNhaCungCap: row.cells[7].textContent,
+                TenDonViTinh: row.cells[8].textContent,
+                TonKho: +row.cells[9].textContent,
+                GhiChu: row.cells[10].textContent,
+                ID: +row.cells[11].textContent,
+            };
+            DanhSachSanPham.push(data);                
+            
+        })
+        $.ajax({
+            url: "/NS_DP_XuatNhapKho/XuatKho_CapNhatSanPham",
+            type: "post",
+            data: {
+                XuatNhapKho: +XuatNhapKho,
+                listsp:DanhSachSanPham
+            },
+            success: function (response) {
+                handleSelectPhieuXuat(response.XuatNhapKho, response.IDPhieu)
+                Toast.fire({
+                    icon: "success",
+                    title: "update successfully"
+                });
             }
         })
     }
@@ -460,7 +503,7 @@
         $('.modal-backdrop').remove()
         $('#modalThemMoiSanPham').modal('hide')
     }   
-    const themMoiSanPham = () => {
+        const themMoiSanPham = () => {
         let PhieuDeNghi = +$("#phieuDeNghi").val()
         let Ncc = +$("#nhaCungCap").val()
         console.log(PhieuDeNghi,+Ncc)
@@ -503,7 +546,7 @@
                         <td>${item.TenTinhChatDongPhuc}</td>
                         <td>${item.MaSize}</td>
                         <td>${item.SoLuong}</td>
-                        <td style="background-color: #E2BFD9" onfocusout="checkSoLuong(this)" contenteditable>${sledit}</td>
+                        <td style="background-color: #E2BFD9" onmouseout="checkSoLuong(this)" contenteditable>${sledit}</td>
                         <td>${item.SoLuongDaNhan}</td>
                         <td>${item.TenNhaCungCap}</td>
                         <td>${item.TenDonViTinh}</td>
@@ -523,19 +566,35 @@
         })
         
     }
+    function isNumeric(value) {
+        return /^-?\d+(?:\.\d+)?$/.test(value);
+    }
     function checkSoLuong(el) {
+        //ketra so luong nhap vao
+        let err=false
         const trElement = el.closest('tr');
         let slYc = +trElement.cells[5].textContent
-        let sl = +trElement.cells[6].textContent
+        let sl = trElement.cells[6].textContent
         let slDaXuat = +trElement.cells[7].textContent
         let tonKho = + trElement.cells[10].textContent
-
-        if (sl > tonKho || sl + slDaXuat > slYc) {
+        console.log(sl)
+        console.log(isNumeric(sl))
+        if (isNumeric(sl)) {
+            sl = +trElement.cells[6].textContent
+        }
+        if (isNumeric(sl) == false) {
+            err = true
+        }
+        if (sl > tonKho || sl + slDaXuat > slYc || sl < 0 || err ) {
             Toast.fire({
                 icon: "error",
-                title: "Số lượng nhập vượt yêu cầu!"
+                title: "lỗi nhập liệu!"
             })
-            trElement.cells[6].textContent = 0
+            if (slYc + slDaXuat > tonKho) {
+              trElement.cells[6].textContent = tonKho - slDaXuat
+            } else {
+                trElement.cells[6].textContent = slYc - slDaXuat
+            }
             console.log(trElement.cells[0].querySelector('input[type="checkbox"]').disabled = true)
             trElement.cells[0].querySelector('input[type="checkbox"]').disabled = true
             trElement.cells[0].querySelector('input[type="checkbox"]').checked = false

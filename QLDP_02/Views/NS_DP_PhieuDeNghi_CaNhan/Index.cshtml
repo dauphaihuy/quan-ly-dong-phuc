@@ -392,7 +392,7 @@
                                     ${renderSizeSanPham(item.SanPham)}
                                 </td>
 
-                                <td><input class="form-control" onfocusout="checkInput(this)" id="soLuong" type="number" value="1" /></td>
+                                <td><input class="form-control" onmouseout="checkInput(this)" id="soLuong" type="number" value="1" /></td>
                             </tr>`
 
                         });
@@ -498,7 +498,7 @@
                         i++;
                         content +=
                             `<tr id="tr_${item.SanPham}">
-                            <td><input type="checkbox" /></td>
+                            <td><input type="checkbox" type="number"  /></td>
                             <td>${i}</td>
                             <td>${item.TenSanPham}</td>
                             <td>${item.TenTinhChatDongPhuc == null ? "" : item.TenTinhChatDongPhuc}</td>
@@ -532,19 +532,6 @@
         if (checkBox === "") {
             alert("Chưa chọn người đề nghị")
             return
-        }
-    }
-    function checkInput(element) {
-        if (+element.value < 1) {
-            //console.log(+element.value)
-            if (+element.value == 0)
-                element.value = 1
-            else 
-                element.value = -+element.value
-            Toast.fire({
-                icon: "info",
-                title: "Quantity must be greater than 0!"
-            });
         }
     }
     function XacNhanChonSP() {

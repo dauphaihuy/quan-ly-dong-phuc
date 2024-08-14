@@ -294,7 +294,7 @@ namespace QLDP_02.Controllers
         {
             try
             {
-                var result = db.NS_DP_PhieuDeNghi.Where(x => x.IsDel == false);
+                var result = db.NS_DP_PhieuDeNghi.Where(x => x.IsDel == false && x.IsHoanThanh!=true);
                 return Json(new { success = true, result });
             }
             catch (Exception e)
@@ -448,7 +448,26 @@ namespace QLDP_02.Controllers
                     .Where(x => x.XuatNhapKho == XuatNhapKho)
                     .SingleOrDefault();
                 var dssp = db.XuatKho_GetSanPhamByPhieu(XuatNhapKho, IDPhieu);
-                return Json(new { success = true, xuatKho , dssp });
+                var phieuBP = db.NS_DP_PhieuDeNghi.Where(x => x.PhieuDeNghi == IDPhieu).SingleOrDefault();
+                return Json(new { success = true, xuatKho , dssp, phieuBP });
+            }
+            catch(Exception e)
+            {
+                return Json(new { success = false, err = e });
+            }
+        }
+        public JsonResult XuatKho_CapNhatSanPham(int XuatNhapKho, List<XuatKho_GetSanPhamByPhieu_Result> listsp)
+        {
+            try
+            {
+                var phieu = db.NS_DP_XuatNhapKho.Where(x => x.XuatNhapKho == XuatNhapKho).SingleOrDefault();
+                foreach(var item in listsp)
+                {
+                    var NS_DP_XuatNhapKho_ChiTiet_item = db.NS_DP_XuatNhapKho_ChiTiet.Where(x => x.XuatNhapKho == XuatNhapKho && x.ID == item.ID).SingleOrDefault();
+                    NS_DP_XuatNhapKho_ChiTiet_item.GhiChu=item.GhiChu;
+                }
+                db.SaveChanges();
+                return Json(new { success = true, XuatNhapKho, IDPhieu=phieu.IDPhieu });
             }
             catch(Exception e)
             {
