@@ -981,8 +981,7 @@ GO
 EXEC XuatKho_getAllPhieuXuatKho
 DELETE FROM dbo.NS_DP_XuatNhapKho WHERE
 LoaiPhieu = 2
-SELECT * FROM dbo.NS_DP_XuatNhapKho
-SELECT * FROM dbo.NS_DP_XuatNhapKho_ChiTiet
-SELECT * FROM dbo.NS_DP_PhieuDeNghi_ChiTiet
+SELECT * FROM dbo.NS_DP_XuatNhapKho ORDER BY XuatNhapKho
+SELECT * FROM dbo.NS_DP_XuatNhapKho_ChiTiet WHERE XuatNhapKho =23
+delete  dbo.NS_DP_XuatNhapKho_ChiTiet WHERE XuatNhapKho =24
 SELECT * FROM dbo.DM_DP_TinhChatDongPhuc
-SELECT * FROM dbo.NS_DP_PhieuDeNghi_ChiTiet

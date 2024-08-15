@@ -69,7 +69,7 @@
                     <div class="col-lg-3">
                         <label class="fw-500 required">Mã phiếu:</label>
                         <input type="text" class="form-control" disabled required id="MaXuatNhapKho" />
-                        <input type="text" class="" required id="XuatNhapKho" value="0" />
+                        <input type="text" style="display:none" class="" required id="XuatNhapKho" value="0" />
                     </div>
                     <div class="col-lg-3">
                         <label class="fw-500 required">Phiếu đề nghị đồng phục:</label>
@@ -95,8 +95,11 @@
                 </div>
                 <div class="modal-header alert">
                     <h5>Danh sách sản phẩm</h5>
-                    <button class="btn btn-success" type="button" onclick="themMoiSanPham()"><i class="fa-solid fa-plus me-1"></i>Thêm mới</button>
-                </div>
+                    <div>
+                        <button class="btn btn-success" type="button" onclick="themMoiSanPham()"><i class="fa-solid fa-plus me-1"></i>Thêm mới</button>
+                        <button class="btn btn-danger" type="button" onclick="XoaSanPham()"><i class="fa-solid fa-trash-can me-1"></i>Xóa</button>
+                    </div>
+                    </div>
                 <div>
                     <table id="tableDanhSachSanPham" class="table">
                         <thead>
@@ -168,6 +171,15 @@
 </div>
 
 <script>
+    const XoaSanPham=()=>{
+        const tableRows = document.querySelectorAll('#tableDanhSachSanPham tbody tr');
+        tableRows.forEach((row, index) => {
+            const checkbox = $(row).find('input[type="checkbox"]');
+            if (checkbox.prop('checked')) {
+                row.remove();
+            }
+        })
+    }
     const changeSelectNhaCungCap = () => {
         let PhieuDeNghi = +$("#phieuDeNghi").val()
         let Ncc = +$("#nhaCungCap").val()
@@ -343,7 +355,7 @@
                     <tr>
                         <td>${item.stt}</td>
                         <td>${item.TenSanPham}</td>
-                        <td>${item.TenTinhChatDongPhuc}</td>
+                        <td>${item.TenTinhChatDongPhuc == null ? "" : item.TenTinhChatDongPhuc}</td>
                         <td>${item.MaSize}</td>
                         <td>${item.Slyc}</td>
                         <td>${-item.SoLuong}</td>

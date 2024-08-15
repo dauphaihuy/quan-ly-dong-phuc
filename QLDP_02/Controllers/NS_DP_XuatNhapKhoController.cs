@@ -43,6 +43,12 @@ namespace QLDP_02.Controllers
     {
         public int XuatNhapKho { get; set; }
     }
+    public class XuatKho_XoaSanPham 
+    { 
+        public int ID { get; set; }
+        public int SanPham { get; set; }
+        public int NhaCungCap { get; set; }
+    }
     public class NS_DP_XuatNhapKhoController : Controller
     {
         private DB_QLDPEntities db = new DB_QLDPEntities();
@@ -432,15 +438,140 @@ namespace QLDP_02.Controllers
 
         //    }
         //}
+        //public JsonResult XuatKho_ChonSanPham(int XuatNhapKho, int IDPhieu, List<XuatKho_ChonSanPham> listChonSp)
+        //{
+        //    try
+        //    {
+        //        var phieu = db.NS_DP_PhieuDeNghi.Where(x => x.PhieuDeNghi == IDPhieu).SingleOrDefault();
+        //        var XuatNhapKhoChiTiet = db.NS_DP_XuatNhapKho_ChiTiet.Where(x => x.XuatNhapKho == XuatNhapKho).ToList();
+        //        if (XuatNhapKhoChiTiet.Count == 0)
+        //        {
+        //            foreach(var item in listChonSp)
+        //            {
+        //                var sp = db.NS_DP_SanPham_TinhChatDongPhuc.Where(x => x.SanPham == item.SanPham).FirstOrDefault();
+        //                var sanp = db.NS_DP_SanPham.Where(x => x.SanPham == item.SanPham).FirstOrDefault();
+        //                NS_DP_XuatNhapKho_ChiTiet ct = new NS_DP_XuatNhapKho_ChiTiet
+        //                {
+        //                    XuatNhapKho = XuatNhapKho,
+        //                    SanPham = item.SanPham,
+        //                    Size = item.Size,
+        //                    SoLuong = -item.SoLuong,
+        //                    DonGia = int.Parse(item.DonGia),
+        //                    ThanhTien = item.SoLuong * int.Parse(item.DonGia),
+        //                    TinhChatDongPhuc = sp.TinhChatDongPhuc,
+        //                    NhaCungCap = item.NhaCungCap,
+        //                    DonViTinh = sanp.DonViTinh
+        //                };
+        //                phieu.TongSLNhan = phieu.TongSLNhan + item.SoLuong;
+        //                if (phieu.TongSLNhan == phieu.TongSLYeuCau)
+        //                {
+        //                    phieu.IsHoanThanh = true;
+        //                }
+        //                var phieuDNChiTiet = db.NS_DP_PhieuDeNghi_ChiTiet.Where(x => x.PhieuDeNghi == IDPhieu);
+        //                foreach (var itemPhieuDNChiTiet in phieuDNChiTiet)
+        //                {
+        //                    if (itemPhieuDNChiTiet.SanPham == item.SanPham && itemPhieuDNChiTiet.Size == item.Size)
+        //                    {
+        //                        itemPhieuDNChiTiet.SoLuongDaNhan = itemPhieuDNChiTiet.SoLuongDaNhan + item.SoLuong;
+        //                    }
+        //                }
+        //                db.NS_DP_XuatNhapKho_ChiTiet.Add(ct);
+        //            }
+        //        }
+        //        foreach (var item in listChonSp)
+        //        {
+        //            foreach(var pct in XuatNhapKhoChiTiet)
+        //            {
+        //                if(pct.SanPham == item.SanPham && pct.Size==item.Size && pct.NhaCungCap ==item.NhaCungCap)
+        //                {
+        //                    pct.SoLuong-=item.SoLuong;
+        //                    phieu.TongSLNhan = phieu.TongSLNhan + item.SoLuong;
+        //                    pct.ThanhTien = -pct.SoLuong * pct.DonGia;
+        //                    if (phieu.TongSLNhan == phieu.TongSLYeuCau)
+        //                    {
+        //                        phieu.IsHoanThanh = true;
+        //                    }
+        //                    var phieuDNChiTiet = db.NS_DP_PhieuDeNghi_ChiTiet.Where(x => x.PhieuDeNghi == IDPhieu);
+        //                    foreach (var itemPhieuDNChiTiet in phieuDNChiTiet)
+        //                    {
+        //                        if (itemPhieuDNChiTiet.SanPham == item.SanPham && itemPhieuDNChiTiet.Size == item.Size)
+        //                        {
+        //                            itemPhieuDNChiTiet.SoLuongDaNhan = itemPhieuDNChiTiet.SoLuongDaNhan + item.SoLuong;
+        //                        }
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    var sp = db.NS_DP_SanPham_TinhChatDongPhuc.Where(x => x.SanPham == item.SanPham).FirstOrDefault();
+        //                    var sanp = db.NS_DP_SanPham.Where(x => x.SanPham == item.SanPham).FirstOrDefault();
+        //                    NS_DP_XuatNhapKho_ChiTiet ct = new NS_DP_XuatNhapKho_ChiTiet
+        //                    {
+        //                        XuatNhapKho = XuatNhapKho,
+        //                        SanPham = item.SanPham,
+        //                        Size = item.Size,
+        //                        SoLuong = -item.SoLuong,
+        //                        DonGia = int.Parse(item.DonGia),
+        //                        ThanhTien = item.SoLuong * int.Parse(item.DonGia),
+        //                        TinhChatDongPhuc = sp.TinhChatDongPhuc,
+        //                        NhaCungCap = item.NhaCungCap,
+        //                        DonViTinh = sanp.DonViTinh
+        //                    };
+        //                    phieu.TongSLNhan = phieu.TongSLNhan + item.SoLuong;
+        //                    if (phieu.TongSLNhan == phieu.TongSLYeuCau)
+        //                    {
+        //                        phieu.IsHoanThanh = true;
+        //                    }
+        //                    var phieuDNChiTiet = db.NS_DP_PhieuDeNghi_ChiTiet.Where(x => x.PhieuDeNghi == IDPhieu);
+        //                    foreach (var itemPhieuDNChiTiet in phieuDNChiTiet)
+        //                    {
+        //                        if (itemPhieuDNChiTiet.SanPham == item.SanPham && itemPhieuDNChiTiet.Size == item.Size)
+        //                        {
+        //                            itemPhieuDNChiTiet.SoLuongDaNhan = itemPhieuDNChiTiet.SoLuongDaNhan + item.SoLuong;
+        //                        }
+        //                    }
+        //                    db.NS_DP_XuatNhapKho_ChiTiet.Add(ct);
+        //                }
+
+        //            }
+
+        //        }
+        //        db.SaveChanges();
+        //        return Json(new { success = true, XuatNhapKho, IDPhieu, listChonSp });
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return Json(new { success = false, err = e });
+
+        //    }
+        //}
         public JsonResult XuatKho_ChonSanPham(int XuatNhapKho, int IDPhieu, List<XuatKho_ChonSanPham> listChonSp)
         {
             try
             {
                 var phieu = db.NS_DP_PhieuDeNghi.Where(x => x.PhieuDeNghi == IDPhieu).SingleOrDefault();
                 var XuatNhapKhoChiTiet = db.NS_DP_XuatNhapKho_ChiTiet.Where(x => x.XuatNhapKho == XuatNhapKho).ToList();
-                if (XuatNhapKhoChiTiet.Count == 0)
+
+                foreach (var item in listChonSp)
                 {
-                    foreach(var item in listChonSp)
+                    var existingItem = XuatNhapKhoChiTiet.FirstOrDefault(x => x.SanPham == item.SanPham && x.Size == item.Size && x.NhaCungCap == item.NhaCungCap);
+                    if (existingItem != null)
+                    {
+                        existingItem.SoLuong -= item.SoLuong;
+                        phieu.TongSLNhan += item.SoLuong;
+                        existingItem.ThanhTien = -existingItem.SoLuong * existingItem.DonGia;
+
+                        if (phieu.TongSLNhan == phieu.TongSLYeuCau)
+                        {
+                            phieu.IsHoanThanh = true;
+                        }
+
+                        var phieuDNChiTiet = db.NS_DP_PhieuDeNghi_ChiTiet.Where(x => x.PhieuDeNghi == IDPhieu && x.SanPham == item.SanPham && x.Size == item.Size);
+                        foreach (var itemPhieuDNChiTiet in phieuDNChiTiet)
+                        {
+                            itemPhieuDNChiTiet.SoLuongDaNhan += item.SoLuong;
+                        }
+                    }
+                    else
                     {
                         var sp = db.NS_DP_SanPham_TinhChatDongPhuc.Where(x => x.SanPham == item.SanPham).FirstOrDefault();
                         var sanp = db.NS_DP_SanPham.Where(x => x.SanPham == item.SanPham).FirstOrDefault();
@@ -456,77 +587,18 @@ namespace QLDP_02.Controllers
                             NhaCungCap = item.NhaCungCap,
                             DonViTinh = sanp.DonViTinh
                         };
-                        phieu.TongSLNhan = phieu.TongSLNhan + item.SoLuong;
+                        phieu.TongSLNhan += item.SoLuong;
                         if (phieu.TongSLNhan == phieu.TongSLYeuCau)
                         {
                             phieu.IsHoanThanh = true;
                         }
-                        var phieuDNChiTiet = db.NS_DP_PhieuDeNghi_ChiTiet.Where(x => x.PhieuDeNghi == IDPhieu);
+                        var phieuDNChiTiet = db.NS_DP_PhieuDeNghi_ChiTiet.Where(x => x.PhieuDeNghi == IDPhieu && x.SanPham == item.SanPham && x.Size == item.Size);
                         foreach (var itemPhieuDNChiTiet in phieuDNChiTiet)
                         {
-                            if (itemPhieuDNChiTiet.SanPham == item.SanPham && itemPhieuDNChiTiet.Size == item.Size)
-                            {
-                                itemPhieuDNChiTiet.SoLuongDaNhan = itemPhieuDNChiTiet.SoLuongDaNhan + item.SoLuong;
-                            }
+                            itemPhieuDNChiTiet.SoLuongDaNhan += item.SoLuong;
                         }
                         db.NS_DP_XuatNhapKho_ChiTiet.Add(ct);
                     }
-                }
-                foreach (var item in listChonSp)
-                {
-                    foreach(var pct in XuatNhapKhoChiTiet)
-                    {
-                        if(pct.SanPham == item.SanPham && pct.Size==item.Size && pct.NhaCungCap ==item.NhaCungCap)
-                        {
-                            pct.SoLuong-=item.SoLuong;
-                            phieu.TongSLNhan = phieu.TongSLNhan + item.SoLuong;
-                            if (phieu.TongSLNhan == phieu.TongSLYeuCau)
-                            {
-                                phieu.IsHoanThanh = true;
-                            }
-                            var phieuDNChiTiet = db.NS_DP_PhieuDeNghi_ChiTiet.Where(x => x.PhieuDeNghi == IDPhieu);
-                            foreach (var itemPhieuDNChiTiet in phieuDNChiTiet)
-                            {
-                                if (itemPhieuDNChiTiet.SanPham == item.SanPham && itemPhieuDNChiTiet.Size == item.Size)
-                                {
-                                    itemPhieuDNChiTiet.SoLuongDaNhan = itemPhieuDNChiTiet.SoLuongDaNhan + item.SoLuong;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            var sp = db.NS_DP_SanPham_TinhChatDongPhuc.Where(x => x.SanPham == item.SanPham).FirstOrDefault();
-                            var sanp = db.NS_DP_SanPham.Where(x => x.SanPham == item.SanPham).FirstOrDefault();
-                            NS_DP_XuatNhapKho_ChiTiet ct = new NS_DP_XuatNhapKho_ChiTiet
-                            {
-                                XuatNhapKho = XuatNhapKho,
-                                SanPham = item.SanPham,
-                                Size = item.Size,
-                                SoLuong = -item.SoLuong,
-                                DonGia = int.Parse(item.DonGia),
-                                ThanhTien = item.SoLuong * int.Parse(item.DonGia),
-                                TinhChatDongPhuc = sp.TinhChatDongPhuc,
-                                NhaCungCap = item.NhaCungCap,
-                                DonViTinh = sanp.DonViTinh
-                            };
-                            phieu.TongSLNhan = phieu.TongSLNhan + item.SoLuong;
-                            if (phieu.TongSLNhan == phieu.TongSLYeuCau)
-                            {
-                                phieu.IsHoanThanh = true;
-                            }
-                            var phieuDNChiTiet = db.NS_DP_PhieuDeNghi_ChiTiet.Where(x => x.PhieuDeNghi == IDPhieu);
-                            foreach (var itemPhieuDNChiTiet in phieuDNChiTiet)
-                            {
-                                if (itemPhieuDNChiTiet.SanPham == item.SanPham && itemPhieuDNChiTiet.Size == item.Size)
-                                {
-                                    itemPhieuDNChiTiet.SoLuongDaNhan = itemPhieuDNChiTiet.SoLuongDaNhan + item.SoLuong;
-                                }
-                            }
-                            db.NS_DP_XuatNhapKho_ChiTiet.Add(ct);
-                        }
-                        
-                    }
-                    
                 }
                 db.SaveChanges();
                 return Json(new { success = true, XuatNhapKho, IDPhieu, listChonSp });
@@ -534,7 +606,6 @@ namespace QLDP_02.Controllers
             catch (Exception e)
             {
                 return Json(new { success = false, err = e });
-
             }
         }
         public JsonResult XuatKho_getAllPhieuXuatKho()
@@ -584,6 +655,18 @@ namespace QLDP_02.Controllers
                 return Json(new { success = false, err = e });
             }
         }
+        public JsonResult XuatKho_XoaSanPham(int XuatNhapKho, List<XuatKho_XoaSanPham> listXoa)
+        {
+            try
+            {
+                return Json(new { success = true,});
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, err = e });
+            }
+        }
+
     }
-    
+
 }
