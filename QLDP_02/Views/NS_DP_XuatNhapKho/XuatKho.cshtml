@@ -191,7 +191,7 @@
                 nhaCungCap: +Ncc
             },
             success: function (response) {
-                console.log(response)
+                //console.log(response)
                 let content = ''
                 response.item.forEach((item) => {
                     content += `
@@ -224,7 +224,7 @@
     }
     const changeSelectPhieuNhap = () => {
         let PhieuDeNghi = $("#phieuDeNghi").val()
-        console.log(PhieuDeNghi)
+        //console.log(PhieuDeNghi)
         
     }
     const renderSelectPhieuDeNghiBoPhan = () => {
@@ -258,7 +258,7 @@
             url: "/NS_DP_XuatNhapKho/XuatKho_RenderNhaCungCap",
             type: "post",
             success: function (response) {
-                console.log(response)
+                //console.log(response)
                 let content = ``
                 response.result.forEach((item) => {
                     content += `<option value="${item.NhaCungCap}">${item.TenNhaCungCap}</option>`
@@ -293,7 +293,7 @@
             url: "/NS_DP_XuatNhapKho/XuatKho_getAllPhieuXuatKho",
             type: "post",
             success: function (response) {
-                console.log(response)
+                //console.log(response)
                 let content=``
                 response.allPhieuXuatKho.forEach((item) => {
                     content += `
@@ -341,7 +341,7 @@
                 IDPhieu: +idphieu
             },
             success: function (response) {
-                console.log(response)
+                //console.log(response)
                 const xk = response.xuatKho
                 $("#MaXuatNhapKho").val(xk.MaXuatNhapKho)
                 $("#GhiChu").val(xk.GhiChu)
@@ -470,7 +470,7 @@
                 XuatNhapKho
             },
             success: function (response) {
-                console.log(response)
+                //console.log(response)
                 $.ajax({
                     url: "/NS_DP_XuatNhapKho/XuatKho_ChonSanPham",
                     type: "post",
@@ -480,7 +480,7 @@
                         listChonSp: DanhSachSanPham
                     },
                     success: function (response) {
-                        console.log(response)
+                        //console.log(response)
                         QLSanPham()
                         handleSelectPhieuXuat(response.XuatNhapKho, response.IDPhieu)
                     }
@@ -558,7 +558,7 @@
             },
             success: function (response) {
                 console.log('XuatKho_GetDanhSachSanPhamDeNghi')
-                console.log(response)
+                //console.log(response)
                 let content = ''
                 response.item.forEach((item) => {
                     console.log(item)

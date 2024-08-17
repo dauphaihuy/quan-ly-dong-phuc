@@ -27,10 +27,84 @@
     <style>
         body {
             cursor: url("/Content/AdminLayout/assets/img/chuot.png"), auto;
+            position: relative;
+        }
+
+        input[type=checkbox] {
+            transform: scale(1.5);
+        }
+        .modal-left {
+            z-index: 9999999;
+            background-color: #F7F7F8;
+            position: absolute;
+            width: 30%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            display: none;
+            transition-duration: 2s;
         }
     </style>
 </head>
+
+@{ var nam= DateTime.Now.Year;
+    var namtrc = DateTime.Now.Year-1;
+    var namsau = DateTime.Now.Year+1;
+    }
+
 <body class="nav-fixed">
+    <div class="modal-left">
+        <div class="row pt-5">
+            <h3 class="col-sm text-center">Lọc</h3>
+            <button onclick="handleCloseFilter()" class="col-sm btn-close">
+            </button>
+            
+        </div>
+        <div class="me-2 ms-3 mt-5">
+            <div>
+                <h3>Tháng:</h3>
+                <div>
+                    <select id="thang" class="form-select">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <h3>Năm:</h3>
+                <div>
+                    <select id="nam" class="form-select">
+                        <option value="@namtrc">@namtrc</option>
+                        <option value="@nam" selected>@nam</option>
+                        <option value="@namsau">@namsau</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <h3>Nhà cung cấp:</h3>
+                <div>
+                    <select id="nhacc" class="form-select">
+                        <option value="1">Nhà bè</option>
+                        <option value="2">Unimax</option>
+                        <option value="3">Dương Phát Lộc</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row me-10 ms-10 mt-5">
+                <button onclick="handleFilter()" class="btn btn-outline-primary">tìm kiếm</button>
+            </div>
+        </div>
+    </div>
     <nav class="topnav navbar navbar-expand shadow justify-content-between justify-content-sm-start navbar-light bg-white" id="sidenavAccordion">
         <button class="btn btn-icon btn-transparent-dark order-1 order-lg-0 me-2 ms-lg-2 me-lg-0" id="sidebarToggle"><i data-feather="menu"></i></button>
         @Html.ActionLink("BSC Admin Pro", "Index", "NS_DP_SanPham", new { area = "" }, new { @class = "navbar-brand pe-3 ps-4 ps-lg-2" })
@@ -47,7 +121,7 @@
                 <a class="nav-link dropdown-toggle" id="navbar1900393939" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa-solid fa-phone fa-sm"></i>
                     <span>&nbsp;</span>
-                    <div class="fw-500">1900.39.39.39</div>
+                    <div class="fw-500">033.250.9042</div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end py-0 me-sm-n15 me-lg-0 o-hidden animated--fade-in-up" aria-labelledby="navbar1900393939">
                     <a class="dropdown-item py-3" href="https://docs.startbootstrap.com/sb-admin-pro" target="_blank">
@@ -166,10 +240,6 @@
                 <div class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownUserImage">
                     <h6 class="dropdown-header d-flex align-items-center">
                         <img class="dropdown-user-img" src="~/Content/AdminLayout/assets/img/illustrations/profiles/profile-1.png" />
-                        <div class="dropdown-user-details">
-                            <div class="dropdown-user-details-name">Nguyễn Anh Tú</div>
-                            <div class="dropdown-user-details-email">vluna@aol.com</div>
-                        </div>
                     </h6>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#!">
@@ -249,6 +319,18 @@
                                 <!-- Nested Sidenav Accordion (NS_DP_PhieuNhapHang -> Index)-->
                                 @Html.ActionLink("Đề nghị ĐP cá nhân", "Index", "NS_DP_PhieuDeNghi_CaNhan", new { area = "" }, new { @class = "nav-link" })
                                 @Html.ActionLink("Đề nghị ĐP bộ phận", "Index", "NS_DP_PhieuDeNghiBoPhan", new { area = "" }, new { @class = "nav-link" })
+                            </nav>
+                        </div>
+                        <!-- Sidenav Accordion (Báo cáo)-->
+                        <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseBaoCaoDP" aria-expanded="false" aria-controls="collapsePages">
+                            <div class="nav-link-icon"><i data-feather="package"></i></div>
+                            Báo cáo đồng phục
+                            <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseBaoCaoDP" data-bs-parent="#accordionSidenav">
+                            <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesMenu">
+                                <!-- Nested Sidenav Accordion (NS_DP_PhieuNhapHang -> Index)-->
+                                @Html.ActionLink("Báo cáo tồn kho", "Index", "BC_TonKho", new { area = "" }, new { @class = "nav-link" })
                             </nav>
                         </div>
                         <!-- Sidenav Menu Heading (Core)-->
@@ -389,6 +471,9 @@
                 });
                 return
             }
+        }
+        const handleCloseFilter = () => {
+            $(".modal-left").css("display","none")
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

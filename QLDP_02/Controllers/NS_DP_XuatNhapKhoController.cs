@@ -170,6 +170,7 @@ namespace QLDP_02.Controllers
                         NgayTao = DateTime.Parse(ngayNhap),
                         IsDel = false,
                         TyGia = tyGia,
+                        NgayNhapXuat=DateTime.Now,  
                     };
                     db.NS_DP_XuatNhapKho.Add(xnkRow);
                     db.SaveChanges();

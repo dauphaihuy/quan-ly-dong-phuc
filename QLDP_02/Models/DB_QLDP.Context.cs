@@ -428,5 +428,22 @@ namespace QLDP_02.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<XuatKho_GetSanPhamByPhieu_Result>("XuatKho_GetSanPhamByPhieu", xuatnhapkhoParameter, idPhieuParameter);
         }
+    
+        public virtual ObjectResult<GetBaoCaoTonKho_Result> GetBaoCaoTonKho(string thang, string nam, Nullable<int> nCC)
+        {
+            var thangParameter = thang != null ?
+                new ObjectParameter("Thang", thang) :
+                new ObjectParameter("Thang", typeof(string));
+    
+            var namParameter = nam != null ?
+                new ObjectParameter("Nam", nam) :
+                new ObjectParameter("Nam", typeof(string));
+    
+            var nCCParameter = nCC.HasValue ?
+                new ObjectParameter("NCC", nCC) :
+                new ObjectParameter("NCC", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBaoCaoTonKho_Result>("GetBaoCaoTonKho", thangParameter, namParameter, nCCParameter);
+        }
     }
 }

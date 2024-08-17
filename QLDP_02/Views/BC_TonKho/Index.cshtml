@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "Tồn kho";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+    <div class="container-fluid px-4">
+        <div class="page-header-content">
+            <div class="row align-items-center justify-content-between pt-3">
+                <div class="col-auto mb-3">
+                    <h1 class="page-header-title">Báo cáo tồn kho</h1>
+                </div>
+                <div class="col-12 col-xl-auto mb-3">
+                    <button onclick="handleOpenFilterModel()" class="btn btn-outline-primary">lọc</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</header>
+
+<!-- Main page content-->
+<div class="container-fluid px-4">
+    <div class="card">
+        <div class="card-body">
+            <table id="tableXuatKho" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th style="text-align: center;">Tên sản phẩm</th>
+                        <th style="text-align: center;">Tính chất</th>
+                        <th style="text-align: center;">Loại Sản phẩm</th>
+                        <th style="text-align: center;">Size</th>
+                        <th style="text-align: center;">Đơn vị tính</th>
+                        <th style="text-align: center;">Tồn đầu kì</th>
+                        <th style="text-align: center;">Nhập trong kì</th>
+                        <th style="text-align: center;">Xuất trong kì</th>
+                        <th style="text-align: center;">Tồn cuối</th>
+                        <th style="text-align: center;">Cân đối</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    const handleOpenFilterModel = () => {
+        $(".modal-left").css("display", "block")
+    }
+    const handleFilter = () => {
+        $(".modal-left").css("display", "none")
+        let thang = $("#thang").val()
+        let nam = $("#nam").val()
+        let ncc = +$("#nhacc").val()
+        $.ajax({
+            url: "/BC_TonKho/getBaoCaoTK",
+            type:"post",
+            data: {
+                thang: thang,
+                nam: nam,
+                ncc: ncc
+            },
+            success: function (response) {
+                console.log(response)
+                let content = ''
+                response.item.forEach((item) => {
+                    content += `
+                    <tr>
+                        <td>${item.TenSanPham}</td>
+                        <td>${item.TenTinhChatDongPhuc}</td>
+                        <td>${item.TenLoaiSanPham}</td>
+                        <td>${item.MaSize}</td>
+                        <td>${item.TenDonViTinh}</td>
+                        <td>${item.tonDauKi}</td>
+                        <td>${item.nhaptrongki}</td>
+                        <td>${item.xuatrongki}</td>
+                        <td>${item.toncuoi}</td>
+                        <td><button>123</button></td>
+                    </td>`
+                })
+                $("#tableXuatKho tbody tr").remove()
+                $("#tableXuatKho tbody").append(content)
+            }
+        })
+    }
+</script>
