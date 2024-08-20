@@ -429,7 +429,25 @@ namespace QLDP_02.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<XuatKho_GetSanPhamByPhieu_Result>("XuatKho_GetSanPhamByPhieu", xuatnhapkhoParameter, idPhieuParameter);
         }
     
-        public virtual ObjectResult<GetBaoCaoTonKho_Result> GetBaoCaoTonKho(string thang, string nam, Nullable<int> nCC)
+        public virtual ObjectResult<DPBP_GetLichSuNhanSu_Result> DPBP_GetLichSuNhanSu(Nullable<int> nhansu)
+        {
+            var nhansuParameter = nhansu.HasValue ?
+                new ObjectParameter("nhansu", nhansu) :
+                new ObjectParameter("nhansu", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<DPBP_GetLichSuNhanSu_Result>("DPBP_GetLichSuNhanSu", nhansuParameter);
+        }
+    
+        public virtual ObjectResult<BaoCao_DPBP_GetLichSuNhanSu_Result> BaoCao_DPBP_GetLichSuNhanSu(Nullable<int> nhansu)
+        {
+            var nhansuParameter = nhansu.HasValue ?
+                new ObjectParameter("nhansu", nhansu) :
+                new ObjectParameter("nhansu", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BaoCao_DPBP_GetLichSuNhanSu_Result>("BaoCao_DPBP_GetLichSuNhanSu", nhansuParameter);
+        }
+    
+        public virtual ObjectResult<GetBaoCaoTonKho_Result1> GetBaoCaoTonKho(string thang, string nam, Nullable<int> nCC)
         {
             var thangParameter = thang != null ?
                 new ObjectParameter("Thang", thang) :
@@ -443,7 +461,7 @@ namespace QLDP_02.Models
                 new ObjectParameter("NCC", nCC) :
                 new ObjectParameter("NCC", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBaoCaoTonKho_Result>("GetBaoCaoTonKho", thangParameter, namParameter, nCCParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBaoCaoTonKho_Result1>("GetBaoCaoTonKho", thangParameter, namParameter, nCCParameter);
         }
     }
 }

@@ -132,6 +132,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BaoCao_DPBP_GetLichSuNhanSu_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CaNhan_RenderTable_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
@@ -177,6 +180,9 @@
     <Compile Include="Models\DPBP_GetAllPhieuDeNghi_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DPBP_GetLichSuNhanSu_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DPBP_GetSanPhamByPhieu_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
@@ -187,6 +193,9 @@
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\GetBaoCaoTonKho_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetBaoCaoTonKho_Result1.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\getDanhSachSanPhamTheoGioiTinhNhanSu_Result.cs">

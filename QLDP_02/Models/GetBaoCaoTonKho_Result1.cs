@@ -11,7 +11,7 @@ namespace QLDP_02.Models
 {
     using System;
     
-    public partial class GetBaoCaoTonKho_Result
+    public partial class GetBaoCaoTonKho_Result1
     {
         public Nullable<long> stt { get; set; }
         public string TenSanPham { get; set; }

@@ -11,18 +11,15 @@ namespace QLDP_02.Models
 {
     using System;
     
-    public partial class GetBaoCaoTonKho_Result
+    public partial class BaoCao_DPBP_GetLichSuNhanSu_Result
     {
         public Nullable<long> stt { get; set; }
+        public System.DateTime NgayDeNghi { get; set; }
+        public string hoten { get; set; }
         public string TenSanPham { get; set; }
-        public string TenTinhChatDongPhuc { get; set; }
-        public string TenLoaiSanPham { get; set; }
+        public Nullable<int> SoLuong { get; set; }
+        public string TenLyDoCapPhat { get; set; }
         public string MaSize { get; set; }
-        public string TenDonViTinh { get; set; }
-        public int tonDauKi { get; set; }
-        public int nhaptrongki { get; set; }
-        public int xuatrongki { get; set; }
-        public Nullable<int> toncuoi { get; set; }
-        public Nullable<System.DateTime> ngay { get; set; }
+        public string MaPhieuDeNghi_CaNhan { get; set; }
     }
 }

@@ -227,6 +227,29 @@ namespace QLDP_02.Controllers
                 return Json(new { success = false, message = e.Message });
             }
         }
+        public JsonResult NS_DP_PhieuDeNghiBoPhan(int NhanSu)
+        {
+            try
+            {
+                return Json(new { success = true, NhanSu });
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, message = e.Message });
+            }
+        }
+        public JsonResult DeNghiBP_GetLichSuNhanSu(int NhanSu)
+        {
+            try
+            {
+                var listLichSu = db.DPBP_GetLichSuNhanSu(NhanSu);
+                return Json(new { success = true, listLichSu });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
     }
     public class XoaSanPham
     {

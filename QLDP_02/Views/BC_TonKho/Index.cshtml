@@ -12,7 +12,7 @@
                     <h1 class="page-header-title">Báo cáo tồn kho</h1>
                 </div>
                 <div class="col-12 col-xl-auto mb-3">
-                    <button onclick="handleOpenFilterModel()" class="btn btn-outline-primary">lọc</button>
+                    <button onclick="handleOpenFilterModel()" class="btn btn-outline-primary"><i class="fa-solid fa-filter me-2"></i>lọc</button>
                 </div>
             </div>
         </div>
@@ -27,6 +27,7 @@
             <table id="tableXuatKho" class="table table-striped">
                 <thead>
                     <tr>
+                        <th style="text-align: center;">STT</th>
                         <th style="text-align: center;">Tên sản phẩm</th>
                         <th style="text-align: center;">Tính chất</th>
                         <th style="text-align: center;">Loại Sản phẩm</th>
@@ -50,6 +51,45 @@
     const handleOpenFilterModel = () => {
         $(".modal-left").css("display", "block")
     }
+
+    const render = () => {
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth() + 1; // Tháng được đánh số từ 0-11, nên cần cộng thêm 1
+        const currentYear = currentDate.getFullYear();
+        let ncc = +$("#nhacc").val()
+        $.ajax({
+            url: "/BC_TonKho/getBaoCaoTK",
+            type: "post",
+            data: {
+                thang: currentMonth,
+                nam: currentYear,
+                ncc: ncc
+            },
+            success: function (response) {
+                console.log(response)
+                let content = ''
+                response.item.forEach((item) => {
+                    content += `
+                <tr>
+                    <td>${item.stt}</td>
+                    <td>${item.TenSanPham}</td>
+                    <td>${item.TenTinhChatDongPhuc}</td>
+                    <td>${item.TenLoaiSanPham}</td>
+                    <td>${item.MaSize}</td>
+                    <td>${item.TenDonViTinh}</td>
+                    <td>${item.tonDauKi}</td>
+                    <td>${item.nhaptrongki}</td>
+                    <td>${item.xuatrongki}</td>
+                    <td>${item.toncuoi}</td>
+                    <td><button class="btn btn-outline-primary"><i class="fa-solid fa-circle-half-stroke me-2"></i>Cân đối</button></td>
+                </td>`
+                })
+                $("#tableXuatKho tbody tr").remove()
+                $("#tableXuatKho tbody").append(content)
+            }
+        })
+    }
+    render()
     const handleFilter = () => {
         $(".modal-left").css("display", "none")
         let thang = $("#thang").val()
@@ -69,6 +109,7 @@
                 response.item.forEach((item) => {
                     content += `
                     <tr>
+                        <td>${item.stt}</td>
                         <td>${item.TenSanPham}</td>
                         <td>${item.TenTinhChatDongPhuc}</td>
                         <td>${item.TenLoaiSanPham}</td>
@@ -78,7 +119,7 @@
                         <td>${item.nhaptrongki}</td>
                         <td>${item.xuatrongki}</td>
                         <td>${item.toncuoi}</td>
-                        <td><button>123</button></td>
+                        <td><button class="btn btn-outline-primary"><i class="fa-solid fa-circle-half-stroke me-2"></i>Cân đối</button></td>
                     </td>`
                 })
                 $("#tableXuatKho tbody tr").remove()

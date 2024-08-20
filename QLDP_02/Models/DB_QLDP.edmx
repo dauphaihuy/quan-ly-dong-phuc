@@ -437,8 +437,14 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
+        <Function Name="BaoCao_DPBP_GetLichSuNhanSu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nhansu" Type="int" Mode="In" />
+        </Function>
         <Function Name="CaNhan_RenderTable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="DPBP_GetAllPhieuDeNghi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="DPBP_GetLichSuNhanSu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nhansu" Type="int" Mode="In" />
+        </Function>
         <Function Name="DPBP_GetSanPhamByPhieu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Phieu" Type="int" Mode="In" />
         </Function>
@@ -1089,7 +1095,13 @@
             <Parameter Name="xuatnhapkho" Mode="In" Type="Int32" />
             <Parameter Name="idPhieu" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetBaoCaoTonKho" ReturnType="Collection(DB_QLDPModel.GetBaoCaoTonKho_Result)">
+          <FunctionImport Name="DPBP_GetLichSuNhanSu" ReturnType="Collection(DB_QLDPModel.DPBP_GetLichSuNhanSu_Result)">
+          <Parameter Name="nhansu" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="BaoCao_DPBP_GetLichSuNhanSu" ReturnType="Collection(DB_QLDPModel.BaoCao_DPBP_GetLichSuNhanSu_Result)">
+          <Parameter Name="nhansu" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetBaoCaoTonKho" ReturnType="Collection(DB_QLDPModel.GetBaoCaoTonKho_Result1)">
             <Parameter Name="Thang" Mode="In" Type="String" />
             <Parameter Name="Nam" Mode="In" Type="String" />
             <Parameter Name="NCC" Mode="In" Type="Int32" />
@@ -1705,7 +1717,42 @@
           <Property Type="String" Name="TenNhaCungCap" Nullable="true" MaxLength="255" />
           <Property Type="Int32" Name="SoLuong" Nullable="false" />
         </ComplexType>
+        <ComplexType Name="DPBP_GetLichSuNhanSu_Result">
+          <Property Type="Int64" Name="stt" Nullable="true" />
+          <Property Type="DateTime" Name="NgayDeNghi" Nullable="false" Precision="16" />
+          <Property Type="String" Name="hoten" Nullable="true" MaxLength="154" />
+          <Property Type="String" Name="TenSanPham" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="SoLuong" Nullable="true" />
+          <Property Type="String" Name="TenLyDoCapPhat" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="MaSize" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="MaPhieuDeNghi_CaNhan" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="TenTinhChatDongPhuc" Nullable="false" MaxLength="150" />
+        </ComplexType>
+        <ComplexType Name="BaoCao_DPBP_GetLichSuNhanSu_Result">
+          <Property Type="Int64" Name="stt" Nullable="true" />
+          <Property Type="DateTime" Name="NgayDeNghi" Nullable="false" Precision="16" />
+          <Property Type="String" Name="hoten" Nullable="true" MaxLength="152" />
+          <Property Type="String" Name="TenSanPham" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="SoLuong" Nullable="true" />
+          <Property Type="String" Name="TenLyDoCapPhat" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="MaSize" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="MaPhieuDeNghi_CaNhan" Nullable="false" MaxLength="50" />
+        </ComplexType>
         <ComplexType Name="GetBaoCaoTonKho_Result">
+          <Property Type="Int64" Name="stt" Nullable="true" />
+          <Property Type="String" Name="TenSanPham" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="TenTinhChatDongPhuc" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="TenLoaiSanPham" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="MaSize" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="TenDonViTinh" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="tonDauKi" Nullable="false" />
+          <Property Type="Int32" Name="nhaptrongki" Nullable="false" />
+          <Property Type="Int32" Name="xuatrongki" Nullable="false" />
+          <Property Type="Int32" Name="toncuoi" Nullable="true" />
+          <Property Type="DateTime" Name="ngay" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetBaoCaoTonKho_Result1">
+          <Property Type="Int64" Name="stt" Nullable="true" />
           <Property Type="String" Name="TenSanPham" Nullable="false" MaxLength="200" />
           <Property Type="String" Name="TenTinhChatDongPhuc" Nullable="false" MaxLength="150" />
           <Property Type="String" Name="TenLoaiSanPham" Nullable="true" MaxLength="100" />
@@ -2852,9 +2899,39 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DPBP_GetLichSuNhanSu" FunctionName="DB_QLDPModel.Store.DPBP_GetLichSuNhanSu">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_QLDPModel.DPBP_GetLichSuNhanSu_Result">
+                <ScalarProperty Name="stt" ColumnName="stt" />
+                <ScalarProperty Name="NgayDeNghi" ColumnName="NgayDeNghi" />
+                <ScalarProperty Name="hoten" ColumnName="hoten" />
+                <ScalarProperty Name="TenSanPham" ColumnName="TenSanPham" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+                <ScalarProperty Name="TenLyDoCapPhat" ColumnName="TenLyDoCapPhat" />
+                <ScalarProperty Name="MaSize" ColumnName="MaSize" />
+                <ScalarProperty Name="MaPhieuDeNghi_CaNhan" ColumnName="MaPhieuDeNghi_CaNhan" />
+                <ScalarProperty Name="TenTinhChatDongPhuc" ColumnName="TenTinhChatDongPhuc" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="BaoCao_DPBP_GetLichSuNhanSu" FunctionName="DB_QLDPModel.Store.BaoCao_DPBP_GetLichSuNhanSu">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_QLDPModel.BaoCao_DPBP_GetLichSuNhanSu_Result">
+                <ScalarProperty Name="stt" ColumnName="stt" />
+                <ScalarProperty Name="NgayDeNghi" ColumnName="NgayDeNghi" />
+                <ScalarProperty Name="hoten" ColumnName="hoten" />
+                <ScalarProperty Name="TenSanPham" ColumnName="TenSanPham" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+                <ScalarProperty Name="TenLyDoCapPhat" ColumnName="TenLyDoCapPhat" />
+                <ScalarProperty Name="MaSize" ColumnName="MaSize" />
+                <ScalarProperty Name="MaPhieuDeNghi_CaNhan" ColumnName="MaPhieuDeNghi_CaNhan" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetBaoCaoTonKho" FunctionName="DB_QLDPModel.Store.GetBaoCaoTonKho">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="DB_QLDPModel.GetBaoCaoTonKho_Result">
+              <ComplexTypeMapping TypeName="DB_QLDPModel.GetBaoCaoTonKho_Result1">
+                <ScalarProperty Name="stt" ColumnName="stt" />
                 <ScalarProperty Name="TenSanPham" ColumnName="TenSanPham" />
                 <ScalarProperty Name="TenTinhChatDongPhuc" ColumnName="TenTinhChatDongPhuc" />
                 <ScalarProperty Name="TenLoaiSanPham" ColumnName="TenLoaiSanPham" />
