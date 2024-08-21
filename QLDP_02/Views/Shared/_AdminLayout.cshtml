@@ -9,7 +9,6 @@
     <meta name="author" content="" />
     <title>@ViewBag.Title - BSC Admin Pro</title>
     <link href="~/Content/AdminLayout/css/styles.css" rel="stylesheet" />
-    <link rel="icon" type="image/x-icon" href="~/Content/AdminLayout/assets/img/AT2.png" />
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -64,19 +63,15 @@
             <div>
                 <h3>Tháng:</h3>
                 <div>
+                    @{
+                        int currentMonth = DateTime.Now.Month;
+                    }
+
                     <select id="thang" class="form-select">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i" @(i == currentMonth ? "selected" : "")>@i</option>
+                        }
                     </select>
                 </div>
             </div>

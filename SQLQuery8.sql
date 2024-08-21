@@ -8,7 +8,7 @@ SET NOCOUNT ON
 BEGIN 
 	DECLARE  @Ngay DATE = @Nam+'-'+@Thang+'-01'
 SELECT 
-	ROW_NUMBER() OVER (ORDER BY NS_DP_PhieuDeNghi_CaNhan_ChiTiet.ID) AS stt,
+	ROW_NUMBER() OVER (ORDER BY NS_DP_SanPham.SanPham) AS stt,
 	NS_DP_SanPham.TenSanPham,
 	ISNULL(DM_DP_TinhChatDongPhuc.TenTinhChatDongPhuc,'') TenTinhChatDongPhuc,
 	DM_DP_LoaiSanPham.TenLoaiSanPham,
@@ -80,3 +80,4 @@ end
 GO 
 
 EXEC GetBaoCaoTonKho @Thang = 8, @Nam = 2024 ,@NCC = 2
+tạo bảng xuất kho nhan su

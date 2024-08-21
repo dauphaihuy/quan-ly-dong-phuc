@@ -96,6 +96,7 @@
                 <div class="modal-header alert">
                     <h5>Danh sách sản phẩm</h5>
                     <div>
+                        <button class="btn btn-outline-warning ct-cap-phat" onclick="xemChiTietCapPhat()"><i class="fa-solid fa-file-invoice me-2"></i>Chi tiết cấp phát</button>
                         <button class="btn btn-success" type="button" onclick="themMoiSanPham()"><i class="fa-solid fa-plus me-1"></i>Thêm mới</button>
                         <button class="btn btn-danger" type="button" onclick="XoaSanPham()"><i class="fa-solid fa-trash-can me-1"></i>Xóa</button>
                     </div>
@@ -170,7 +171,81 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalChiTietCP">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title" id="staticSuaSanPham">Chi tiết cấp phát</h5>
+                </div>
+                <div>
+                    <button class="btn btn-outline-secondary" onclick="handleclose()"><i class="fa-solid fa-arrow-left me-1"></i>Quay lại</button>
+                    <button class="btn btn-outline-success" onclick="handleThemSanPham()"><i class="fa-regular fa-floppy-disk me-1"></i>Chọn</button>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group row mb-3">
+                    <table id="tableChiTietCapPhat" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Nhân sự</th>
+                                <th>Sản phẩm</th>
+                                <th>Size</th>
+                                <th>Số lượng</th>
+                                <th>Tính chất</th>
+                                <th>Nhà cung cấp</th>
+                                <th>Tồn kho</th>
+                                <th>Người đổi</th>
+                                <th>Ngày đổi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
+    function handleclose() {
+        $('#modalChiTietCP').modal('hide')
+    }
+    const xemChiTietCapPhat = () => {
+        $.ajax({
+            url: "/NS_DP_XuatNhapKho/XuatKho_GetChiTietCapPhat",
+            data: {
+                XuatNhapKho: +$("#XuatNhapKho").val()
+            },
+            type: "post",
+            success: function (response) {
+                console.log(response)
+                let content = ''
+                response.item.forEach((item) => {
+                    content += `
+                    <tr>
+                        <td>${item.stt}</td>
+                        <td>${item.hoTen}</td>
+                        <td>${item.TenSanPham}</td>
+                        <td>${item.MaSize}</td>
+                        <td>${-item.SoLuong}</td>
+                        <td>${item.TenTinhChatDongPhuc}</td>
+                        <td>${item.TenNhaCungCap}</td>
+                        <td>${item.tonKho}</td>
+                        <td>${item.NguoiDoiTra??''}</td>
+                        <td>${item.NgayDoiTra ??''}</td>
+                    </tr>
+                    `
+                })
+                $("#tableChiTietCapPhat tbody tr").remove()
+                $("#tableChiTietCapPhat tbody").append(content)
+            }
+        
+        })
+        $('#modalChiTietCP').modal('show')
+    }
     const XoaSanPham=()=>{
         const tableRows = document.querySelectorAll('#tableDanhSachSanPham tbody tr');
         tableRows.forEach((row, index) => {
@@ -280,6 +355,7 @@
         $("#phieuDeNghi").val("");
         $("#khoXuat").val(1);
         $("#XuatNhapKho").val(0);
+        $(".ct-cap-phat").css("display", "none");
         $('#modalThemMoiSanPham').modal('show')
         $("#CapNhatBtn").hide();
 
@@ -332,7 +408,7 @@
     const handleSelectPhieuXuat = (id, idphieu) => {
         console.log(id, idphieu)
         $("#CapNhatBtn").show();
-
+        $(".ct-cap-phat").css("display", "inline");
         $.ajax({
             url: "/NS_DP_XuatNhapKho/XuatKho_GetDanhSachSanPhamDaChon",
             type:"post",
@@ -426,8 +502,12 @@
                     SoLuong: +row.cells[6].textContent,
                     Size: +row.cells[15].textContent,
                     DonGia: row.cells[12].textContent,
-                    TinhChat: +row.cells[13].textContent,
+                    TinhChatDongPhuc: +row.cells[13].textContent,
                     NhaCungCap: +row.cells[16].textContent,
+                    NhanSu: +row.cells[17].textContent,
+                    DonViTinh: +row.cells[18].textContent,
+                    PhieuDeNghi: +row.cells[19].textContent,
+
                 };
                 DanhSachSanPham.push(data);
             }
@@ -591,6 +671,9 @@
                         <td style = "display:none">${item.NhaCungCap}</td>
                         <td style = "display:none">${item.Size}</td>
                         <td style = "display:none">${item.NhaCungCap}</td>    
+                        <td style = "display:none">${item.NhanSu}</td>    
+                        <td style = "display:none">${item.DonViTinh}</td>    
+                        <td style = "display:none">${item.PhieuDeNghi}</td>    
                      </tr>
                     `
                 })

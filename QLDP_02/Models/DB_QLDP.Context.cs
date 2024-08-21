@@ -50,6 +50,7 @@ namespace QLDP_02.Models
         public virtual DbSet<NS_QuocTich> NS_QuocTich { get; set; }
         public virtual DbSet<DM_DP_Size> DM_DP_Size { get; set; }
         public virtual DbSet<NS_DP_LoaiPhieu> NS_DP_LoaiPhieu { get; set; }
+        public virtual DbSet<NS_DP_XuatKho_ChiTiet_NhanSu> NS_DP_XuatKho_ChiTiet_NhanSu { get; set; }
     
         public virtual ObjectResult<getPhieuNhapHang_Result> getPhieuNhapHang()
         {
@@ -398,19 +399,6 @@ namespace QLDP_02.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CaNhan_RenderTable_Result>("CaNhan_RenderTable");
         }
     
-        public virtual ObjectResult<XuatKho_GetSanPham_Result> XuatKho_GetSanPham(Nullable<int> phieuDeNghi, Nullable<int> nhaCungCap)
-        {
-            var phieuDeNghiParameter = phieuDeNghi.HasValue ?
-                new ObjectParameter("PhieuDeNghi", phieuDeNghi) :
-                new ObjectParameter("PhieuDeNghi", typeof(int));
-    
-            var nhaCungCapParameter = nhaCungCap.HasValue ?
-                new ObjectParameter("NhaCungCap", nhaCungCap) :
-                new ObjectParameter("NhaCungCap", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<XuatKho_GetSanPham_Result>("XuatKho_GetSanPham", phieuDeNghiParameter, nhaCungCapParameter);
-        }
-    
         public virtual ObjectResult<XuatKho_getAllPhieuXuatKho_Result> XuatKho_getAllPhieuXuatKho()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<XuatKho_getAllPhieuXuatKho_Result>("XuatKho_getAllPhieuXuatKho");
@@ -462,6 +450,28 @@ namespace QLDP_02.Models
                 new ObjectParameter("NCC", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBaoCaoTonKho_Result1>("GetBaoCaoTonKho", thangParameter, namParameter, nCCParameter);
+        }
+    
+        public virtual ObjectResult<XuatKho_GetDanhSachCapPhatNhanSu_Result> XuatKho_GetDanhSachCapPhatNhanSu(Nullable<int> xuatNhapKho)
+        {
+            var xuatNhapKhoParameter = xuatNhapKho.HasValue ?
+                new ObjectParameter("XuatNhapKho", xuatNhapKho) :
+                new ObjectParameter("XuatNhapKho", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<XuatKho_GetDanhSachCapPhatNhanSu_Result>("XuatKho_GetDanhSachCapPhatNhanSu", xuatNhapKhoParameter);
+        }
+    
+        public virtual ObjectResult<XuatKho_GetSanPham_Result> XuatKho_GetSanPham(Nullable<int> phieuDeNghi, Nullable<int> nhaCungCap)
+        {
+            var phieuDeNghiParameter = phieuDeNghi.HasValue ?
+                new ObjectParameter("PhieuDeNghi", phieuDeNghi) :
+                new ObjectParameter("PhieuDeNghi", typeof(int));
+    
+            var nhaCungCapParameter = nhaCungCap.HasValue ?
+                new ObjectParameter("NhaCungCap", nhaCungCap) :
+                new ObjectParameter("NhaCungCap", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<XuatKho_GetSanPham_Result>("XuatKho_GetSanPham", phieuDeNghiParameter, nhaCungCapParameter);
         }
     }
 }

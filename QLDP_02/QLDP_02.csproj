@@ -294,6 +294,9 @@
     <Compile Include="Models\NS_DP_SanPham_TinhChatDongPhuc.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\NS_DP_XuatKho_ChiTiet_NhanSu.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\NS_DP_XuatNhapKho.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
@@ -322,6 +325,9 @@
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\XuatKho_getAllPhieuXuatKho_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\XuatKho_GetDanhSachCapPhatNhanSu_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\XuatKho_GetSanPhamByPhieu_Result.cs">

@@ -10,26 +10,23 @@
 namespace QLDP_02.Models
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class XuatKho_GetSanPham_Result
+    public partial class NS_DP_XuatKho_ChiTiet_NhanSu
     {
-        public Nullable<long> stt { get; set; }
-        public int tonKho { get; set; }
         public int ID { get; set; }
-        public int PhieuDeNghi { get; set; }
+        public int XuatNhapKho { get; set; }
         public int SanPham { get; set; }
-        public string TenTinhChatDongPhuc { get; set; }
-        public string MaSize { get; set; }
-        public Nullable<int> SoLuongDaNhan { get; set; }
-        public int SoLuong { get; set; }
-        public string TenDonViTinh { get; set; }
-        public Nullable<int> DonViTinh { get; set; }
         public Nullable<int> Size { get; set; }
+        public int SoLuong { get; set; }
+        public Nullable<int> DonViTinh { get; set; }
+        public string GhiChu { get; set; }
+        public Nullable<decimal> DonGia { get; set; }
+        public Nullable<decimal> ThanhTien { get; set; }
         public Nullable<int> TinhChatDongPhuc { get; set; }
         public Nullable<int> NhaCungCap { get; set; }
-        public string TenNhaCungCap { get; set; }
-        public string TenSanPham { get; set; }
-        public Nullable<decimal> DonGia { get; set; }
         public Nullable<int> NhanSu { get; set; }
+        public Nullable<int> NguoiDoiTra { get; set; }
+        public Nullable<System.DateTime> NgayDoiTra { get; set; }
     }
 }
