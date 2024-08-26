@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "DS cấp phát đồng phục";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+    <div class="container-fluid px-4">
+        <div class="page-header-content">
+            <div class="row align-items-center justify-content-between pt-3">
+                <div class="col-auto mb-3">
+                    <h1 class="page-header-title">
+                        <i class="fa-solid fa-shirt fa-lg"></i>&nbsp;DS cấp phát đồng phục
+                    </h1>
+                    <div class="col-sm-12 mt-2">
+                        <span class=" mr-2">Trang chủ</span>
+                        <i class="fas fa-angle-right mt-1 mr-2"></i>
+                        <span class=" mr-2" id="id_MenuCap3">Đồng phục</span>
+                        <i class="fas fa-angle-right mt-1 mr-2"></i>
+                        <span class="mr-2" id="id_MenuCap2">Báo cáo đồng phục</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="tableBaoCao">
+    <div class="card">
+        <div class="card-header">DS cấp phát đồng phục</div>
+        <div class="card-body">
+            <table id="tablePhieuNhapHang" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        @*<th>STT</th>
+                        <th>Ngày nhận ĐP</th>
+                        <th>ID</th>
+                        <th>Họ tên</th>
+                        <th>Giới tính</th>
+                        <th style="background-color: #D1E9F6">Size áo dài tay</th>
+                        <th style="background-color: #D1E9F6">Sl áo dài tay</th>
+                        <th style="background-color: #EECAD5">Size quần dài tay</th>
+                        <th style="background-color: #EECAD5">Sl quần dài tay</th>
+                        <th style="background-color: #D1E9F6">Size áo ngắn tay</th>
+                        <th style="background-color: #D1E9F6">Sl áo ngắn tay</th>
+                        <th style="background-color: #EECAD5 ">Size quần ngắn tay</th>
+                        <th style="background-color: #EECAD5 ">Sl quần ngắn tay</th>
+                        <th style="background-color: #D1E9F6 ">Size đồ bầu</th>
+                        <th style="background-color: #D1E9F6 ">Sl đồ bầu</th>
+                        <th style="background-color: #EECAD5 ">Size giày</th>
+                        <th style="background-color: #EECAD5 ">Sl giày</th>*@
+                        <th>STT</th>
+                        <th>Ngày nhận</th>
+                        <th>Họ Tên</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Tính chất</th>
+                        <th>Size</th>
+                        <th>Số lượng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    function formatDate(dateString) {
+        const dateObj = new Date(parseInt(dateString.replace('/Date(', '').replace(')/', '')));
+        const year = dateObj.getFullYear();
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        return `${day}-${month}-${year}`;
+    }
+    const renderTable = () => {
+        $.ajax({
+            url: '/DSCapPhat/BC_DSCapPhat',
+            type: 'post',
+            success: function (response) {
+                console.log(response)
+                let content =''
+                response.item.forEach((item, index) => {
+                    console.log(item, index)
+                    content += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${formatDate(item.date_only)}</td>
+                        <td>${item.hoTen}</td>
+                        <td>${item.TenSanPham}</td>
+                        <td>${item.TenTinhChatDongPhuc ?? ""}</td>
+                        <td>${item.MaSize}</td>
+                        <td>${item.soLuong}</td>
+                    </tr>
+                    `
+                })
+                $("#tablePhieuNhapHang tbody tr").remove()
+                $("#tablePhieuNhapHang tbody").append(content)
+            }
+        })
+    }
+    renderTable()
+</script>

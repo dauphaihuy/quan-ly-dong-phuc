@@ -16,6 +16,7 @@ namespace QLDP_02.Models
         public Nullable<long> stt { get; set; }
         public int XuatNhapKho { get; set; }
         public string hoTen { get; set; }
+        public int SanPham { get; set; }
         public string TenSanPham { get; set; }
         public Nullable<int> Size { get; set; }
         public string MaSize { get; set; }
@@ -25,5 +26,9 @@ namespace QLDP_02.Models
         public Nullable<int> tonKho { get; set; }
         public Nullable<int> NguoiDoiTra { get; set; }
         public Nullable<System.DateTime> NgayDoiTra { get; set; }
+        public int ID { get; set; }
+        public Nullable<int> NhaCungCap { get; set; }
+        public Nullable<int> TinhChatDongPhuc { get; set; }
+        public Nullable<int> NhanSu { get; set; }
     }
 }

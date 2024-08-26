@@ -122,6 +122,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BC_TonKhoController.cs" />
     <Compile Include="Controllers\DM_DP_SizeController.cs" />
+    <Compile Include="Controllers\DSCapPhatController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NS_DP_PhieuDeNghiBoPhanController.cs" />
     <Compile Include="Controllers\NS_DP_PhieuDeNghi_CaNhanController.cs" />
@@ -133,6 +134,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BaoCao_DPBP_GetLichSuNhanSu_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BC_DSCapPhat_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CaNhan_RenderTable_Result.cs">
@@ -187,6 +191,9 @@
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DPBP_HienThiSanPham_Result.cs">
+      <DependentUpon>DB_QLDP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DSCapPhat_Result.cs">
       <DependentUpon>DB_QLDP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\getAllDonMuaHang_Result.cs">
@@ -491,6 +498,7 @@
     <Content Include="Scripts\moment-with-locales.min.js.map" />
     <Content Include="Views\NS_DP_PhieuDeNghiBoPhan\Index.cshtml" />
     <Content Include="Views\BC_TonKho\Index.cshtml" />
+    <Content Include="Views\DSCapPhat\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

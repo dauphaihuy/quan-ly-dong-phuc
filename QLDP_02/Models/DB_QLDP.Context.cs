@@ -452,15 +452,6 @@ namespace QLDP_02.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBaoCaoTonKho_Result1>("GetBaoCaoTonKho", thangParameter, namParameter, nCCParameter);
         }
     
-        public virtual ObjectResult<XuatKho_GetDanhSachCapPhatNhanSu_Result> XuatKho_GetDanhSachCapPhatNhanSu(Nullable<int> xuatNhapKho)
-        {
-            var xuatNhapKhoParameter = xuatNhapKho.HasValue ?
-                new ObjectParameter("XuatNhapKho", xuatNhapKho) :
-                new ObjectParameter("XuatNhapKho", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<XuatKho_GetDanhSachCapPhatNhanSu_Result>("XuatKho_GetDanhSachCapPhatNhanSu", xuatNhapKhoParameter);
-        }
-    
         public virtual ObjectResult<XuatKho_GetSanPham_Result> XuatKho_GetSanPham(Nullable<int> phieuDeNghi, Nullable<int> nhaCungCap)
         {
             var phieuDeNghiParameter = phieuDeNghi.HasValue ?
@@ -472,6 +463,25 @@ namespace QLDP_02.Models
                 new ObjectParameter("NhaCungCap", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<XuatKho_GetSanPham_Result>("XuatKho_GetSanPham", phieuDeNghiParameter, nhaCungCapParameter);
+        }
+    
+        public virtual ObjectResult<BC_DSCapPhat_Result> BC_DSCapPhat()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BC_DSCapPhat_Result>("BC_DSCapPhat");
+        }
+    
+        public virtual ObjectResult<DSCapPhat_Result> DSCapPhat()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<DSCapPhat_Result>("DSCapPhat");
+        }
+    
+        public virtual ObjectResult<XuatKho_GetDanhSachCapPhatNhanSu_Result> XuatKho_GetDanhSachCapPhatNhanSu(Nullable<int> xuatNhapKho)
+        {
+            var xuatNhapKhoParameter = xuatNhapKho.HasValue ?
+                new ObjectParameter("XuatNhapKho", xuatNhapKho) :
+                new ObjectParameter("XuatNhapKho", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<XuatKho_GetDanhSachCapPhatNhanSu_Result>("XuatKho_GetDanhSachCapPhatNhanSu", xuatNhapKhoParameter);
         }
     }
 }

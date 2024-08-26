@@ -459,6 +459,7 @@
         <Function Name="BaoCao_DPBP_GetLichSuNhanSu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="nhansu" Type="int" Mode="In" />
         </Function>
+        <Function Name="BC_DSCapPhat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="CaNhan_RenderTable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="DPBP_GetAllPhieuDeNghi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="DPBP_GetLichSuNhanSu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -468,6 +469,7 @@
           <Parameter Name="Phieu" Type="int" Mode="In" />
         </Function>
         <Function Name="DPBP_HienThiSanPham" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="DSCapPhat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="getAllDonMuaHang" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetBaoCaoTonKho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -1125,13 +1127,15 @@
             <Parameter Name="Nam" Mode="In" Type="String" />
             <Parameter Name="NCC" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="XuatKho_GetDanhSachCapPhatNhanSu" ReturnType="Collection(DB_QLDPModel.XuatKho_GetDanhSachCapPhatNhanSu_Result)">
-          <Parameter Name="XuatNhapKho" Mode="In" Type="Int32" />
-          </FunctionImport>
           <EntitySet Name="NS_DP_XuatKho_ChiTiet_NhanSu" EntityType="DB_QLDPModel.NS_DP_XuatKho_ChiTiet_NhanSu" />
           <FunctionImport Name="XuatKho_GetSanPham" ReturnType="Collection(DB_QLDPModel.XuatKho_GetSanPham_Result)">
             <Parameter Name="PhieuDeNghi" Mode="In" Type="Int32" />
             <Parameter Name="NhaCungCap" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="BC_DSCapPhat" ReturnType="Collection(DB_QLDPModel.BC_DSCapPhat_Result)" />
+          <FunctionImport Name="DSCapPhat" ReturnType="Collection(DB_QLDPModel.DSCapPhat_Result)" />
+          <FunctionImport Name="XuatKho_GetDanhSachCapPhatNhanSu" ReturnType="Collection(DB_QLDPModel.XuatKho_GetDanhSachCapPhatNhanSu_Result)">
+            <Parameter Name="XuatNhapKho" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="getPhieuNhapHang_Result">
@@ -1773,20 +1777,6 @@
           <Property Type="Int32" Name="toncuoi" Nullable="true" />
           <Property Type="DateTime" Name="ngay" Nullable="true" />
         </ComplexType>
-        <ComplexType Name="XuatKho_GetDanhSachCapPhatNhanSu_Result">
-          <Property Type="Int64" Name="stt" Nullable="true" />
-          <Property Type="Int32" Name="XuatNhapKho" Nullable="false" />
-          <Property Type="String" Name="hoTen" Nullable="true" MaxLength="154" />
-          <Property Type="String" Name="TenSanPham" Nullable="true" MaxLength="200" />
-          <Property Type="Int32" Name="Size" Nullable="true" />
-          <Property Type="String" Name="MaSize" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="SoLuong" Nullable="false" />
-          <Property Type="String" Name="TenTinhChatDongPhuc" Nullable="false" MaxLength="150" />
-          <Property Type="String" Name="TenNhaCungCap" Nullable="true" MaxLength="255" />
-          <Property Type="Int32" Name="tonKho" Nullable="true" />
-          <Property Type="Int32" Name="NguoiDoiTra" Nullable="true" />
-          <Property Type="DateTime" Name="NgayDoiTra" Nullable="true" Precision="16" />
-        </ComplexType>
         <EntityType Name="NS_DP_XuatKho_ChiTiet_NhanSu">
           <Key>
             <PropertyRef Name="ID" />
@@ -1824,6 +1814,61 @@
           <Property Type="String" Name="TenNhaCungCap" Nullable="true" MaxLength="255" />
           <Property Type="String" Name="TenSanPham" Nullable="true" MaxLength="200" />
           <Property Type="Decimal" Name="DonGia" Nullable="true" Precision="10" Scale="2" />
+          <Property Type="Int32" Name="NhanSu" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="BC_DSCapPhat_Result">
+          <Property Type="Int32" Name="soLuong" Nullable="true" />
+          <Property Type="Int32" Name="SanPham" Nullable="false" />
+          <Property Type="Int32" Name="Size" Nullable="true" />
+          <Property Type="DateTime" Name="date_only" Nullable="true" />
+          <Property Type="Int32" Name="NhanSu" Nullable="true" />
+          <Property Type="Int32" Name="TinhChatDongPhuc" Nullable="true" />
+          <Property Type="String" Name="TenTinhChatDongPhuc" Nullable="true" MaxLength="150" />
+          <Property Type="Int32" Name="NhaCungCap" Nullable="true" />
+          <Property Type="String" Name="TenNhaCungCap" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="TenSanPham" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="hoTen" Nullable="true" MaxLength="101" />
+          <Property Type="String" Name="MaSize" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="DSCapPhat_Result">
+          <Property Type="Int32" Name="NhanSu" Nullable="false" />
+          <Property Type="String" Name="MaNhanSu" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Hoten" Nullable="true" MaxLength="101" />
+          <Property Type="Int32" Name="QuocTich" Nullable="true" />
+          <Property Type="Boolean" Name="IsDel" Nullable="false" />
+          <Property Type="Int32" Name="aoDaiSL" Nullable="true" />
+          <Property Type="String" Name="aoDaiMasize" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="NgayNhapXuat" Nullable="true" Precision="16" />
+          <Property Type="Int32" Name="quanDaiSL" Nullable="true" />
+          <Property Type="String" Name="quanDaiSize" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="NgayNhapXuat1" Nullable="true" Precision="16" />
+          <Property Type="Int32" Name="aoNganSL" Nullable="true" />
+          <Property Type="String" Name="aoNganSize" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="quanNganSL" Nullable="true" />
+          <Property Type="String" Name="quanNganSize" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="bauSL" Nullable="true" />
+          <Property Type="String" Name="bauSize" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="NgayNhapXuat2" Nullable="true" Precision="16" />
+          <Property Type="Int32" Name="giaySL" Nullable="true" />
+          <Property Type="String" Name="giaySize" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="XuatKho_GetDanhSachCapPhatNhanSu_Result">
+          <Property Type="Int64" Name="stt" Nullable="true" />
+          <Property Type="Int32" Name="XuatNhapKho" Nullable="false" />
+          <Property Type="String" Name="hoTen" Nullable="true" MaxLength="154" />
+          <Property Type="Int32" Name="SanPham" Nullable="false" />
+          <Property Type="String" Name="TenSanPham" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="Size" Nullable="true" />
+          <Property Type="String" Name="MaSize" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="SoLuong" Nullable="false" />
+          <Property Type="String" Name="TenTinhChatDongPhuc" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="TenNhaCungCap" Nullable="true" MaxLength="255" />
+          <Property Type="Int32" Name="tonKho" Nullable="true" />
+          <Property Type="Int32" Name="NguoiDoiTra" Nullable="true" />
+          <Property Type="DateTime" Name="NgayDoiTra" Nullable="true" Precision="16" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="Int32" Name="NhaCungCap" Nullable="true" />
+          <Property Type="Int32" Name="TinhChatDongPhuc" Nullable="true" />
           <Property Type="Int32" Name="NhanSu" Nullable="true" />
         </ComplexType>
       </Schema>
@@ -2985,24 +3030,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="XuatKho_GetDanhSachCapPhatNhanSu" FunctionName="DB_QLDPModel.Store.XuatKho_GetDanhSachCapPhatNhanSu">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="DB_QLDPModel.XuatKho_GetDanhSachCapPhatNhanSu_Result">
-                <ScalarProperty Name="stt" ColumnName="stt" />
-                <ScalarProperty Name="XuatNhapKho" ColumnName="XuatNhapKho" />
-                <ScalarProperty Name="hoTen" ColumnName="hoTen" />
-                <ScalarProperty Name="TenSanPham" ColumnName="TenSanPham" />
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="MaSize" ColumnName="MaSize" />
-                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
-                <ScalarProperty Name="TenTinhChatDongPhuc" ColumnName="TenTinhChatDongPhuc" />
-                <ScalarProperty Name="TenNhaCungCap" ColumnName="TenNhaCungCap" />
-                <ScalarProperty Name="tonKho" ColumnName="tonKho" />
-                <ScalarProperty Name="NguoiDoiTra" ColumnName="NguoiDoiTra" />
-                <ScalarProperty Name="NgayDoiTra" ColumnName="NgayDoiTra" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <EntitySetMapping Name="NS_DP_XuatKho_ChiTiet_NhanSu">
             <EntityTypeMapping TypeName="DB_QLDPModel.NS_DP_XuatKho_ChiTiet_NhanSu">
               <MappingFragment StoreEntitySet="NS_DP_XuatKho_ChiTiet_NhanSu">
@@ -3043,6 +3070,73 @@
                 <ScalarProperty Name="TenNhaCungCap" ColumnName="TenNhaCungCap" />
                 <ScalarProperty Name="TenSanPham" ColumnName="TenSanPham" />
                 <ScalarProperty Name="DonGia" ColumnName="DonGia" />
+                <ScalarProperty Name="NhanSu" ColumnName="NhanSu" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="BC_DSCapPhat" FunctionName="DB_QLDPModel.Store.BC_DSCapPhat">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_QLDPModel.BC_DSCapPhat_Result">
+                <ScalarProperty Name="soLuong" ColumnName="soLuong" />
+                <ScalarProperty Name="SanPham" ColumnName="SanPham" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="date_only" ColumnName="date_only" />
+                <ScalarProperty Name="NhanSu" ColumnName="NhanSu" />
+                <ScalarProperty Name="TinhChatDongPhuc" ColumnName="TinhChatDongPhuc" />
+                <ScalarProperty Name="TenTinhChatDongPhuc" ColumnName="TenTinhChatDongPhuc" />
+                <ScalarProperty Name="NhaCungCap" ColumnName="NhaCungCap" />
+                <ScalarProperty Name="TenNhaCungCap" ColumnName="TenNhaCungCap" />
+                <ScalarProperty Name="TenSanPham" ColumnName="TenSanPham" />
+                <ScalarProperty Name="hoTen" ColumnName="hoTen" />
+                <ScalarProperty Name="MaSize" ColumnName="MaSize" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DSCapPhat" FunctionName="DB_QLDPModel.Store.DSCapPhat">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_QLDPModel.DSCapPhat_Result">
+                <ScalarProperty Name="NhanSu" ColumnName="NhanSu" />
+                <ScalarProperty Name="MaNhanSu" ColumnName="MaNhanSu" />
+                <ScalarProperty Name="Hoten" ColumnName="Hoten" />
+                <ScalarProperty Name="QuocTich" ColumnName="QuocTich" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+                <ScalarProperty Name="aoDaiSL" ColumnName="aoDaiSL" />
+                <ScalarProperty Name="aoDaiMasize" ColumnName="aoDaiMasize" />
+                <ScalarProperty Name="NgayNhapXuat" ColumnName="NgayNhapXuat" />
+                <ScalarProperty Name="quanDaiSL" ColumnName="quanDaiSL" />
+                <ScalarProperty Name="quanDaiSize" ColumnName="quanDaiSize" />
+                <ScalarProperty Name="NgayNhapXuat1" ColumnName="NgayNhapXuat1" />
+                <ScalarProperty Name="aoNganSL" ColumnName="aoNganSL" />
+                <ScalarProperty Name="aoNganSize" ColumnName="aoNganSize" />
+                <ScalarProperty Name="quanNganSL" ColumnName="quanNganSL" />
+                <ScalarProperty Name="quanNganSize" ColumnName="quanNganSize" />
+                <ScalarProperty Name="bauSL" ColumnName="bauSL" />
+                <ScalarProperty Name="bauSize" ColumnName="bauSize" />
+                <ScalarProperty Name="NgayNhapXuat2" ColumnName="NgayNhapXuat2" />
+                <ScalarProperty Name="giaySL" ColumnName="giaySL" />
+                <ScalarProperty Name="giaySize" ColumnName="giaySize" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="XuatKho_GetDanhSachCapPhatNhanSu" FunctionName="DB_QLDPModel.Store.XuatKho_GetDanhSachCapPhatNhanSu">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_QLDPModel.XuatKho_GetDanhSachCapPhatNhanSu_Result">
+                <ScalarProperty Name="stt" ColumnName="stt" />
+                <ScalarProperty Name="XuatNhapKho" ColumnName="XuatNhapKho" />
+                <ScalarProperty Name="hoTen" ColumnName="hoTen" />
+                <ScalarProperty Name="SanPham" ColumnName="SanPham" />
+                <ScalarProperty Name="TenSanPham" ColumnName="TenSanPham" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="MaSize" ColumnName="MaSize" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+                <ScalarProperty Name="TenTinhChatDongPhuc" ColumnName="TenTinhChatDongPhuc" />
+                <ScalarProperty Name="TenNhaCungCap" ColumnName="TenNhaCungCap" />
+                <ScalarProperty Name="tonKho" ColumnName="tonKho" />
+                <ScalarProperty Name="NguoiDoiTra" ColumnName="NguoiDoiTra" />
+                <ScalarProperty Name="NgayDoiTra" ColumnName="NgayDoiTra" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NhaCungCap" ColumnName="NhaCungCap" />
+                <ScalarProperty Name="TinhChatDongPhuc" ColumnName="TinhChatDongPhuc" />
                 <ScalarProperty Name="NhanSu" ColumnName="NhanSu" />
               </ComplexTypeMapping>
             </ResultMapping>

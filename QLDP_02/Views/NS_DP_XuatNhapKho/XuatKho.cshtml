@@ -180,7 +180,7 @@
                 </div>
                 <div>
                     <button class="btn btn-outline-secondary" onclick="handleclose()"><i class="fa-solid fa-arrow-left me-1"></i>Quay lại</button>
-                    <button class="btn btn-outline-success" onclick="handleThemSanPham()"><i class="fa-regular fa-floppy-disk me-1"></i>Chọn</button>
+                    <button class="btn btn-outline-success" onclick="handleCapNhat()"><i class="fa-regular fa-floppy-disk me-1"></i>Cập nhật</button>
                 </div>
             </div>
 
@@ -189,6 +189,7 @@
                     <table id="tableChiTietCapPhat" class="table table-striped">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>STT</th>
                                 <th>Nhân sự</th>
                                 <th>Sản phẩm</th>
@@ -210,6 +211,52 @@
     </div>
 </div>
 <script>
+    const handleCapNhat = () => {
+        const tableRows = document.querySelectorAll('#tableChiTietCapPhat tbody tr');
+        const DanhSachSanPham = []
+        tableRows.forEach((row, index) => {
+            const checkbox = $(row).find('input[type="checkbox"]');
+            if (checkbox.prop('checked')) {
+                console.log(row.cells[4])
+                var val = row.cells[4].querySelector('select').value
+                console.log(val)
+                const data = {
+                    ID: +row.cells[11].textContent,
+                    Size: +val,
+                    NhaCungCap: +row.cells[12].textContent,
+                    SanPham: +row.cells[13].textContent,
+                    TinhChatDongPhuc: +row.cells[14].textContent,
+                    NhanSu: +row.cells[15].textContent,
+                };
+                DanhSachSanPham.push(data);
+            }
+        })
+        console.log(DanhSachSanPham)
+        if (DanhSachSanPham.length == 0) {
+            Toast.fire({
+                icon: "error",
+                title: "Chưa chọn sản phẩm"
+            })
+            return
+        }
+        $.ajax({
+            url: "/NS_DP_XuatNhapKho/XuatKho_DoiTraCapPhat",
+            type: "post",
+            data: {
+                XuatNhapKho: $("#XuatNhapKho").val(),
+                listsp: DanhSachSanPham
+            },
+            success: function (response) {
+                console.log(response)
+                Toast.fire({
+                    icon: "success",
+                    title: "Cập nhật thành công"
+                })
+                xemChiTietCapPhat()
+                handleSelectPhieuXuat(response.XuatNhapKho, response.IDPhieu)
+            }
+        })
+    }
     function handleclose() {
         $('#modalChiTietCP').modal('hide')
     }
@@ -226,16 +273,22 @@
                 response.item.forEach((item) => {
                     content += `
                     <tr>
+                        <td><input type="checkbox"/></td>
                         <td>${item.stt}</td>
                         <td>${item.hoTen}</td>
                         <td>${item.TenSanPham}</td>
-                        <td>${item.MaSize}</td>
+                        <td id="sizeSanPham_${item.SanPham}">${renderSizeSanPham(item.SanPham, item.Size)}</td>
                         <td>${-item.SoLuong}</td>
                         <td>${item.TenTinhChatDongPhuc}</td>
                         <td>${item.TenNhaCungCap}</td>
                         <td>${item.tonKho}</td>
                         <td>${item.NguoiDoiTra??''}</td>
-                        <td>${item.NgayDoiTra ??''}</td>
+                        <td>${item.NgayDoiTra == null ?  "1":formatDate(item.NgayDoiTra)}</td>
+                        <td style="display:none">${item.ID}</td>
+                        <td style="display:none">${item.NhaCungCap}</td>
+                        <td style="display:none">${item.SanPham}</td>
+                        <td style="display:none">${item.TinhChatDongPhuc}</td>
+                        <td style="display:none">${item.NhanSu}</td>
                     </tr>
                     `
                 })
@@ -296,6 +349,31 @@
             }
         })
     
+    }
+    const renderSizeSanPham = (id, selectVal) => {
+        $.ajax({
+            url: "/NS_DP_PhieuDeNghi_CaNhan/GetSizeFromSanPham",
+            type: 'POST',
+            data: {
+                idSanPham: +id
+            },
+            success: function (response) {
+                //console.log(response)
+                let content = `<select class="form-control" id="MaSize" name="MaSize">`
+                response.item.forEach(function (item) {
+                    //console.log(item)
+                    content += `
+                <option value="${item.Size}" ${item.Size == selectVal ?"selected":""}>${item.MaSize}</option>
+                `
+                })
+                content += '</select>'
+                $(`#sizeSanPham_${id}`).html(content)
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu: ', error)
+
+            }
+        })
     }
     const changeSelectPhieuNhap = () => {
         let PhieuDeNghi = $("#phieuDeNghi").val()

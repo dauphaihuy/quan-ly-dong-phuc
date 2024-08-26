@@ -545,6 +545,40 @@ namespace QLDP_02.Controllers
                 return Json(new { success = false, err = e });
             }
         }
+        public JsonResult XuatKho_DoiTraCapPhat(int XuatNhapKho, List<XuatKho_GetDanhSachCapPhatNhanSu_Result> listsp)
+        {
+            try
+            {
+                var xnk = db.NS_DP_XuatNhapKho.Where(x => x.XuatNhapKho == XuatNhapKho).SingleOrDefault();
+                foreach (var item in listsp)
+                {
+                    var xk_ct_ns = db.NS_DP_XuatKho_ChiTiet_NhanSu.Where(x=>x.ID == item.ID).SingleOrDefault();
+                    xk_ct_ns.Size = item.Size;
+                    xk_ct_ns.NguoiDoiTra = 17;
+                    xk_ct_ns.NgayDoiTra = DateTime.Now;
+                    var xk_ct = db.NS_DP_XuatNhapKho_ChiTiet.Where(x=>x.XuatNhapKho == XuatNhapKho
+                    && x.SanPham == item.SanPham 
+                    && x.NhaCungCap == item.NhaCungCap
+                    && x.TinhChatDongPhuc == item.TinhChatDongPhuc
+                    ).SingleOrDefault();
+                    xk_ct.Size = item.Size;
+                    var phieuCaNhan = db.NS_DP_PhieuDeNghi_CaNhan_ChiTiet.Where(x=>x.PhieuDeNghi_CaNhan == xnk.IDPhieu 
+                    && x.SanPham == item.SanPham && x.TinhChatDongPhuc == item.TinhChatDongPhuc
+                    && x.NhanSu == item.NhanSu).SingleOrDefault();
+                    phieuCaNhan.Size = item.Size;
+                    // phieu bo phan
+                    var phieuBP_CT = db.NS_DP_PhieuDeNghi_ChiTiet.
+                        Where(x=>x.PhieuDeNghi == phieuCaNhan.PhieuDeNghi_CaNhan && x.SanPham == item.SanPham && x.TinhChatDongPhuc == item.TinhChatDongPhuc).SingleOrDefault();
+                    phieuBP_CT.Size = item.Size;    
+                }
+                db.SaveChanges();   
+                return Json(new { success = true, XuatNhapKho , xnk.IDPhieu});
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, err = e });
+            }
+        }
     }
 
 }
