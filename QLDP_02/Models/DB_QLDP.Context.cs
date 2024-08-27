@@ -483,5 +483,26 @@ namespace QLDP_02.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<XuatKho_GetDanhSachCapPhatNhanSu_Result>("XuatKho_GetDanhSachCapPhatNhanSu", xuatNhapKhoParameter);
         }
+    
+        public virtual ObjectResult<XuatKho_CT_CapPhat_getSoLuong_Result> XuatKho_CT_CapPhat_getSoLuong(Nullable<int> sanPham, Nullable<int> nhaCC, Nullable<int> size, Nullable<int> tCDP)
+        {
+            var sanPhamParameter = sanPham.HasValue ?
+                new ObjectParameter("SanPham", sanPham) :
+                new ObjectParameter("SanPham", typeof(int));
+    
+            var nhaCCParameter = nhaCC.HasValue ?
+                new ObjectParameter("NhaCC", nhaCC) :
+                new ObjectParameter("NhaCC", typeof(int));
+    
+            var sizeParameter = size.HasValue ?
+                new ObjectParameter("Size", size) :
+                new ObjectParameter("Size", typeof(int));
+    
+            var tCDPParameter = tCDP.HasValue ?
+                new ObjectParameter("TCDP", tCDP) :
+                new ObjectParameter("TCDP", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<XuatKho_CT_CapPhat_getSoLuong_Result>("XuatKho_CT_CapPhat_getSoLuong", sanPhamParameter, nhaCCParameter, sizeParameter, tCDPParameter);
+        }
     }
 }

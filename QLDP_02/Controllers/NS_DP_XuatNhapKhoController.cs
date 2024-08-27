@@ -550,6 +550,18 @@ namespace QLDP_02.Controllers
             try
             {
                 var xnk = db.NS_DP_XuatNhapKho.Where(x => x.XuatNhapKho == XuatNhapKho).SingleOrDefault();
+                foreach (var check in listsp)
+                {
+                    var itemRes = db.XuatKho_CT_CapPhat_getSoLuong(check.SanPham, check.NhaCungCap, check.Size, check.TinhChatDongPhuc).SingleOrDefault();
+                    if(itemRes == null)
+                    {
+                        return Json(new { success = false, message = "Không đủ số lượng cấp phát" });
+                    }
+                    if (itemRes.soLuong < check.SoLuong)
+                    {
+                        return Json(new { success = false, message = "Số lượng đổi trả lớn hơn số lượng cấp phát" });
+                    }
+                }
                 foreach (var item in listsp)
                 {
                     var xk_ct_ns = db.NS_DP_XuatKho_ChiTiet_NhanSu.Where(x=>x.ID == item.ID).SingleOrDefault();

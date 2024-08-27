@@ -566,6 +566,12 @@
           <Parameter Name="nguoiDeNghi" Type="int" Mode="In" />
           <Parameter Name="idLyDoCapPhat" Type="int" Mode="In" />
         </Function>
+        <Function Name="XuatKho_CT_CapPhat_getSoLuong" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SanPham" Type="int" Mode="In" />
+          <Parameter Name="NhaCC" Type="int" Mode="In" />
+          <Parameter Name="Size" Type="int" Mode="In" />
+          <Parameter Name="TCDP" Type="int" Mode="In" />
+        </Function>
         <Function Name="XuatKho_getAllPhieuXuatKho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="XuatKho_GetDanhSachCapPhatNhanSu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="XuatNhapKho" Type="int" Mode="In" />
@@ -1135,7 +1141,13 @@
           <FunctionImport Name="BC_DSCapPhat" ReturnType="Collection(DB_QLDPModel.BC_DSCapPhat_Result)" />
           <FunctionImport Name="DSCapPhat" ReturnType="Collection(DB_QLDPModel.DSCapPhat_Result)" />
           <FunctionImport Name="XuatKho_GetDanhSachCapPhatNhanSu" ReturnType="Collection(DB_QLDPModel.XuatKho_GetDanhSachCapPhatNhanSu_Result)">
-            <Parameter Name="XuatNhapKho" Mode="In" Type="Int32" />
+          <Parameter Name="XuatNhapKho" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="XuatKho_CT_CapPhat_getSoLuong" ReturnType="Collection(DB_QLDPModel.XuatKho_CT_CapPhat_getSoLuong_Result)">
+            <Parameter Name="SanPham" Mode="In" Type="Int32" />
+            <Parameter Name="NhaCC" Mode="In" Type="Int32" />
+            <Parameter Name="Size" Mode="In" Type="Int32" />
+            <Parameter Name="TCDP" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="getPhieuNhapHang_Result">
@@ -1870,6 +1882,13 @@
           <Property Type="Int32" Name="NhaCungCap" Nullable="true" />
           <Property Type="Int32" Name="TinhChatDongPhuc" Nullable="true" />
           <Property Type="Int32" Name="NhanSu" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="XuatKho_CT_CapPhat_getSoLuong_Result">
+          <Property Type="Int32" Name="soLuong" Nullable="true" />
+          <Property Type="Int32" Name="SanPham" Nullable="false" />
+          <Property Type="Int32" Name="NhaCungCap" Nullable="true" />
+          <Property Type="Int32" Name="Size" Nullable="true" />
+          <Property Type="Int32" Name="TinhChatDongPhuc" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3138,6 +3157,17 @@
                 <ScalarProperty Name="NhaCungCap" ColumnName="NhaCungCap" />
                 <ScalarProperty Name="TinhChatDongPhuc" ColumnName="TinhChatDongPhuc" />
                 <ScalarProperty Name="NhanSu" ColumnName="NhanSu" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="XuatKho_CT_CapPhat_getSoLuong" FunctionName="DB_QLDPModel.Store.XuatKho_CT_CapPhat_getSoLuong">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_QLDPModel.XuatKho_CT_CapPhat_getSoLuong_Result">
+                <ScalarProperty Name="soLuong" ColumnName="soLuong" />
+                <ScalarProperty Name="SanPham" ColumnName="SanPham" />
+                <ScalarProperty Name="NhaCungCap" ColumnName="NhaCungCap" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="TinhChatDongPhuc" ColumnName="TinhChatDongPhuc" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

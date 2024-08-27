@@ -248,12 +248,21 @@
             },
             success: function (response) {
                 console.log(response)
-                Toast.fire({
-                    icon: "success",
-                    title: "Cập nhật thành công"
-                })
-                xemChiTietCapPhat()
-                handleSelectPhieuXuat(response.XuatNhapKho, response.IDPhieu)
+                if (response.success) {
+                    Toast.fire({
+                        icon: "success",
+                        title: "Cập nhật thành công"
+                    })
+                    xemChiTietCapPhat()
+                    handleSelectPhieuXuat(response.XuatNhapKho, response.IDPhieu)
+                }
+                else if (response.success == false) {
+                    Toast.fire({
+                        icon: "error",
+                        title: response.message
+                    })
+                }
+                
             }
         })
     }

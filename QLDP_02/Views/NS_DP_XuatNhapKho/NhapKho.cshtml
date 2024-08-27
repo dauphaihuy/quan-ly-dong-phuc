@@ -262,7 +262,7 @@
                 MaSize: +row.cells[16].textContent,
                 TonKho: +row.cells[13].textContent,
                 SoLuongYeuCau: +row.cells[6].textContent,
-                TinhChatDongPhuc: +row.cells[4].textContent,
+                TinhChatDongPhuc: +row.cells[19].textContent,
                 NhaCungCap: +row.cells[17].textContent,
                 ID: +row.cells[18].textContent,
             }
@@ -334,7 +334,7 @@
         return formattedDate;
     }
     const selectChiTietPhieuNhap = (element) => {
-        console.log(element)
+        console.log('eeee')
         let cells = element.getElementsByTagName('td')
         var data = [];
         for (var i = 0; i < cells.length; i++) {
@@ -362,7 +362,8 @@
                 var formattedDate = date.toISOString().slice(0, 16);
                 $("#id_NgayNhapXuat").val(formattedDate)
                 // hiện danh sách sản phẩm
-                //console.log(response.dssp)
+                console.log('hiện danh sách sản phẩm')
+                console.log(response.dssp)
                 let content = ``
                 response.dssp.forEach((item) => {
                     content += `
@@ -504,6 +505,7 @@
                             <td style = "display:none">${item.Size}</td>
                             <td style = "display:none">${item.NhaCungCap}</td>
                             <td style = "display:none">${item.ID}</td>
+                            <td>${item.TinhChatDongPhuc}</td>
                         </tr>`
                     })
                     $("#tableDanhSachSanPham tbody").html('')
