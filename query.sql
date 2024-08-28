@@ -1338,7 +1338,5 @@ group by NS_DP_XuatKho_ChiTiet_NhanSu.SanPham
 ,NS_NhanSu.Ten+' '+NS_NhanSu.HoDem
 ,DM_DP_Size.MaSize
 , DM_DP_TinhChatDongPhuc.TenTinhChatDongPhuc
-SELECT * FROM dbo.NS_DP_XuatNhapKho
 SELECT * FROM dbo.NS_DP_XuatNhapKho_ChiTiet
-LEFT JOIN NS_DP_XuatNhapKho on NS_DP_XuatNhapKho.XuatNhapKho = NS_DP_XuatNhapKho_ChiTiet.XuatNhapKho
- where LoaiPhieu =1
+SELECT * FROM dbo.NS_DP_SanPham
